@@ -1,4 +1,4 @@
-# `AirBnB Clone - Project`
+# `HomeHopper`
 
 ## Database Schema Design
 
