@@ -40,10 +40,13 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') // Default value of now
       }
-    });
+    }, options); // Include the options object here to apply the schema
+
   },
   async down(queryInterface, Sequelize) {
-    options.tableName = "Users";
-    await queryInterface.dropTable(options);
+    await queryInterface.dropTable({
+      tableName: 'Users',
+      ...options // Spread the options object to include schema during dropTable
+    });
   }
 };
