@@ -25,32 +25,40 @@ const validateSignup = [
     .exists({ checkFalsy: true })
     .isLength({ min: 6 })
     .withMessage('Password must be 6 characters or more.'),
+  check('firstName') // Validation for firstName
+    .exists({ checkFalsy: true })
+    .withMessage('First name is required.'),
+  check('lastName') // Validation for lastName
+    .exists({ checkFalsy: true })
+    .withMessage('Last name is required.'),
   handleValidationErrors
 ];
 
 
 
-// Sign up
-router.post(
-  '/',
-  validateSignup,
-  async (req, res) => {
-    const { email, password, username } = req.body;
-    const hashedPassword = bcrypt.hashSync(password);
-    const user = await User.create({ email, username, hashedPassword });
+/// Sign up
+router.post('/', validateSignup, async (req, res) => {
+  const { email, password, username, firstName, lastName } = req.body;
+  const hashedPassword = bcrypt.hashSync(password);
+  const user = await User.create({
+    email,
+    username,
+    hashedPassword,
+    firstName,
+    lastName
+  });
 
-    const safeUser = {
-      id: user.id,
-      email: user.email,
-      username: user.username,
-    };
+  const safeUser = {
+    id: user.id,
+    email: user.email,
+    username: user.username,
+    firstName: user.firstName,
+    lastName: user.lastName
+  };
 
-    await setTokenCookie(res, safeUser);
+  await setTokenCookie(res, safeUser);
 
-    return res.json({
-      user: safeUser
-    });
-  }
-);
+  return res.json({ user: safeUser });
+});
 
 module.exports = router;

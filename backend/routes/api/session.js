@@ -4,14 +4,12 @@ const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
 const { handleValidationErrors } = require('../../utils/validation');
 const { check } = require('express-validator');
-
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const { User } = require('../../db/models');
 
 const router = express.Router();
 
-// Define the validateLogin middleware before using it in the route
-
+// Define the validateLogin middleware
 const validateLogin = [
   check('credential')
     .exists({ checkFalsy: true })
@@ -23,8 +21,7 @@ const validateLogin = [
   handleValidationErrors
 ];
 
-
-//Log in
+// Log in route
 router.post(
   '/',
   validateLogin,
@@ -33,10 +30,7 @@ router.post(
 
     const user = await User.unscoped().findOne({
       where: {
-        [Op.or]: {
-          username: credential,
-          email: credential
-        }
+        [Op.or]: [{ username: credential }, { email: credential }]
       }
     });
 
@@ -48,48 +42,43 @@ router.post(
       return next(err);
     }
 
+    // Add firstName and lastName to the safeUser object
     const safeUser = {
       id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       username: user.username,
     };
 
     await setTokenCookie(res, safeUser);
 
-    return res.json({
-      user: safeUser
-    });
+    return res.json({ user: safeUser });
   }
 );
 
-//Logout
-router.delete(
-  '/',
-  (_req, res) => {
-    res.clearCookie('token');
-    return res.json({ message: 'success' });
+// Logout route
+router.delete('/', (_req, res) => {
+  res.clearCookie('token');
+  return res.json({ message: 'success' });
+});
+
+// Restore session user route
+router.get('/', restoreUser, (req, res) => {
+  const { user } = req;
+  if (user) {
+    const safeUser = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      username: user.username,
+    };
+    return res.json({ user: safeUser });
+  } else {
+    return res.json({ user: null });
   }
-);
-
-
-// Restore session user
-router.get(
-  '/',
-  (req, res) => {
-    const { user } = req;
-    if (user) {
-      const safeUser = {
-        id: user.id,
-        email: user.email,
-        username: user.username,
-      };
-      return res.json({
-        user: safeUser
-      });
-    } else return res.json({ user: null });
-  }
-);
-
-
+});
 
 module.exports = router;
+

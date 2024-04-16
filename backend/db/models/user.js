@@ -4,7 +4,7 @@ const { Model, Validator } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      // define association here
+      // Define association here
     }
   };
 
@@ -34,7 +34,21 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING.BINARY,
         allowNull: false,
         validate: {
-          len: [60, 60]
+          len: [60, 60]  // Ensures hashed password is exactly 60 characters
+        }
+      },
+      firstName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true,  // Prevents empty string
+        }
+      },
+      lastName: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true,  // Prevents empty string
         }
       }
     },
