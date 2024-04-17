@@ -2,7 +2,6 @@
 
 let options = {};
 if (process.env.NODE_ENV === 'production') {
-  // Define your schema in the options object for production environment
   options.schema = process.env.SCHEMA;
 }
 
@@ -41,12 +40,9 @@ module.exports = {
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP') // Default value of now
       }
     }, options); // Include the options object here to apply the schema
-
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable({
-      tableName: 'Users',
-      ...options // Spread the options object to include schema during dropTable
-    });
+    options.tableName = "Users";
+    return queryInterface.dropTable(options);
   }
 };
