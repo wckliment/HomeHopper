@@ -1,5 +1,5 @@
 'use strict';
-
+//temp
 // Same approach to handling options as in create-user.js
 let options = {};
 if (process.env.NODE_ENV === 'production') {
@@ -26,4 +26,3 @@ module.exports = {
     await queryInterface.removeColumn({ tableName: 'Users', schema: options.schema }, 'lastName');
   }
 };
-
