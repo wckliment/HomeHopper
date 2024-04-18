@@ -5,11 +5,11 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.addColumn('Users', 'firstName', {
       type: Sequelize.STRING,
-      allowNull: true
+      allowNull: false
     });
     await queryInterface.addColumn('Users', 'lastName', {
       type: Sequelize.STRING,
-      allowNull: true
+      allowNull: false
     });
   },
 
