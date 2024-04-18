@@ -12,11 +12,11 @@ module.exports = {
     // Use tableName with options for specifying schema when modifying the table
     await queryInterface.addColumn({ tableName: 'Users', schema: options.schema }, 'firstName', {
       type: Sequelize.STRING,
-      allowNull: true
+      allowNull: false
     });
     await queryInterface.addColumn({ tableName: 'Users', schema: options.schema }, 'lastName', {
       type: Sequelize.STRING,
-      allowNull: true
+      allowNull: false
     });
   },
 
