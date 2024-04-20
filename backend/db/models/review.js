@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Review.belongsTo(models.Spot, { foreignKey: 'spotId', onDelete: 'CASCADE' });
       Review.belongsTo(models.User, { foreignKey: 'userId', onDelete: 'CASCADE' });
+      Review.hasMany(models.Reviewimage, {foreignKey: 'reviewId', onDelete: 'CASCADE'})
     }
   }
   Review.init({
