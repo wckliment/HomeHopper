@@ -4,7 +4,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Review_Images extends Model {
     static associate(models) {
-      Review_Images.belongsTo(models.Review, { foreignKey: 'reviewId', onDelete: 'CASCADE' });
+      Review_Images.belongsTo(models.review, { foreignKey: 'reviewId', onDelete: 'CASCADE' });
     }
   }
   Review_Images.init({

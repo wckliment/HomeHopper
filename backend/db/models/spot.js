@@ -5,7 +5,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Spot extends Model {
     static associate(models) {
-      Spot.belongsTo(models.User, { foreignKey: 'ownerId', as: 'owner', onDelete: 'CASCADE' });
+      Spot.belongsTo(models.user, { foreignKey: 'ownerId', as: 'owner', onDelete: 'CASCADE' });
     }
   }
   Spot.init({
