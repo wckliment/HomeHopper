@@ -1,11 +1,15 @@
 'use strict';
 
-const { Review_Images } = require('../models');
+const { Reviewimage } = require('../models');
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // Define your schema in the options object for the production environment
+}
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Seed data for Review_Images table
-    await Review_Images.bulkCreate([
+    await Reviewimage.bulkCreate([
       {
         reviewId: 1,
         url: "https://example.com/image1.jpg",
@@ -24,10 +28,13 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       }
-    ]);
+    ], { validate: true });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Review_Images', null, {});
+    const Op = Sequelize.Op;
+    return queryInterface.bulkDelete('Reviewimage', {
+      url: { [Op.in]: ["https://example.com/image1.jpg", "https://example.com/image2.jpg", "https://example.com/image3.jpg"] }
+    }, {});
   }
 };

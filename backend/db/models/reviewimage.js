@@ -2,20 +2,19 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Review_Images extends Model {
+  class Reviewimage extends Model {
     static associate(models) {
-      Review_Images.belongsTo(models.review, { foreignKey: 'reviewId', onDelete: 'CASCADE' });
+      Reviewimage.belongsTo(models.Review, { foreignKey: 'reviewId', onDelete: 'CASCADE' });
     }
   }
-  Review_Images.init({
+  Reviewimage.init({
     reviewId: DataTypes.INTEGER,
     url: DataTypes.STRING,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE
   }, {
     sequelize,
-    modelName: 'Review_Images',
-    tableName: 'Review_Images', // Specify the correct table name here
+    modelName: 'Reviewimage',
   });
-  return Review_Images;
+  return Reviewimage;
 };

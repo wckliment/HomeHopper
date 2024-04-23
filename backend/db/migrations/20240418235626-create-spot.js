@@ -11,7 +11,7 @@ module.exports = {
     await queryInterface.createTable('Spots', {
       id: {
         allowNull: false,
-        autoIncrement: true,
+        autoIncrement: false,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
@@ -38,11 +38,11 @@ module.exports = {
         allowNull: false
       },
       lat: {
-        type: Sequelize.DECIMAL(10, 7),
+        type: Sequelize.STRING,
         allowNull: false
       },
       lng: {
-        type: Sequelize.DECIMAL(10, 7),
+        type: Sequelize.STRING,
         allowNull: false
       },
       name: {
@@ -54,7 +54,7 @@ module.exports = {
         allowNull: false
       },
       price: {
-        type: Sequelize.DECIMAL(10, 2),
+        type: Sequelize.STRING,
         allowNull: false
       },
       createdAt: {
