@@ -1,5 +1,5 @@
 const express = require('express');
-const { Spot } = require('../../db/models');
+const { Spot, Review, SpotImage, User } = require('../../db/models');
 const { requireAuth } = require('../../utils/auth');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
@@ -45,34 +45,66 @@ router.get('/current', requireAuth, async (req, res) => {
   }
 });
 
+// Get Details of a Spot from an ID
+
 router.get('/:spotId', async (req, res) => {
+  const { spotId } = req.params;
   try {
-    const spotId = req.params.spotId;
     const spot = await Spot.findByPk(spotId, {
       include: [
         {
           model: Review,
-          attributes: ['id', 'userId', 'spotId', 'rating', 'review'],
-          as: 'reviews'
+          as: 'Reviews', // Ensure this alias matches your model association
+          attributes: ['id']
         },
         {
           model: SpotImage,
-          attributes: ['id', 'url', 'preview'],
-          as: 'spotImages'
+          as: 'SpotImages', // Ensure this alias matches your model association
+          attributes: ['id', 'url', 'preview']
         },
         {
           model: User,
-          attributes: ['id', 'firstName', 'lastName'],
-          as: 'owner'
+          as: 'owner', // Ensure this alias matches your model association
+          attributes: ['id', 'firstName', 'lastName']
         }
       ]
     });
-        if (!spot) {
+
+    if (!spot) {
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
-    res.status(200).json(result);
+    // Prepare the data according to the README specifications
+    const response = {
+      id: spot.id,
+      ownerId: spot.ownerId,
+      address: spot.address,
+      city: spot.city,
+      state: spot.state,
+      country: spot.country,
+      lat: spot.lat,
+      lng: spot.lng,
+      name: spot.name,
+      description: spot.description,
+      price: spot.price,
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt,
+      numReviews: spot.Reviews.length,
+      SpotImages: spot.SpotImages.map(image => ({
+        id: image.id,
+        url: image.url,
+        preview: image.preview
+      })),
+      Owner: {
+        id: spot.owner.id,
+        firstName: spot.owner.firstName,
+        lastName: spot.owner.lastName
+      }
+    };
+
+    res.status(200).json(response);
   } catch (error) {
+    console.error('Failed to fetch spot details', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -137,7 +169,6 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     });
 
     return res.status(201).json({
-      id: image.id,
       url: image.url,
       preview: image.preview
     });
