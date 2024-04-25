@@ -22,7 +22,7 @@ const validateSpot = [
 router.get('/', async (req, res) => {
   try {
     const spots = await Spot.findAll({
-      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt']
+      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt', 'avgRating', 'previewImage']
     });
     res.status(200).json({ Spots: spots });
   } catch (error) {
@@ -37,7 +37,7 @@ router.get('/current', requireAuth, async (req, res) => {
     const ownerId = req.user.id;
     const spots = await Spot.findAll({
       where: { ownerId: ownerId },
-      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt']
+      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt', 'avgRating', 'previewImage']
     });
     res.status(200).json({ Spots: spots });
   } catch (error) {
