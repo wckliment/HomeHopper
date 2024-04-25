@@ -26,7 +26,7 @@ const validateReviewUpdate = [
   handleValidationErrors
 ];
 
-
+//Get all reviews of the current user
 
 router.get('/current', requireAuth, async (req, res, next) => {
   try {
@@ -35,7 +35,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
       where: { userId },
       include: [
         { model: User, as: 'User', attributes: ['id', 'firstName', 'lastName'] },
-        { model: Spot, as: 'Spot', attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'] },
+        { model: Spot, as: 'Spot', attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'] },
         { model: Reviewimage, as: 'ReviewImages', attributes: ['id', 'url'] }
       ]
     });
