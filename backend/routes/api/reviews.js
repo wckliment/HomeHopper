@@ -3,7 +3,7 @@ const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { Review, User, Spot, ReviewImage } = require('../../db/models');
+const { Review, User, Spot, Reviewimage } = require('../../db/models');
 
 const validateReviewInput = [
   check('review')
@@ -26,20 +26,22 @@ const validateReviewUpdate = [
   handleValidationErrors
 ];
 
-// Get all reviews of the current user
+
+
 router.get('/current', requireAuth, async (req, res, next) => {
   try {
     const userId = req.user.id;
     const reviews = await Review.findAll({
       where: { userId },
       include: [
-        { model: User, attributes: ['id', 'firstName', 'lastName'] },
-        { model: Spot, attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'] },
-        { model: ReviewImage, attributes: ['id', 'url'] }
+        { model: User, as: 'User', attributes: ['id', 'firstName', 'lastName'] },
+        { model: Spot, as: 'Spot', attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'] },
+        { model: Reviewimage, as: 'ReviewImages', attributes: ['id', 'url'] }
       ]
     });
     res.status(200).json({ Reviews: reviews });
   } catch (error) {
+    console.error('Error fetching reviews:', error);
     next(error);
   }
 });
@@ -141,4 +143,3 @@ router.put('/reviews/:reviewId', requireAuth, validateReviewUpdate, async (req, 
 });
 
 module.exports = router;
-
