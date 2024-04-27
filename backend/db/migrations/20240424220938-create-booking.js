@@ -12,7 +12,7 @@ module.exports = {
     await queryInterface.createTable('Bookings', {
       id: {
         allowNull: false,
-        autoIncrement: false,
+        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
