@@ -40,7 +40,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
 
-// PUT - Update an existing review
+// Edit an Review
 router.put('/:reviewId', requireAuth, validateReviewUpdate, async (req, res, next) => {
   console.log('Put - Edit existing review');
   const { reviewId } = req.params;
@@ -129,5 +129,32 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     next(error);
   }
 });
+
+
+// Delete a review
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
+  const { reviewId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const review = await Review.findOne({
+      where: {
+        id: reviewId,
+        userId: userId // Ensure the review belongs to the current user
+      }
+    });
+
+    if (!review) {
+      return res.status(404).json({ message: "Review couldn't be found" });
+    }
+
+    await review.destroy();
+    res.status(200).json({ message: "Successfully deleted" });
+  } catch (error) {
+    console.error('Failed to delete review:', error);
+    next(error);
+  }
+});
+
 
 module.exports = router;
