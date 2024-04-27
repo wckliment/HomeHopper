@@ -62,17 +62,63 @@ const validateBooking = [
   handleValidationErrors
 ];
 
+
+
 // GET all spots
 router.get('/', async (req, res) => {
+
+
+  // Extract query parameters with defaults
+  const page = parseInt(req.query.page) || 1;
+  const size = parseInt(req.query.size) || 20;
+  const minLat = req.query.minLat;
+  const maxLat = req.query.maxLat;
+  const minLng = req.query.minLng;
+  const maxLng = req.query.maxLng;
+  const minPrice = req.query.minPrice;
+  const maxPrice = req.query.maxPrice;
+
+  const where = {}; // Filter conditions
+
+  // Add latitude and longitude filters
+  if (minLat && maxLat) {
+    where.lat = { [Op.between]: [minLat, maxLat] };
+  } else {
+    if (minLat) where.lat = { [Op.gte]: minLat };
+    if (maxLat) where.lat = { [Op.lte]: maxLat };
+  }
+
+  if (minLng && maxLng) {
+    where.lng = { [Op.between]: [minLng, maxLng] };
+  } else {
+    if (minLng) where.lng = { [Op.gte]: minLng };
+    if (maxLng) where.lng = { [Op.lte]: maxLng };
+  }
+
+  // Add price filters
+  if (minPrice) where.price = { [Op.gte]: parseFloat(minPrice) };
+  if (maxPrice) where.price = { [Op.lte]: parseFloat(maxPrice) };
+
   try {
+    const totalSpots = await Spot.count({ where });
     const spots = await Spot.findAll({
-      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt', 'avgRating', 'previewImage']
+      where,
+      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt', 'avgRating', 'previewImage'],
+      limit: size,
+      offset: (page - 1) * size
     });
-    res.status(200).json({ Spots: spots });
+
+    res.status(200).json({
+      Spots: spots,
+      page,
+      size,
+      totalPages: Math.ceil(totalSpots / size)
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 
 // Get all reviews by a Spot's Id
