@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.bulkUpdate('Spots', {
+    await queryInterface.bulkUpdate('Spot', {
       previewImage: Sequelize.literal(`CASE
         WHEN address = '123 Disney Lane' THEN 'https://example.com/disney.jpg'
         WHEN address = '456 Pixar St' THEN 'https://example.com/pixar.jpg'
@@ -21,7 +21,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Spots', {
+    await queryInterface.bulkUpdate('Spot', {
       previewImage: null
     }, {});
   }
