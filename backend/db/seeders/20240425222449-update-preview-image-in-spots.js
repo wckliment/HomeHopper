@@ -21,7 +21,7 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkUpdate('Spots', {
+    await queryInterface.bulkDelete('Spots', {
       previewImage: null
     }, {});
   }
