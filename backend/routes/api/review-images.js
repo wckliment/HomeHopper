@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
-const { ReviewImage, Review } = require('../../db/models');
+const { Reviewimage, Review } = require('../../db/models');
 
 
 
@@ -12,7 +12,7 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
 
   try {
     // Find the image including the associated Review to check ownership
-    const image = await ReviewImage.findByPk(imageId, {
+    const image = await Reviewimage.findByPk(imageId, {
       include: [{
         model: Review,
         attributes: ['userId']

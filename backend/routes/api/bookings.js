@@ -11,17 +11,11 @@ const { Op } = require("sequelize");
 // Validator middleware for booking dates
 const validateBookingDates = [
   check('startDate')
-    .isDate({ format: 'YYYY-MM-DD' })
+    .isISO8601()
     .withMessage('startDate must be a valid date in YYYY-MM-DD format'),
   check('endDate')
-    .isDate({ format: 'YYYY-MM-DD' })
-    .withMessage('endDate must be a valid date in YYYY-MM-DD format')
-    .custom((value, { req }) => {
-      if (new Date(value) <= new Date(req.body.startDate)) {
-        throw new Error("endDate cannot be on or before startDate");
-      }
-      return true;
-    }),
+    .isISO8601()
+    .withMessage('endDate must be a valid date in YYYY-MM-DD format'),
   handleValidationErrors
 ];
 
@@ -154,8 +148,8 @@ router.post('/spots/:spotId/bookings', requireAuth, validateBooking, async (req,
 });
 
 
-// PUT - Update an existing booking
-router.put('/bookings/:bookingId', requireAuth, validateBookingDates, async (req, res) => {
+// Edit a Booking
+router.put('/:bookingId', requireAuth, validateBookingDates, async (req, res) => {
   const { bookingId } = req.params;
   const { startDate, endDate } = req.body;
   const userId = req.user.id;
@@ -170,38 +164,36 @@ router.put('/bookings/:bookingId', requireAuth, validateBookingDates, async (req
       return res.status(403).json({ message: "Unauthorized to edit this booking" });
     }
 
-    if (new Date(booking.endDate) < new Date()) {
-      return res.status(403).json({ message: "Past bookings can't be modified" });
-    }
-
-    // Check for booking conflicts except with the current booking
-    const conflict = await Booking.findOne({
-      where: {
-        id: { [Op.ne]: bookingId },
-        spotId: booking.spotId,
-        [Op.or]: [
-          {
-            startDate: {
-              [Op.between]: [startDate, endDate]
+    // Only check for conflict if the new endDate is in the future
+    if (new Date(endDate) > new Date()) {
+      const conflict = await Booking.findOne({
+        where: {
+          id: { [Op.ne]: bookingId },
+          spotId: booking.spotId,
+          [Op.or]: [
+            {
+              startDate: {
+                [Op.between]: [startDate, endDate]
+              }
+            },
+            {
+              endDate: {
+                [Op.between]: [startDate, endDate]
+              }
             }
-          },
-          {
-            endDate: {
-              [Op.between]: [startDate, endDate]
-            }
-          }
-        ]
-      }
-    });
-
-    if (conflict) {
-      return res.status(403).json({
-        message: "Sorry, this spot is already booked for the specified dates",
-        errors: {
-          startDate: "Start date conflicts with an existing booking",
-          endDate: "End date conflicts with an existing booking"
+          ]
         }
       });
+
+      if (conflict) {
+        return res.status(403).json({
+          message: "Sorry, this spot is already booked for the specified dates",
+          errors: {
+            startDate: "Start date conflicts with an existing booking",
+            endDate: "End date conflicts with an existing booking"
+          }
+        });
+      }
     }
 
     booking.startDate = startDate;
@@ -215,8 +207,9 @@ router.put('/bookings/:bookingId', requireAuth, validateBookingDates, async (req
   }
 });
 
+
 // DELETE - Delete an existing booking
-router.delete('/bookings/:bookingId', requireAuth, async (req, res) => {
+router.delete('/:bookingId', requireAuth, async (req, res) => {
   const { bookingId } = req.params;
   const userId = req.user.id;
 
