@@ -50,7 +50,7 @@ const validateBooking = [
   handleValidationErrors
 ];
 
-// Route to get all current user's bookings
+// get all current user's bookings
 router.get('/current', requireAuth, async (req, res) => {
   try {
     // Assuming req.user.id contains the ID of the authenticated user
@@ -65,6 +65,23 @@ router.get('/current', requireAuth, async (req, res) => {
       order: [['createdAt', 'DESC']] // Ordering by creation date, newest first
     });
 
+    const formattedBookings = bookings.map(booking => ({
+      id: booking.id,
+      spotId: booking.spotId,
+      userId: booking.userId,
+      startDate: booking.startDate.toISOString().split('T')[0], // format as "YYYY-MM-DD"
+      endDate: booking.endDate.toISOString().split('T')[0],     // format as "YYYY-MM-DD"
+      createdAt: booking.createdAt.toISOString(),                // keep the full timestamp
+      updatedAt: booking.updatedAt.toISOString(),                // keep the full timestamp
+      Spot: {
+        ...booking.Spot.get({ plain: true }),
+        lat: parseFloat(booking.Spot.lat),
+        lng: parseFloat(booking.Spot.lng),
+        price: parseInt(booking.Spot.price, 10)
+      }
+    }));
+
+
     res.status(200).json({ Bookings: bookings });
   } catch (error) {
     console.error('Failed to fetch bookings', error);
@@ -73,61 +90,7 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 
-// Route to get all bookings for a specific spot
-router.get('/spots/:spotId/bookings', requireAuth, async (req, res) => {
-  const { spotId } = req.params;
-  const userId = req.user.id;
 
-  try {
-    const spot = await Spot.findByPk(spotId);
-    if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
-    }
-
-    const bookings = await Booking.findAll({
-      where: { spotId },
-      include: [
-        {
-          model: User,
-          attributes: ['id', 'firstName', 'lastName']
-        }
-      ],
-      order: [['createdAt', 'DESC']]
-    });
-
-    // Check if the current user is the owner of the spot
-    const isOwner = spot.ownerId === userId;
-    const response = bookings.map(booking => {
-      if (isOwner) {
-        return {
-          User: {
-            id: booking.User.id,
-            firstName: booking.User.firstName,
-            lastName: booking.User.lastName
-          },
-          id: booking.id,
-          spotId: booking.spotId,
-          userId: booking.userId,
-          startDate: booking.startDate,
-          endDate: booking.endDate,
-          createdAt: booking.createdAt,
-          updatedAt: booking.updatedAt
-        };
-      } else {
-        return {
-          spotId: booking.spotId,
-          startDate: booking.startDate,
-          endDate: booking.endDate
-        };
-      }
-    });
-
-    res.status(200).json({ Bookings: response });
-  } catch (error) {
-    console.error('Failed to fetch bookings for spot', error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-});
 
 
 // POST a new booking for a spot
