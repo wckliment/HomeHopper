@@ -85,7 +85,8 @@ router.put('/:reviewId', requireAuth, validateReviewUpdate, async (req, res, nex
 
 
 
-// POST an image to a review
+// Add an Image to a Review based on the Review's id
+
 router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
   const { reviewId } = req.params;
   const { url } = req.body;
@@ -102,7 +103,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
     if (!review) {
       return res.status(404).json({
-        message: "Review couldn't be found or doesn't belong to the current user"
+        message: "Review couldn't be found"
       });
     }
 

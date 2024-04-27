@@ -32,7 +32,7 @@ const validateReviewInput = [
   check('review')
     .exists({ checkFalsy: true })
     .isLength({ min: 10 })
-    .withMessage('Review must be at least 10 characters long.'),
+    .withMessage('Review text is required'),
   check('stars')
     .isInt({ min: 1, max: 5 })
     .withMessage('Stars must be a number between 1 and 5.'),
@@ -75,7 +75,7 @@ router.get('/', async (req, res) => {
 });
 
 
-// Get all reviews for a specific spot
+// Get all reviews by a Spot's Id
 router.get('/:spotId/reviews', async (req, res, next) => {
   const spotId = req.params.spotId;
   try {
@@ -88,7 +88,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
     });
 
     if (!reviews.length) {
-      return res.status(404).json({ message: "No reviews found for this spot" });
+      return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
     // Filter out reviews that do not have associated images
@@ -212,7 +212,7 @@ const validateSpotCreation = [
   check('country').not().isEmpty().withMessage('Country is required'),
   check('lat').isFloat({ min: -90, max: 90 }).withMessage('Latitude must be within -90 and 90'),
   check('lng').isFloat({ min: -180, max: 180 }).withMessage('Longitude must be within -180 and 180'),
-  check('name').isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
+  check('name').isLength({ min:5, max: 50 }).withMessage('Name must be more than 5 characters and less than 50 characters'),
   check('description').not().isEmpty().withMessage('Description is required'),
   check('price').isFloat({ min: 0 }).withMessage('Price per day must be a positive number'),
   handleValidationErrors
@@ -280,7 +280,7 @@ const validateSpotUpdate = [
   check('country').not().isEmpty().withMessage('Country is required'),
   check('lat').isFloat({ min: -90, max: 90 }).withMessage('Latitude must be within -90 and 90'),
   check('lng').isFloat({ min: -180, max: 180 }).withMessage('Longitude must be within -180 and 180'),
-  check('name').isLength({ max: 50 }).withMessage('Name must be less than 50 characters'),
+  check('name').isLength({ min: 5, max: 50 }).withMessage('Name must be more than 5 characters and less than 50 characters'),
   check('description').not().isEmpty().withMessage('Description is required'),
   check('price').isFloat({ min: 0 }).withMessage('Price per day must be a positive number'),
   handleValidationErrors
@@ -344,7 +344,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
   }
 });
 
-// POST a new review for a spot
+// Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, validateReviewInput, async (req, res, next) => {
   const { spotId } = req.params;
   const { review, stars } = req.body;
@@ -398,7 +398,7 @@ router.post('/:spotId/reviews', requireAuth, validateReviewInput, async (req, re
 });
 
 
-// Route to get all bookings for a specific spot
+// Get all Bookings for a Spot based on the Spot's id
 router.get('/:spotId/bookings', requireAuth, async (req, res) => {
   const { spotId } = req.params;
   const userId = req.user.id;
@@ -454,7 +454,9 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
   }
 });
 
-// POST a new booking for a spot
+
+//Create a Booking from a Spot based on the Spot's id
+
 router.post('/:spotId/bookings', requireAuth, validateBooking, async (req, res) => {
   const { spotId } = req.params;
   const { startDate, endDate } = req.body;

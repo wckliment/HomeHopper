@@ -8,17 +8,35 @@ const { Op } = require("sequelize");
 
 
 
-// Validator middleware for booking dates
 const validateBookingDates = [
   check('startDate')
     .isISO8601()
-    .withMessage('startDate must be a valid date in YYYY-MM-DD format'),
+    .withMessage('startDate must be a valid date in YYYY-MM-DD format')
+    .custom((value, { req }) => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);  // Normalize today's date by removing time
+      const startDate = new Date(value);
+      if (startDate < today) {
+        throw new Error("startDate cannot be in the past");
+      }
+      return true;
+    }),
   check('endDate')
     .isISO8601()
-    .withMessage('endDate must be a valid date in YYYY-MM-DD format'),
+    .withMessage('endDate must be a valid date in YYYY-MM-DD format')
+    .custom((value, { req }) => {
+      if (!req.body.startDate) {
+        return true;  // If startDate is not provided, skip this check
+      }
+      const startDate = new Date(req.body.startDate);
+      const endDate = new Date(value);
+      if (endDate <= startDate) {
+        throw new Error("endDate cannot be on or before startDate");
+      }
+      return true;
+    }),
   handleValidationErrors
 ];
-
 
 
 // Validator middleware
@@ -162,6 +180,13 @@ router.put('/:bookingId', requireAuth, validateBookingDates, async (req, res) =>
 
     if (booking.userId !== userId) {
       return res.status(403).json({ message: "Unauthorized to edit this booking" });
+    }
+
+    // Check if the booking's end date is in the past
+    if (new Date(booking.endDate) < new Date()) {
+      return res.status(403).json({
+        message: "Past bookings can't be modified"
+      });
     }
 
     // Only check for conflict if the new endDate is in the future

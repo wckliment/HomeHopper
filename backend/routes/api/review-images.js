@@ -21,7 +21,7 @@ router.delete('/:imageId', requireAuth, async (req, res) => {
 
     // Check if the image exists and if the user owns the review
     if (!image || image.Review.userId !== userId) {
-      return res.status(404).json({ message: "Review Image couldn't be found or you do not have permission to delete it" });
+      return res.status(404).json({ message: "Review Image couldn't be found" });
     }
 
     // Delete the image
