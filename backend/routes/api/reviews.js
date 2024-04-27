@@ -3,18 +3,9 @@ const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { Review, User, Spot, ReviewImage } = require('../../db/models');
+const { Review, User, Spot, Reviewimage } = require('../../db/models');
 
-const validateReviewInput = [
-  check('review')
-    .exists({ checkFalsy: true })
-    .isLength({ min: 10 })
-    .withMessage('Review must be at least 10 characters long.'),
-  check('stars')
-    .isInt({ min: 1, max: 5 })
-    .withMessage('Stars must be a number between 1 and 5.'),
-  handleValidationErrors
-];
+
 
 const validateReviewUpdate = [
   check('review')
@@ -26,82 +17,32 @@ const validateReviewUpdate = [
   handleValidationErrors
 ];
 
-// Get all reviews of the current user
+//Get all reviews of the current user
+
 router.get('/current', requireAuth, async (req, res, next) => {
   try {
     const userId = req.user.id;
     const reviews = await Review.findAll({
       where: { userId },
       include: [
-        { model: User, attributes: ['id', 'firstName', 'lastName'] },
-        { model: Spot, attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'] },
-        { model: ReviewImage, attributes: ['id', 'url'] }
+        { model: User, as: 'User', attributes: ['id', 'firstName', 'lastName'] },
+        { model: Spot, as: 'Spot', attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage'] },
+        { model: Reviewimage, as: 'ReviewImages', attributes: ['id', 'url'] }
       ]
     });
     res.status(200).json({ Reviews: reviews });
   } catch (error) {
+    console.error('Error fetching reviews:', error);
     next(error);
   }
 });
 
-// Get all reviews for a specific spot
-router.get('/spots/:spotId/reviews', async (req, res, next) => {
-  const spotId = req.params.spotId;
-  try {
-    const reviews = await Review.findAll({
-      where: { spotId },
-      include: [
-        { model: User, attributes: ['id', 'firstName', 'lastName'] },
-        { model: ReviewImage, attributes: ['id', 'url'] }
-      ]
-    });
-    if (!reviews.length) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
-    }
-    res.status(200).json({ Reviews: reviews });
-  } catch (error) {
-    next(error);
-  }
-});
 
-// POST a new review for a spot
-router.post('/spots/:spotId/reviews', requireAuth, validateReviewInput, async (req, res, next) => {
-  const { spotId } = req.params;
-  const { review, stars } = req.body;
-  const userId = req.user.id;
 
-  try {
-    const spot = await Spot.findByPk(spotId);
-    if (!spot) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
-    }
-    const existingReview = await Review.findOne({
-      where: {
-        userId: userId,
-        spotId: spotId
-      }
-    });
-    if (existingReview) {
-      return res.status(500).json({ message: "User already has a review for this spot" });
-    }
-    const newReview = await Review.create({
-      userId,
-      spotId,
-      review,
-      stars
-    });
-    res.status(201).json(newReview);
-  } catch (error) {
-    if (error.name === 'SequelizeValidationError') {
-      res.status(400).json({ message: "Validation error", errors: error.errors.map(e => e.message) });
-    } else {
-      next(error);
-    }
-  }
-});
 
-// PUT - Update an existing review
-router.put('/reviews/:reviewId', requireAuth, validateReviewUpdate, async (req, res, next) => {
+// Edit an Review
+router.put('/:reviewId', requireAuth, validateReviewUpdate, async (req, res, next) => {
+  console.log('Put - Edit existing review');
   const { reviewId } = req.params;
   const { review, stars } = req.body;
   const userId = req.user.id;
@@ -113,6 +54,8 @@ router.put('/reviews/:reviewId', requireAuth, validateReviewUpdate, async (req, 
         userId: userId
       }
     });
+    console.log(existingReview, 'existingReview', userId, 'userId', reviewId, 'reviewId');
+
 
     if (!existingReview) {
       return res.status(404).json({ message: "Review couldn't be found" });
@@ -140,5 +83,79 @@ router.put('/reviews/:reviewId', requireAuth, validateReviewUpdate, async (req, 
   }
 });
 
-module.exports = router;
 
+
+// Add an Image to a Review based on the Review's id
+
+router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
+  const { reviewId } = req.params;
+  const { url } = req.body;
+  const userId = req.user.id;
+
+  try {
+    // Check if the review exists and belongs to the current user
+    const review = await Review.findOne({
+      where: {
+        id: reviewId,
+        userId: userId // ensures the review belongs to the current user
+      }
+    });
+
+    if (!review) {
+      return res.status(404).json({
+        message: "Review couldn't be found"
+      });
+    }
+
+    // Check if the review already has 10 images
+    const countImages = await Reviewimage.count({
+      where: { reviewId: review.id }
+    });
+
+    if (countImages >= 10) {
+      return res.status(403).json({
+        message: "Maximum number of images for this resource was reached"
+      });
+    }
+
+    // Create the new review image
+    const newImage = await Reviewimage.create({
+      reviewId: review.id,
+      url: url
+    });
+
+    res.status(200).json(newImage);
+  } catch (error) {
+    console.error('Failed to add image to review:', error);
+    next(error);
+  }
+});
+
+
+// Delete a review
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
+  const { reviewId } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const review = await Review.findOne({
+      where: {
+        id: reviewId,
+        userId: userId // Ensure the review belongs to the current user
+      }
+    });
+
+    if (!review) {
+      return res.status(404).json({ message: "Review couldn't be found" });
+    }
+
+    await review.destroy();
+    res.status(200).json({ message: "Successfully deleted" });
+  } catch (error) {
+    console.error('Failed to delete review:', error);
+    next(error);
+  }
+});
+
+
+module.exports = router;

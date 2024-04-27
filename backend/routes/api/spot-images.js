@@ -21,7 +21,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
 
     // Check if image exists and if the user owns the spot
     if (!image || image.Spot.ownerId !== userId) {
-      return res.status(404).json({ message: "Spot Image couldn't be found or you do not have permission to delete it" });
+      return res.status(404).json({ message: "Spot Image couldn't be found" });
     }
 
     // Delete the image
