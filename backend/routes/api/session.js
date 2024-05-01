@@ -36,8 +36,12 @@ router.post(
 
     if (!user || !bcrypt.compareSync(password, user.hashedPassword.toString())) {
       return res.status(401).json({
-        message: "Invalid credentials"
+        title: "Bad request.",
+        message: "Invalid credentials",
+        errors: { password: "Password is required" }
+        // Note: 'stack' is omitted intentionally
       });
+
     }
 
     // Add firstName and lastName to the safeUser object
