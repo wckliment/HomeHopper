@@ -80,21 +80,27 @@ router.get('/current', requireAuth, async (req, res) => {
     const formattedBookings = bookings.map(booking => ({
       id: booking.id,
       spotId: booking.spotId,
+      Spot: {
+        id: booking.Spot.id,
+        ownerId: booking.Spot.ownerId,
+        address: booking.Spot.address,
+        city: booking.Spot.city,
+        state: booking.Spot.state,
+        country: booking.Spot.country,
+        lat: parseFloat(booking.Spot.lat), // Ensure number format
+        lng: parseFloat(booking.Spot.lng), // Ensure number format
+        name: booking.Spot.name,
+        price: parseInt(booking.Spot.price, 10), // Ensure number format
+        previewImage: booking.Spot.previewImage // Ensure correct handling of null values
+      },
       userId: booking.userId,
       startDate: booking.startDate.toISOString().split('T')[0], // format as "YYYY-MM-DD"
       endDate: booking.endDate.toISOString().split('T')[0],     // format as "YYYY-MM-DD"
-      createdAt: booking.createdAt.toISOString(),                // keep the full timestamp
-      updatedAt: booking.updatedAt.toISOString(),                // keep the full timestamp
-      Spot: {
-        ...booking.Spot.get({ plain: true }),
-        lat: parseFloat(booking.Spot.lat),
-        lng: parseFloat(booking.Spot.lng),
-        price: parseInt(booking.Spot.price, 10)
-      }
+      createdAt: booking.createdAt.toISOString().replace('T', ' ').slice(0, 19), // Adjusted to "YYYY-MM-DD HH:MM:SS"
+      updatedAt: booking.updatedAt.toISOString().replace('T', ' ').slice(0, 19) // Adjusted to "YYYY-MM-DD HH:MM:SS"
     }));
 
-
-    res.status(200).json({ Bookings: bookings });
+    res.status(200).json({ Bookings: formattedBookings });
   } catch (error) {
     console.error('Failed to fetch bookings', error);
     res.status(500).json({ message: "Internal server error" });
