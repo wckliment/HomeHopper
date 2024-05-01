@@ -127,7 +127,6 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
     // Return the desired fields without 'updatedAt' and 'createdAt'
     res.status(200).json({
       id: newImage.id,
-      reviewId: newImage.reviewId,
       url: newImage.url
     });
   } catch (error) {
