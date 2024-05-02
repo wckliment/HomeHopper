@@ -67,7 +67,6 @@ const validateBooking = [
 // GET all spots
 
 router.get('/', async (req, res) => {
-  // Extract query parameters with defaults
   const page = parseInt(req.query.page) || 1;
   const size = parseInt(req.query.size) || 20;
   const minLat = req.query.minLat;
@@ -77,24 +76,14 @@ router.get('/', async (req, res) => {
   const minPrice = req.query.minPrice;
   const maxPrice = req.query.maxPrice;
 
-  const where = {}; // Filter conditions
+  const where = {};
 
-  // Add latitude and longitude filters
-  if (minLat && maxLat) {
-    where.lat = { [Op.between]: [minLat, maxLat] };
-  } else {
-    if (minLat) where.lat = { [Op.gte]: minLat };
-    if (maxLat) where.lat = { [Op.lte]: maxLat };
-  }
-
-  if (minLng && maxLng) {
-    where.lng = { [Op.between]: [minLng, maxLng] };
-  } else {
-    if (minLng) where.lng = { [Op.gte]: minLng };
-    if (maxLng) where.lng = { [Op.lte]: maxLng };
-  }
-
-  // Add price filters
+  if (minLat && maxLat) where.lat = { [Op.between]: [minLat, maxLat] };
+  if (minLat) where.lat = { [Op.gte]: minLat };
+  if (maxLat) where.lat = { [Op.lte]: maxLat };
+  if (minLng && maxLng) where.lng = { [Op.between]: [minLng, maxLng] };
+  if (minLng) where.lng = { [Op.gte]: minLng };
+  if (maxLng) where.lng = { [Op.lte]: maxLng };
   if (minPrice) where.price = { [Op.gte]: parseFloat(minPrice) };
   if (maxPrice) where.price = { [Op.lte]: parseFloat(maxPrice) };
 
@@ -105,80 +94,44 @@ router.get('/', async (req, res) => {
       include: [{
         model: Review,
         as: 'Reviews',
-        attributes: ['stars'] // Fetching 'stars' instead of 'rating'
+        attributes: ['stars']
       }],
       attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt'],
       limit: size,
       offset: (page - 1) * size
     });
 
-    const spotsWithAvgRating = spots.map(spot => {
-      const stars = spot.Reviews.map(review => review.stars); // Using 'stars' field
+    const formattedSpots = spots.map(spot => {
+      const stars = spot.Reviews.map(review => review.stars);
       const avgRating = stars.length ? stars.reduce((a, b) => a + b, 0) / stars.length : null;
       return {
-        ...spot.get({ plain: true }),
-        avgRating // Adding dynamically calculated average rating
+        id: spot.id,
+        ownerId: spot.ownerId,
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        country: spot.country,
+        lat: parseFloat(spot.lat),
+        lng: parseFloat(spot.lng),
+        name: spot.name,
+        description: spot.description,
+        price: spot.price,
+        createdAt: spot.createdAt.toISOString().replace('T', ' ').slice(0, 19),
+        updatedAt: spot.updatedAt.toISOString().replace('T', ' ').slice(0, 19),
+        avgRating: avgRating,
+        previewImage: null // Placeholder for now
       };
     });
 
     res.status(200).json({
-      Spots: spotsWithAvgRating,
+      Spots: formattedSpots,
       page,
       size,
       totalPages: Math.ceil(totalSpots / size)
     });
   } catch (error) {
+    console.error('Failed to fetch spots:', error);
     res.status(500).json({ error: error.message });
-  }
-});
-
-// Get all reviews by a Spot's Id
-router.get('/:spotId/reviews', async (req, res, next) => {
-  const spotId = req.params.spotId;
-  try {
-    const reviews = await Review.findAll({
-      where: { spotId },
-      include: [
-        { model: User, as: 'User', attributes: ['id', 'firstName', 'lastName'] },
-        { model: Reviewimage, as: 'ReviewImages', attributes: ['id', 'url'] }
-      ]
-    });
-
-    if (!reviews.length) {
-      return res.status(404).json({ message: "Spot couldn't be found" });
-    }
-
-    // Filter out reviews that do not have associated images
-    const filteredReviews = reviews.filter(review => review.ReviewImages.length > 0);
-
-    if (!filteredReviews.length) {
-      return res.status(404).json({ message: "No reviews with images found for this spot" });
-    }
-
-    // Restructure each review to match the desired output format
-    const formattedReviews = filteredReviews.map(review => ({
-      id: review.id,
-      userId: review.userId,
-      spotId: review.spotId,
-      review: review.review,
-      stars: review.stars,
-      createdAt: formatDate(review.createdAt), // Assuming formatDate is defined as shown previously
-      updatedAt: formatDate(review.updatedAt),
-      User: {
-        id: review.User.id,
-        firstName: review.User.firstName,
-        lastName: review.User.lastName
-      },
-      ReviewImages: review.ReviewImages.map(image => ({
-        id: image.id,
-        url: image.url
-      }))
-    }));
-
-    res.status(200).json({ Reviews: formattedReviews });
-  } catch (error) {
-    console.error('Error fetching reviews:', error);
-    next(error);
   }
 });
 
