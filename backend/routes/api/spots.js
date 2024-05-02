@@ -179,13 +179,6 @@ router.get('/current', requireAuth, async (req, res) => {
   }
 });
 
-    res.status(200).json({ Spots: formattedSpots });
-  } catch (error) {
-    console.error('Failed to fetch spots owned by the user:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
 
 
 
