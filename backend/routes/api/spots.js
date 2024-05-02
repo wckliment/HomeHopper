@@ -65,9 +65,8 @@ const validateBooking = [
 
 
 // GET all spots
+
 router.get('/', async (req, res) => {
-
-
   // Extract query parameters with defaults
   const page = parseInt(req.query.page) || 1;
   const size = parseInt(req.query.size) || 20;
@@ -103,15 +102,19 @@ router.get('/', async (req, res) => {
     const totalSpots = await Spot.count({ where });
     const spots = await Spot.findAll({
       where,
-      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt', 'avgRating', 'previewImage'],
+      include: [{
+        model: Review,
+        as: 'Reviews',
+        attributes: ['stars'] // Fetching 'stars' instead of 'rating'
+      }],
+      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt'],
       limit: size,
       offset: (page - 1) * size
     });
 
     const spotsWithAvgRating = spots.map(spot => {
-      // Safely access Reviews or default to an empty array if undefined
-      const ratings = spot.Reviews ? spot.Reviews.map(review => review.rating) : [];
-      const avgRating = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null;
+      const stars = spot.Reviews.map(review => review.stars); // Using 'stars' field
+      const avgRating = stars.length ? stars.reduce((a, b) => a + b, 0) / stars.length : null;
       return {
         ...spot.get({ plain: true }),
         avgRating // Adding dynamically calculated average rating
@@ -119,7 +122,7 @@ router.get('/', async (req, res) => {
     });
 
     res.status(200).json({
-      Spots: spots,
+      Spots: spotsWithAvgRating,
       page,
       size,
       totalPages: Math.ceil(totalSpots / size)
@@ -128,8 +131,6 @@ router.get('/', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
-
-
 
 // Get all reviews by a Spot's Id
 router.get('/:spotId/reviews', async (req, res, next) => {
@@ -196,7 +197,7 @@ router.get('/current', requireAuth, async (req, res) => {
   }
 });
 
-// Get Details of a Spot from an ID
+
 
 // Get Details of a Spot from an ID
 router.get('/:spotId', async (req, res) => {
@@ -207,7 +208,7 @@ router.get('/:spotId', async (req, res) => {
         {
           model: Review,
           as: 'Reviews', // Ensure this alias matches your model association
-          attributes: ['id', 'rating'] // Fetch 'id' for counting and 'rating' for avg calculation
+          attributes: ['id', 'stars'] // Fetch 'id' and 'stars' for avg calculation
         },
         {
           model: SpotImage,
@@ -226,11 +227,11 @@ router.get('/:spotId', async (req, res) => {
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
-    // Calculate average rating
+    // Calculate average stars
     let avgRating = null;
     if (spot.Reviews.length > 0) {
-      const sumRating = spot.Reviews.reduce((acc, review) => acc + review.rating, 0);
-      avgRating = sumRating / spot.Reviews.length;
+      const sumStars = spot.Reviews.reduce((acc, review) => acc + review.stars, 0);
+      avgRating = sumStars / spot.Reviews.length;
     }
 
     // Prepare the data according to the specifications
@@ -249,7 +250,7 @@ router.get('/:spotId', async (req, res) => {
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
       numReviews: spot.Reviews.length,
-      avgRating: avgRating,  // Include the dynamically calculated average rating
+      avgRating: avgRating,  // Include the dynamically calculated average stars
       SpotImages: spot.SpotImages.map(image => ({
         id: image.id,
         url: image.url,
