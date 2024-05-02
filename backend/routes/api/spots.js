@@ -135,20 +135,37 @@ router.get('/', async (req, res) => {
   }
 });
 
-//Get all Spots owned by the Current User
+
+
+// Get all Spots owned by the Current User
 router.get('/current', requireAuth, async (req, res) => {
   try {
-    // Assuming req.user is set by the requireAuth middleware and contains the user's ID
     const ownerId = req.user.id;
     const spots = await Spot.findAll({
       where: { ownerId: ownerId },
-      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt', 'avgRating', 'previewImage']
+      include: [{
+        model: Review, // No 'as' key, using default association
+        attributes: ['stars']
+      }],
+      attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt']
     });
-    res.status(200).json({ Spots: spots });
+
+    const formattedSpots = spots.map(spot => {
+      const stars = spot.Reviews ? spot.Reviews.map(review => review.stars) : [];
+      const avgRating = stars.length ? stars.reduce((a, b) => a + b, 0) / stars.length : null;
+      return {
+        ...spot.get({ plain: true }),
+        avgRating // Adding dynamically calculated average rating
+      };
+    });
+
+    res.status(200).json({ Spots: formattedSpots });
   } catch (error) {
+    console.error('Failed to fetch spots owned by the user:', error);
     res.status(500).json({ error: error.message });
   }
 });
+
 
 
 
