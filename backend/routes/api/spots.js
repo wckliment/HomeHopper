@@ -109,14 +109,14 @@ router.get('/', async (req, res) => {
     });
 
     const spotsWithAvgRating = spots.map(spot => {
-      const ratings = spot.Reviews.map(review => review.rating);
+      // Safely access Reviews or default to an empty array if undefined
+      const ratings = spot.Reviews ? spot.Reviews.map(review => review.rating) : [];
       const avgRating = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null;
       return {
         ...spot.get({ plain: true }),
         avgRating // Adding dynamically calculated average rating
       };
     });
-
 
     res.status(200).json({
       Spots: spots,
