@@ -71,7 +71,6 @@ app.use((err, req, res, next) => {
     title: err.title || 'Error',
     message: err.message,
     errors: err.errors,
-    stack: isProduction ? null : err.stack
   });
 });
 
