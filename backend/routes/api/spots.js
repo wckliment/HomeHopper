@@ -198,6 +198,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 // Get Details of a Spot from an ID
 
+// Get Details of a Spot from an ID
 router.get('/:spotId', async (req, res) => {
   const { spotId } = req.params;
   try {
@@ -206,7 +207,7 @@ router.get('/:spotId', async (req, res) => {
         {
           model: Review,
           as: 'Reviews', // Ensure this alias matches your model association
-          attributes: ['id']
+          attributes: ['id', 'rating'] // Fetch 'id' for counting and 'rating' for avg calculation
         },
         {
           model: SpotImage,
@@ -225,7 +226,14 @@ router.get('/:spotId', async (req, res) => {
       return res.status(404).json({ message: "Spot couldn't be found" });
     }
 
-    // Prepare the data according to the README specifications
+    // Calculate average rating
+    let avgRating = null;
+    if (spot.Reviews.length > 0) {
+      const sumRating = spot.Reviews.reduce((acc, review) => acc + review.rating, 0);
+      avgRating = sumRating / spot.Reviews.length;
+    }
+
+    // Prepare the data according to the specifications
     const response = {
       id: spot.id,
       ownerId: spot.ownerId,
@@ -241,6 +249,7 @@ router.get('/:spotId', async (req, res) => {
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
       numReviews: spot.Reviews.length,
+      avgRating: avgRating,  // Include the dynamically calculated average rating
       SpotImages: spot.SpotImages.map(image => ({
         id: image.id,
         url: image.url,
