@@ -144,20 +144,40 @@ router.get('/current', requireAuth, async (req, res) => {
     const spots = await Spot.findAll({
       where: { ownerId: ownerId },
       include: [{
-        model: Review, // No 'as' key, using default association
+        model: Review,
         attributes: ['stars']
       }],
       attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt']
     });
 
     const formattedSpots = spots.map(spot => {
-      const stars = spot.Reviews ? spot.Reviews.map(review => review.stars) : [];
-      const avgRating = stars.length ? stars.reduce((a, b) => a + b, 0) / stars.length : null;
+      const stars = spot.Reviews.map(review => review.stars);
+      const avgRating = stars.length ? (stars.reduce((a, b) => a + b, 0) / stars.length).toFixed(1) : null; // Calculate average and round to one decimal place
       return {
-        ...spot.get({ plain: true }),
-        avgRating // Adding dynamically calculated average rating
+        id: spot.id,
+        ownerId: spot.ownerId,
+        address: spot.address,
+        city: spot.city,
+        state: spot.state,
+        country: spot.country,
+        lat: parseFloat(spot.lat), // Ensure number format
+        lng: parseFloat(spot.lng), // Ensure number format
+        name: spot.name,
+        description: spot.description,
+        price: spot.price,
+        createdAt: new Date(spot.createdAt).toISOString().replace('T', ' ').slice(0, 19), // Format date
+        updatedAt: new Date(spot.updatedAt).toISOString().replace('T', ' ').slice(0, 19), // Format date
+        avgRating: avgRating,
+        previewImage: "image url" // Placeholder or logic to fetch an actual image URL
       };
     });
+
+    res.status(200).json({ Spots: formattedSpots });
+  } catch (error) {
+    console.error('Failed to fetch spots owned by the user:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
     res.status(200).json({ Spots: formattedSpots });
   } catch (error) {
