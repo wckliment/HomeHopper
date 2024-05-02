@@ -67,8 +67,8 @@ const validateBooking = [
 // GET all spots
 
 router.get('/', async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const size = parseInt(req.query.size) || 20;
+  const page = req.query.page !== undefined ? parseInt(req.query.page, 10) : 1;
+  const size = req.query.size !== undefined ? parseInt(req.query.size, 10) : 20;
   const minLat = req.query.minLat;
   const maxLat = req.query.maxLat;
   const minLng = req.query.minLng;
