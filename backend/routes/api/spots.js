@@ -108,6 +108,16 @@ router.get('/', async (req, res) => {
       offset: (page - 1) * size
     });
 
+    const spotsWithAvgRating = spots.map(spot => {
+      const ratings = spot.Reviews.map(review => review.rating);
+      const avgRating = ratings.length ? ratings.reduce((a, b) => a + b, 0) / ratings.length : null;
+      return {
+        ...spot.get({ plain: true }),
+        avgRating // Adding dynamically calculated average rating
+      };
+    });
+
+
     res.status(200).json({
       Spots: spots,
       page,
