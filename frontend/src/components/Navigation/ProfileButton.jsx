@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { FaUserCircle } from 'react-icons/fa';
 import * as sessionActions from '../../store/session';
-import './ProfileButton.css';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
@@ -11,14 +10,14 @@ function ProfileButton({ user }) {
 
   const toggleMenu = (e) => {
     e.stopPropagation(); // Keep click from bubbling up to document and triggering closeMenu
-    setShowMenu((prevShowMenu) => !prevShowMenu);
+    // if (!showMenu) setShowMenu(true);
+    setShowMenu(!showMenu);
   };
 
   useEffect(() => {
     if (!showMenu) return;
 
     const closeMenu = (e) => {
-      // Close the menu only if the click is outside the dropdown
       if (ulRef.current && !ulRef.current.contains(e.target)) {
         setShowMenu(false);
       }
