@@ -11,7 +11,7 @@ function Layout() {
 
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => {
-      setIsLoaded(true);
+      setIsLoaded(true)
     });
   }, [dispatch]);
 
@@ -35,13 +35,12 @@ const router = createBrowserRouter([
         element: <LoginFormPage />
       },
       {
-         path: '/signup',
+        path: "/signup",
         element: <SignupFormPage />
       }
     ]
   }
 ]);
-
 
 function App() {
   return <RouterProvider router={router} />;
