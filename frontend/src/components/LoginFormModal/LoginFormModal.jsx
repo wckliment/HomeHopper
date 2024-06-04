@@ -19,10 +19,12 @@ function LoginFormModal() {
       .catch(async (res) => {
         const data = await res.json();
         if (data && data.errors) {
-          setErrors(data.errors);
+          setErrors({ credentials: "The provided credentials were invalid" });
         }
       });
   };
+
+  const isDisabled = credential.length < 4 || password.length < 6;
 
   return (
     <>
@@ -46,10 +48,10 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && (
-          <p>{errors.credential}</p>
+        {errors.credentials && (
+          <p className="error">{errors.credentials}</p>
         )}
-        <button type="submit">Log In</button>
+        <button type="submit" disabled={isDisabled}>Log In</button>
       </form>
     </>
   );
