@@ -5,12 +5,12 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  font-size: 24px;
-  color: blue;
+  font-size: 32px;
+  color: #3DC6C1;
 }
 
 .menu-button:hover {
-  color: darkblue;
+  color: black;
 }
 
 .profile-dropdown {

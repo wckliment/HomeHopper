@@ -24,22 +24,14 @@ function LoginFormModal() {
       });
   };
 
-const handleDemoLogin = (e) => {
-    e.preventDefault();
-    return dispatch(sessionActions.login({ credential: "demo@user.io", password: "password" }))
-      .then(closeModal)
-      .catch(async (res) => {
-        const data = await res.json();
-        if (data && data.errors) {
-          setErrors({ credentials: "The provided credentials were invalid" });
-        }
-      });
+  const handleDemoLogin = () => {
+    return dispatch(sessionActions.login({ credential: 'DemoUser', password: 'password' }))
+      .then(closeModal);
   };
-
 
   const isDisabled = credential.length < 4 || password.length < 6;
 
-   return (
+  return (
     <>
       <h1>Log In</h1>
       <form onSubmit={handleSubmit}>
@@ -62,10 +54,10 @@ const handleDemoLogin = (e) => {
           />
         </label>
         {errors.credentials && (
-          <p className="error">{errors.credentials}</p>
+          <p>{errors.credentials}</p>
         )}
         <button type="submit" disabled={isDisabled}>Log In</button>
-        <button onClick={handleDemoLogin}>Log in as Demo User</button>
+        <button type="button" onClick={handleDemoLogin}>Demo User</button>
       </form>
     </>
   );
