@@ -29,7 +29,12 @@ button {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-button:hover {
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button:hover:enabled {
   background-color: #3DC6C1;
   box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
 }
@@ -43,4 +48,9 @@ ul {
   color: red;
   list-style-type: none;
   padding: 0;
+}
+
+.error {
+  color: red;
+  margin-top: 5px;
 }
