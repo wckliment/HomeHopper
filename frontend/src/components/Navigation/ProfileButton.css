@@ -1,12 +1,26 @@
+.menu-button {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 24px;
+  color: blue;
+}
+
+.menu-button:hover {
+  color: darkblue;
+}
+
 .profile-dropdown {
   position: absolute;
-  top: 50px;
-  /* Adjust this to properly position the dropdown */
   right: 0;
+  top: 50px;
+  /* Adjust this value to move the dropdown lower */
   background-color: white;
   border: 1px solid #ccc;
   padding: 10px;
-  margin-top: 10px;
   list-style-type: none;
   width: 150px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -14,12 +28,12 @@
 }
 
 .profile-dropdown li {
-  display: block;
-  /* Ensure each list item takes up the full width */
   padding: 8px 12px;
   cursor: pointer;
   font-size: 16px;
   color: #333;
+  display: block;
+  /* Ensure list items are displayed as block elements */
 }
 
 .profile-dropdown li:hover {
@@ -31,14 +45,7 @@
   display: none;
 }
 
-button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 24px;
-  color: blue;
-}
-
-button:hover {
-  color: darkblue;
+.error {
+  color: red;
+  margin-top: 5px;
 }
