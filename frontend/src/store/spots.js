@@ -2,7 +2,8 @@ import { csrfFetch } from './csrf';
 
 // Action Types
 const SET_SPOTS = 'spots/SET_SPOTS';
-const SET_SPOT_DETAILS = 'spot/SET_SPOT_DETAILS';
+const SET_SPOT_DETAILS = 'spots/SET_SPOT_DETAILS';
+const SET_LOADING = 'spots/SET_LOADING';
 
 // Action Creators
 const setSpots = (spots) => ({
@@ -15,6 +16,11 @@ const setSpotDetails = (spot) => ({
   spot,
 });
 
+const setLoading = (loading) => ({
+  type: SET_LOADING,
+  loading,
+});
+
 // Thunks
 export const fetchSpots = () => async (dispatch) => {
   const response = await csrfFetch('/api/spots');
@@ -24,18 +30,21 @@ export const fetchSpots = () => async (dispatch) => {
   }
 };
 
-export const fetchSpot = (spotId) => async (dispatch) => {
+export const fetchSpotDetails = (spotId) => async (dispatch) => {
+  dispatch(setLoading(true));
   const response = await csrfFetch(`/api/spots/${spotId}`);
   if (response.ok) {
-    const spot = await response.json();
-    dispatch(setSpotDetails(spot));
+    const data = await response.json();
+    dispatch(setSpotDetails(data));
   }
+  dispatch(setLoading(false));
 };
 
 // Initial State
 const initialState = {
   spots: [],
-  spotDetails: {},
+  spotDetails: null,
+  loading: false,
 };
 
 // Reducer
@@ -49,10 +58,12 @@ export default function spotsReducer(state = initialState, action) {
     case SET_SPOT_DETAILS:
       return {
         ...state,
-        spotDetails: {
-          ...state.spotDetails,
-          [action.spot.id]: action.spot,
-        },
+        spotDetails: action.spot,
+      };
+    case SET_LOADING:
+      return {
+        ...state,
+        loading: action.loading,
       };
     default:
       return state;

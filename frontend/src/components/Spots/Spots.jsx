@@ -7,21 +7,21 @@ import './Spots.css';
 
 const Spots = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const spots = useSelector((state) => state.spots.spots);
 
   useEffect(() => {
     dispatch(fetchSpots());
   }, [dispatch]);
 
-  const handleTileClick = (spotId) => {
+  const handleClick = (spotId) => {
     navigate(`/spots/${spotId}`);
   };
 
   return (
     <div className="spots-container">
       {spots.map((spot) => (
-        <div key={spot.id} className="spot-tile" onClick={() => handleTileClick(spot.id)}>
+        <div key={spot.id} className="spot-tile" onClick={() => handleClick(spot.id)}>
           <img src={spot.previewImage[0]?.url} alt={spot.name} />
           <div className="tooltip">{spot.name}</div>
           <div className="spot-info">

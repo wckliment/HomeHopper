@@ -1,53 +1,66 @@
 .spot-detail {
   max-width: 1000px;
   margin: 0 auto;
+  padding: 20px;
 }
 
 .spot-detail h1 {
-  font-size: 2rem;
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.spot-detail p {
+  font-size: 1.2em;
 }
 
 .spot-images {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .large-image {
   width: 100%;
-  height: auto;
+  max-height: 400px;
+  object-fit: cover;
 }
 
 .small-images {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  margin-top: 10px;
+  width: 100%;
 }
 
 .small-images img {
-  width: 20%;
-  height: auto;
+  flex: 1 1 calc(25% - 10px);
+  max-height: 150px;
+  object-fit: cover;
 }
 
 .spot-info {
   margin-top: 20px;
 }
 
-.callout-box {
+.callout-info {
+  background: #f7f7f7;
+  padding: 20px;
   border: 1px solid #ccc;
-  padding: 10px;
   border-radius: 8px;
   margin-top: 20px;
 }
 
-.reserve-button {
-  background-color: #ff5a5f;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 4px;
-  cursor: pointer;
+.callout-info p {
+  margin: 5px 0;
+  font-size: 1.2em;
 }
 
-.reserve-button:hover {
-  background-color: #e14b4e;
+.callout-info .price {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+.callout-info .rating {
+  font-size: 1.2em;
+  color: #ffc107;
 }

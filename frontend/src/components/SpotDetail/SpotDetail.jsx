@@ -1,19 +1,21 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { fetchSpot } from '../../store/spots';
-import './SpotDetail.css';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { fetchSpotDetails } from "../../store/spots";
+import "./SpotDetail.css";
 
 const SpotDetail = () => {
   const dispatch = useDispatch();
   const { spotId } = useParams();
-  const spot = useSelector((state) => state.spots.spotDetails[spotId]);
+  const spot = useSelector((state) => state.spots.spotDetails);
+  const loading = useSelector((state) => state.spots.loading);
 
   useEffect(() => {
-    dispatch(fetchSpot(spotId));
+    dispatch(fetchSpotDetails(spotId));
   }, [dispatch, spotId]);
 
-  if (!spot) return null;
+  if (loading) return <div>Loading...</div>;
+  if (!spot) return <div>Spot not found</div>;
 
   return (
     <div className="spot-detail">
@@ -28,15 +30,12 @@ const SpotDetail = () => {
         </div>
       </div>
       <div className="spot-info">
-        <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
+        <p>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</p>
         <p>{spot.description}</p>
-        <div className="callout-box">
-          <p>${spot.price} / night</p>
-          <p>{spot.avgRating} ★ ({spot.numReviews} reviews)</p>
-          <button className="reserve-button" onClick={() => alert('Feature Coming Soon.')}>
-            Reserve
-          </button>
-        </div>
+      </div>
+      <div className="callout-info">
+        <p className="price">${spot.price} / night</p>
+        <p className="rating">{spot.avgRating} ★ ({spot.numReviews} reviews)</p>
       </div>
     </div>
   );
