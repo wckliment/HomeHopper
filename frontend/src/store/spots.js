@@ -2,6 +2,7 @@ import { csrfFetch } from './csrf';
 
 // Action Types
 const SET_SPOTS = 'spots/SET_SPOTS';
+const SET_SPOT_DETAILS = 'spot/SET_SPOT_DETAILS';
 
 // Action Creators
 const setSpots = (spots) => ({
@@ -9,7 +10,12 @@ const setSpots = (spots) => ({
   spots,
 });
 
-// Thunk to fetch spots
+const setSpotDetails = (spot) => ({
+  type: SET_SPOT_DETAILS,
+  spot,
+});
+
+// Thunks
 export const fetchSpots = () => async (dispatch) => {
   const response = await csrfFetch('/api/spots');
   if (response.ok) {
@@ -18,9 +24,18 @@ export const fetchSpots = () => async (dispatch) => {
   }
 };
 
+export const fetchSpot = (spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}`);
+  if (response.ok) {
+    const spot = await response.json();
+    dispatch(setSpotDetails(spot));
+  }
+};
+
 // Initial State
 const initialState = {
   spots: [],
+  spotDetails: {},
 };
 
 // Reducer
@@ -30,6 +45,14 @@ export default function spotsReducer(state = initialState, action) {
       return {
         ...state,
         spots: action.spots,
+      };
+    case SET_SPOT_DETAILS:
+      return {
+        ...state,
+        spotDetails: {
+          ...state.spotDetails,
+          [action.spot.id]: action.spot,
+        },
       };
     default:
       return state;

@@ -1,0 +1,53 @@
+.spot-detail {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.spot-detail h1 {
+  font-size: 2rem;
+}
+
+.spot-images {
+  display: flex;
+  flex-direction: column;
+}
+
+.large-image {
+  width: 100%;
+  height: auto;
+}
+
+.small-images {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.small-images img {
+  width: 20%;
+  height: auto;
+}
+
+.spot-info {
+  margin-top: 20px;
+}
+
+.callout-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.reserve-button {
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reserve-button:hover {
+  background-color: #e14b4e;
+}
