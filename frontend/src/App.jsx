@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux'; // Added useSelector
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import Header from './components/Header/Header';
+import Spots from './components/Spots/Spots';
 import * as sessionActions from './store/session';
 
 function Layout() {
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h1></h1>
+        element: <Spots />
       }
     ]
   }

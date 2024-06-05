@@ -116,6 +116,13 @@ router.get('/', async (req, res) => {
         model: Review,
         as: 'Reviews',
         attributes: ['stars']
+      },
+      {
+         model: SpotImage,
+         as: 'SpotImages',
+         attributes: ['url'],
+         where: { preview: true },
+         required: false,
       }],
       attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt'],
       limit: size,
@@ -140,7 +147,7 @@ router.get('/', async (req, res) => {
         createdAt: spot.createdAt.toISOString().replace('T', ' ').slice(0, 19),
         updatedAt: spot.updatedAt.toISOString().replace('T', ' ').slice(0, 19),
         avgRating: avgRating,
-        previewImage: null // Placeholder for now
+        previewImage: spot.SpotImages
       };
     });
 
