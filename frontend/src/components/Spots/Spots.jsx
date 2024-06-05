@@ -11,12 +11,12 @@ const Spots = () => {
     dispatch(fetchSpots());
   }, [dispatch]);
 
- return (
+  return (
     <div className="spots-container">
       {spots.map((spot) => (
         <div key={spot.id} className="spot-tile">
-          <img src={spot.previewImage[0]?.url} alt={spot.name} />
           <div className="tooltip">{spot.name}</div>
+          <img src={spot.previewImage[0]?.url} alt={spot.name} />
           <div className="spot-info">
             <h3>{spot.name}</h3>
             <p>{spot.city}, {spot.state}</p>
@@ -28,6 +28,5 @@ const Spots = () => {
     </div>
   );
 };
-
 
 export default Spots;
