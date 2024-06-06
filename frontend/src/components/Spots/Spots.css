@@ -55,6 +55,5 @@
 }
 
 .spot-tile:hover .tooltip {
-  visibility: visible;
-  opacity: 1;
+  visibility: visible
 }
