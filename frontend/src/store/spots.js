@@ -51,7 +51,7 @@ export const fetchReviews = (spotId) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
      console.log('Fetched reviews:', data.Reviews); // Log the fetched reviews
-    dispatch(setReviews(data.reviews));
+    dispatch(setReviews(data.Reviews));
   }
 };
 

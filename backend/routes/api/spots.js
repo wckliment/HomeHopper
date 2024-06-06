@@ -220,15 +220,16 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 
         const reviews = await specificSpot.getReviews({
             include: [{
-                model: User
+                model: User, as: 'User'
             }, {
-                model: Reviewimage
+                model: Reviewimage, as: 'ReviewImages'
             }]
         });
 
         return res.status(200).json({ Reviews: reviews });
 
     } catch (error) {
+      console.log(error)
         next(error);
     }
 });

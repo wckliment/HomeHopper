@@ -65,6 +65,12 @@
 .callout-info .rating {
   font-size: 1.2em;
   color: #ffc107;
+  display: flex;
+  align-items: center;
+}
+
+.callout-info .dot {
+  margin: 0 8px;
 }
 
 .reserve-button {

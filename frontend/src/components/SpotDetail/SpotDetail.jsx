@@ -8,17 +8,13 @@ const SpotDetail = () => {
   const dispatch = useDispatch();
   const { spotId } = useParams();
   const spot = useSelector((state) => state.spots.spotDetails);
-  const reviews = useSelector((state) => state.spots.reviews);
+  const reviews = useSelector((state) => state.spots.reviews) || [];
   const loading = useSelector((state) => state.spots.loading);
 
   useEffect(() => {
     dispatch(fetchSpotDetails(spotId));
     dispatch(fetchReviews(spotId));
   }, [dispatch, spotId]);
-
-  useEffect(() => {
-    console.log('Reviews state:', reviews); // Log the reviews state
-  }, [reviews]);
 
   if (loading) return <div>Loading...</div>;
   if (!spot) return <div>Spot not found</div>;
@@ -47,7 +43,9 @@ const SpotDetail = () => {
         <div className="callout-ctn">
           <div className="callout-info">
             <p className="price">${spot.price} / night</p>
-            <p className="rating">{spot.avgRating} ★ ({reviewText})</p>
+            <p className="rating">
+              {spot.avgRating} ★ {spot.numReviews > 0 && <span className="dot">·</span>} {spot.numReviews > 0 ? reviewText : "New"}
+            </p>
             <button className="reserve-button" onClick={() => alert('Feature Coming Soon!')}>
               Reserve
             </button>
