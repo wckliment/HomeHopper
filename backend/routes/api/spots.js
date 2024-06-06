@@ -222,7 +222,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
             include: [{
                 model: User
             }, {
-                model: ReviewImage
+                model: Reviewimage
             }]
         });
 
