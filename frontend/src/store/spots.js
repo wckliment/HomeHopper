@@ -3,6 +3,7 @@ import { csrfFetch } from './csrf';
 // Action Types
 const SET_SPOTS = 'spots/SET_SPOTS';
 const SET_SPOT_DETAILS = 'spots/SET_SPOT_DETAILS';
+const SET_REVIEWS = 'spots/SET_REVIEWS'
 const SET_LOADING = 'spots/SET_LOADING';
 
 // Action Creators
@@ -14,6 +15,11 @@ const setSpots = (spots) => ({
 const setSpotDetails = (spot) => ({
   type: SET_SPOT_DETAILS,
   spot,
+});
+
+const setReviews = (reviews) => ({
+  type: SET_REVIEWS,
+  reviews,
 });
 
 const setLoading = (loading) => ({
@@ -40,12 +46,22 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
   dispatch(setLoading(false));
 };
 
+export const fetchReviews = (spotId) => async (dispatch) => {
+  const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(setReviews(data.reviews));
+  }
+};
+
 // Initial State
 const initialState = {
   spots: [],
   spotDetails: null,
+  reviews: [],
   loading: false,
 };
+
 
 // Reducer
 export default function spotsReducer(state = initialState, action) {
@@ -59,6 +75,11 @@ export default function spotsReducer(state = initialState, action) {
       return {
         ...state,
         spotDetails: action.spot,
+      };
+    case SET_REVIEWS:
+      return {
+        ...state,
+        reviews: action.reviews,
       };
     case SET_LOADING:
       return {

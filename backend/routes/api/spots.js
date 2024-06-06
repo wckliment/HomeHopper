@@ -208,6 +208,30 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 
+//Added route for fetching reviews for the front end.
+
+router.get('/:spotId/reviews', async (req, res, next) => {
+    try {
+        const specificSpot = await Spot.findByPk(req.params.spotId);
+
+        if (!specificSpot) {
+            return res.status(404).json({ message: 'Spot couldn\'t be found' });
+        }
+
+        const reviews = await specificSpot.getReviews({
+            include: [{
+                model: User
+            }, {
+                model: ReviewImage
+            }]
+        });
+
+        return res.status(200).json({ Reviews: reviews });
+
+    } catch (error) {
+        next(error);
+    }
+});
 
 
 // Get Details of a Spot from an ID
