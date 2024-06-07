@@ -10,6 +10,7 @@ const SpotDetail = () => {
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.spots.reviews) || [];
   const loading = useSelector((state) => state.spots.loading);
+  const currentUser = useSelector((state) => state.session.user); 
 
   useEffect(() => {
     dispatch(fetchSpotDetails(spotId));
@@ -20,6 +21,7 @@ const SpotDetail = () => {
   if (!spot) return <div>Spot not found</div>;
 
   const reviewText = spot.numReviews === 1 ? "1 Review" : `${spot.numReviews} Reviews`;
+  const isOwner = currentUser && currentUser.id === spot.ownerId;
 
   return (
     <div className="spot-details-page">
@@ -58,13 +60,13 @@ const SpotDetail = () => {
           reviews.map((review) => (
             <div key={review.id} className="review">
               <p>{review.User.firstName}</p>
-              <p>{new Date(review.createdAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}</p>
+              <p>{new Date(review.createdAt).toLocaleString('default', { month: 'long', year: 'numeric' })}</p>
               <p>{review.review}</p>
               <p>{review.stars} ★</p>
             </div>
           ))
         ) : (
-          <p>No reviews yet.</p>
+          !isOwner && currentUser ? <p>Be the first to post a review!</p> : <p>No reviews yet.</p>
         )}
       </div>
     </div>
