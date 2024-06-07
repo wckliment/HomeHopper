@@ -1,0 +1,59 @@
+form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+label {
+  margin-bottom: 10px;
+}
+
+input {
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px;
+  background-color: #3DC6C1;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    /* Add box shadow */
+}
+
+button:hover {
+  background-color: #3DC6C1;
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+      /* Increase shadow on hover */
+}
+
+button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+ul {
+  color: red;
+  list-style-type: none;
+  padding: 0;
+}
+
+.error {
+  color: red;
+  margin-top: 5px;
+}

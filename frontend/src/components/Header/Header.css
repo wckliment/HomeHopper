@@ -1,0 +1,27 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.logo {
+  height: 100px;
+  cursor: pointer;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+  /* Add margin to move the nav items away from the right edge */
+}
+
+.profile-icon {
+  font-size: 24px;
+  cursor: pointer;
+}

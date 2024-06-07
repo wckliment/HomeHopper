@@ -18,4 +18,15 @@ module.exports = {
     ],
     'react/prop-types': 'off'
   },
+  overrides: [
+    {
+      files: [
+        "src/context/*.jsx",
+        "src/components/Navigation/*.jsx"
+      ],
+      rules: {
+        'react-refresh/only-export-components': 'off'
+      }
+    }
+  ],
 }

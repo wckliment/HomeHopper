@@ -1,0 +1,52 @@
+.spot-tile {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  width: calc(25% - 20px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+  position: relative;
+  cursor: pointer;
+}
+
+.spot-tile img {
+  width: 100%;
+  height: auto;
+}
+
+.spot-tile:hover {
+  transform: scale(1.05);
+}
+
+.spot-info {
+  padding: 10px;
+}
+
+.spot-info h3 {
+  margin: 0 0 10px;
+}
+
+.spot-info p {
+  margin: 5px 0;
+}
+
+.tooltip {
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip.visible {
+  visibility: visible;
+  opacity: 1;
+}

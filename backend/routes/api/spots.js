@@ -116,6 +116,13 @@ router.get('/', async (req, res) => {
         model: Review,
         as: 'Reviews',
         attributes: ['stars']
+      },
+      {
+         model: SpotImage,
+         as: 'SpotImages',
+         attributes: ['url'],
+         where: { preview: true },
+         required: false,
       }],
       attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt'],
       limit: size,
@@ -140,7 +147,7 @@ router.get('/', async (req, res) => {
         createdAt: spot.createdAt.toISOString().replace('T', ' ').slice(0, 19),
         updatedAt: spot.updatedAt.toISOString().replace('T', ' ').slice(0, 19),
         avgRating: avgRating,
-        previewImage: null // Placeholder for now
+        previewImage: spot.SpotImages
       };
     });
 
@@ -201,6 +208,31 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 
+//Added route for fetching reviews for the front end.
+
+router.get('/:spotId/reviews', async (req, res, next) => {
+    try {
+        const specificSpot = await Spot.findByPk(req.params.spotId);
+
+        if (!specificSpot) {
+            return res.status(404).json({ message: 'Spot couldn\'t be found' });
+        }
+
+      const reviews = await specificSpot.getReviews({
+            include: [{
+                model: User, as: 'User'
+            }, {
+                model: Reviewimage, as: 'ReviewImages'
+            }],
+            order: [['createdAt', 'DESC']] // Order by createdAt descending
+        });
+
+        return res.status(200).json({ Reviews: reviews });
+
+    } catch (error) {
+        next(error);
+    }
+});
 
 
 // Get Details of a Spot from an ID
