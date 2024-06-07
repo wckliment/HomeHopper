@@ -90,6 +90,7 @@ export const createSpot = (spotData) => async (dispatch) => {
 
     const spot = await response.json();
     dispatch(createSpotSuccess(spot));
+    return spot;
   } catch (error) {
     dispatch(createSpotFailure(error.toString()));
   }

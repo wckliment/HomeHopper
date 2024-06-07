@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSpot } from '../../store/spots';
+import { useNavigate } from 'react-router-dom'
+import './CreateSpotForm.css';
 
 const CreateSpotForm = () => {
   const [country, setCountry] = useState('');
@@ -14,11 +16,47 @@ const CreateSpotForm = () => {
   const [price, setPrice] = useState('');
   const [previewImage, setPreviewImage] = useState('');
   const [imageUrls, setImageUrls] = useState(['', '', '', '']);
+  const [descriptionError, setDescriptionError] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [priceError, setPriceError] = useState('');
+  const [imageErrors, setImageErrors] = useState({});
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.spots);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (description.length < 30) {
+      setDescriptionError('Description needs 30 or more characters');
+      return;
+    }
+    if (!name) {
+      setNameError('Name is required');
+      return;
+    }
+    if (!price || isNaN(price) || parseFloat(price) <= 0) {
+      setPriceError('Price is required and must be a positive number');
+      return;
+    }
+    if (!previewImage || !/\.(jpg|jpeg|png)$/.test(previewImage)) {
+      setImageErrors(prev => ({ ...prev, previewImage: 'Preview image must end in .png, .jpg, or .jpeg' }));
+      return;
+    }
+    const newImageErrors = {};
+    imageUrls.forEach((url, index) => {
+      if (url && !/\.(jpg|jpeg|png)$/.test(url)) {
+        newImageErrors[index] = 'Image URL must end in .png, .jpg, or .jpeg';
+      }
+    });
+    if (Object.keys(newImageErrors).length > 0) {
+      setImageErrors(newImageErrors);
+      return;
+    }
+    setDescriptionError('');
+    setNameError('');
+    setPriceError('');
+    setImageErrors({});
+
     const spotData = {
       country,
       address,
@@ -32,7 +70,11 @@ const CreateSpotForm = () => {
       previewImage,
       images: imageUrls.filter(url => url),
     };
-    dispatch(createSpot(spotData));
+
+    const response = await dispatch(createSpot(spotData));
+    if (response && response.id) {
+      navigate(`/spots/${response.id}`);
+    }
   };
 
   const handleImageUrlChange = (index, value) => {
@@ -42,58 +84,114 @@ const CreateSpotForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Country:</label>
-        <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} required />
-      </div>
-      <div>
-        <label>Street Address:</label>
-        <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} required />
-      </div>
-      <div>
-        <label>City:</label>
-        <input type="text" value={city} onChange={(e) => setCity(e.target.value)} required />
-      </div>
-      <div>
-        <label>State:</label>
-        <input type="text" value={state} onChange={(e) => setState(e.target.value)} required />
-      </div>
-      <div>
-        <label>Latitude:</label>
-        <input type="text" value={latitude} onChange={(e) => setLatitude(e.target.value)} />
-      </div>
-      <div>
-        <label>Longitude:</label>
-        <input type="text" value={longitude} onChange={(e) => setLongitude(e.target.value)} />
-      </div>
-      <div>
-        <label>Description:</label>
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)} required />
-      </div>
-      <div>
-        <label>Name:</label>
-        <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
-      </div>
-      <div>
-        <label>Price per night (USD):</label>
-        <input type="text" value={price} onChange={(e) => setPrice(e.target.value)} required />
-      </div>
-      <div>
-        <label>Preview Image URL:</label>
-        <input type="text" value={previewImage} onChange={(e) => setPreviewImage(e.target.value)} required />
-      </div>
-      {imageUrls.map((url, index) => (
-        <div key={index}>
-          <label>Image URL:</label>
-          <input type="text" value={url} onChange={(e) => handleImageUrlChange(index, e.target.value)} />
+    <div className="create-spot-form-container">
+      <h1>Create a New Spot</h1>
+      <form onSubmit={handleSubmit}>
+        <div className="form-section">
+          <h2>Where&apos;s your place located?</h2>
+          <p>Guests will only get your exact address once they booked a reservation.</p>
+          <div className="form-group">
+            <label>Country</label>
+            <input type="text" placeholder="Country" value={country} onChange={(e) => setCountry(e.target.value)} required />
+          </div>
+          <div className="form-group">
+            <label>Street Address</label>
+            <input type="text" placeholder="Address" value={address} onChange={(e) => setAddress(e.target.value)} required />
+          </div>
+          <div className="form-group">
+            <label>City</label>
+            <input type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} required />
+          </div>
+          <div className="form-group">
+            <label>State</label>
+            <input type="text" placeholder="State" value={state} onChange={(e) => setState(e.target.value)} required />
+          </div>
+          <div className="form-group">
+            <label>Latitude (optional)</label>
+            <input type="text" placeholder="Latitude" value={latitude} onChange={(e) => setLatitude(e.target.value)} />
+          </div>
+          <div className="form-group">
+            <label>Longitude (optional)</label>
+            <input type="text" placeholder="Longitude" value={longitude} onChange={(e) => setLongitude(e.target.value)} />
+          </div>
         </div>
-      ))}
-      <button type="submit" disabled={loading}>
-        Create Spot
-      </button>
-      {error && <p>{error}</p>}
-    </form>
+        <div className="form-section">
+          <h2>Describe your place to guests</h2>
+          <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
+          <div className="form-group">
+            <label>Description</label>
+            <textarea
+              placeholder="Please write at least 30 characters"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
+            {descriptionError && <p className="error">{descriptionError}</p>}
+          </div>
+        </div>
+        <div className="form-section">
+          <h2>Create a title for your spot</h2>
+          <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
+          <div className="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              placeholder="Name of your spot"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            {nameError && <p className="error">{nameError}</p>}
+          </div>
+        </div>
+        <div className="form-section">
+          <h2>Set a base price for your spot</h2>
+          <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+          <div className="form-group">
+            <label>Price per night (USD)</label>
+            <input
+              type="number"
+              placeholder="Price per night (USD)"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              required
+            />
+            {priceError && <p className="error">{priceError}</p>}
+          </div>
+        </div>
+        <div className="form-section">
+          <h2>Liven up your spot with photos</h2>
+          <p>Submit a link to at least one photo to publish your spot.</p>
+          <div className="form-group">
+            <label>Preview Image URL</label>
+            <input
+              type="text"
+              placeholder="Preview Image URL"
+              value={previewImage}
+              onChange={(e) => setPreviewImage(e.target.value)}
+              required
+            />
+            {imageErrors.previewImage && <p className="error">{imageErrors.previewImage}</p>}
+          </div>
+          {imageUrls.map((url, index) => (
+            <div className="form-group" key={index}>
+              <label>Image URL</label>
+              <input
+                type="text"
+                placeholder="Image URL"
+                value={url}
+                onChange={(e) => handleImageUrlChange(index, e.target.value)}
+              />
+              {imageErrors[index] && <p className="error">{imageErrors[index]}</p>}
+            </div>
+          ))}
+        </div>
+        <button type="submit" disabled={loading}>
+          Create Spot
+        </button>
+        {error && <p>{error}</p>}
+      </form>
+    </div>
   );
 };
 

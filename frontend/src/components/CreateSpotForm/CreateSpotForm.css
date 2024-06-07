@@ -1,0 +1,75 @@
+.create-spot-form-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.create-spot-form-container h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.form-section h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+.form-section p {
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  min-height: 100px;
+}
+
+.create-spot-form-container button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.create-spot-form-container button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.create-spot-form-container p.error {
+  color: red;
+  margin-top: 5px;
+  font-size: 12px;
+  text-align: left;
+}
+
+.create-spot-form-container p {
+  color: red;
+  text-align: center;
+}
