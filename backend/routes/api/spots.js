@@ -218,18 +218,18 @@ router.get('/:spotId/reviews', async (req, res, next) => {
             return res.status(404).json({ message: 'Spot couldn\'t be found' });
         }
 
-        const reviews = await specificSpot.getReviews({
+      const reviews = await specificSpot.getReviews({
             include: [{
                 model: User, as: 'User'
             }, {
                 model: Reviewimage, as: 'ReviewImages'
-            }]
+            }],
+            order: [['createdAt', 'DESC']] // Order by createdAt descending
         });
 
         return res.status(200).json({ Reviews: reviews });
 
     } catch (error) {
-      console.log(error)
         next(error);
     }
 });
