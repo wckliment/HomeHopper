@@ -44,7 +44,7 @@ const SpotDetail = () => {
           <div className="callout-info">
             <p className="price">${spot.price} / night</p>
             <p className="rating">
-              {spot.avgRating} ★ {spot.numReviews > 0 && <span className="dot">·</span>} {spot.numReviews > 0 ? reviewText : "New"}
+              {spot.avgRating} ★ <span className="dot">·</span> {spot.numReviews ? reviewText : "New"}
             </p>
             <button className="reserve-button" onClick={() => alert('Feature Coming Soon!')}>
               Reserve
@@ -57,8 +57,8 @@ const SpotDetail = () => {
         {reviews.length > 0 ? (
           reviews.map((review) => (
             <div key={review.id} className="review">
-              <p>{review.User.firstName} {review.User.lastName}</p>
-              <p>{new Date(review.createdAt).toLocaleDateString()}</p>
+              <p>{review.User.firstName}</p>
+              <p>{new Date(review.createdAt).toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}</p>
               <p>{review.review}</p>
               <p>{review.stars} ★</p>
             </div>
