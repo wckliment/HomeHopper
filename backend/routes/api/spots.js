@@ -447,6 +447,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
   }
 });
 
+
 // Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, validateReviewInput, async (req, res, next) => {
   const { spotId } = req.params;
@@ -476,7 +477,7 @@ router.post('/:spotId/reviews', requireAuth, validateReviewInput, async (req, re
     });
     if (existingReview) {
       console.error("Review already exists for user:", userId, "and spot:", spotId);
-      return res.status(500).json({ message: "User already has a review for this spot" }); // Changed from 500 to 409
+      return res.status(409).json({ message: "User already has a review for this spot" }); // Changed from 500 to 409
     }
 
     // Create the new review

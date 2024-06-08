@@ -35,6 +35,7 @@ export const createReview = (spotId, reviewData) => async (dispatch) => {
   if (response.ok) {
     const data = await response.json();
     dispatch(addReview(data));
+    return data; // Return the newly created review
   }
 };
 
@@ -54,7 +55,7 @@ export default function reviewsReducer(state = initialState, action) {
     case ADD_REVIEW:
       return {
         ...state,
-        reviews: [...state.reviews, action.review],
+        reviews: [action.review, ...state.reviews],
       };
     default:
       return state;

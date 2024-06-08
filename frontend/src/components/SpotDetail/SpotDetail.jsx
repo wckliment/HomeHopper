@@ -22,8 +22,16 @@ const SpotDetail = () => {
   if (loading) return <div>Loading...</div>;
   if (!spot) return <div>Spot not found</div>;
 
-  const reviewText = spot.numReviews === 1 ? '1 Review' : `${spot.numReviews} Reviews`;
+  const reviewText = reviews.length === 1 ? "1 Review" : `${reviews.length} Reviews`;
   const isOwner = currentUser && currentUser.id === spot.ownerId;
+
+  const calculateAverageRating = (reviews) => {
+    if (reviews.length === 0) return "New";
+    const totalRating = reviews.reduce((acc, review) => acc + review.stars, 0);
+    return (totalRating / reviews.length).toFixed(1);
+  };
+
+  const averageRating = calculateAverageRating(reviews);
 
   return (
     <div className="spot-details-page">
@@ -48,7 +56,7 @@ const SpotDetail = () => {
           <div className="callout-info">
             <p className="price">${spot.price} / night</p>
             <p className="rating">
-              {spot.avgRating} ★ <span className="dot">·</span> {spot.numReviews ? reviewText : 'New'}
+              {averageRating} ★ <span className="dot">·</span> {reviewText}
             </p>
             <button className="reserve-button" onClick={() => alert('Feature Coming Soon!')}>
               Reserve
@@ -58,6 +66,12 @@ const SpotDetail = () => {
       </div>
       <div className="reviews-section">
         <h2>Reviews</h2>
+        {currentUser && !isOwner && !reviews.some(review => review.userId === currentUser.id) && (
+          <OpenModalButton
+            modalComponent={<ReviewForm spotId={spotId} />}
+            buttonText="Post Your Review"
+          />
+        )}
         {reviews.length > 0 ? (
           reviews.map((review) => (
             <div key={review.id} className="review">
@@ -71,12 +85,6 @@ const SpotDetail = () => {
           !isOwner && currentUser ? <p>Be the first to post a review!</p> : <p>No reviews yet.</p>
         )}
       </div>
-      {!isOwner && currentUser && (
-        <OpenModalButton
-          buttonText="Post Your Review"
-          modalComponent={<ReviewForm spotId={spotId} />}
-        />
-      )}
     </div>
   );
 };

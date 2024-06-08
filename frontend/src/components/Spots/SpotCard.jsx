@@ -7,6 +7,9 @@ const SpotCard = ({ spot, onClick }) => {
   // Ensure that spot.previewImage is defined and is an array
   const previewImageUrl = Array.isArray(spot.previewImage) && spot.previewImage.length > 0 ? spot.previewImage[0].url : 'default-image-url'; // Provide a default image URL if necessary
 
+  // Round the average rating to one decimal place
+  const averageRating = spot.avgRating ? parseFloat(spot.avgRating).toFixed(1) : 'New';
+
   return (
     <div
       key={spot.id}
@@ -25,7 +28,7 @@ const SpotCard = ({ spot, onClick }) => {
         <h3>{spot.name}</h3>
         <p>{spot.city}, {spot.state}</p>
         <p>${spot.price} / night</p>
-        <p>{spot.avgRating} ★</p>
+        <p>{averageRating} ★</p>
       </div>
     </div>
   );

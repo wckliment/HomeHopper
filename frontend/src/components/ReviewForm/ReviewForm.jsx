@@ -7,8 +7,8 @@ const ReviewForm = ({ spotId, onClose }) => {
   const dispatch = useDispatch();
   const [review, setReview] = useState('');
   const [stars, setStars] = useState(0);
-  const [hoverStars, setHoverStars] = useState(0); // Add hover state
   const [errors, setErrors] = useState({});
+  const [backendError, setBackendError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,13 +27,19 @@ const ReviewForm = ({ spotId, onClose }) => {
       return;
     }
 
-    await dispatch(createReview(spotId, { review, stars }));
-    onClose();
+    try {
+      await dispatch(createReview(spotId, { review, stars }));
+      onClose();
+    } catch (err) {
+      const errorMessage = err.message || 'An unexpected error occurred. Please try again later.';
+      setBackendError(errorMessage);
+    }
   };
 
   return (
     <div className="review-form">
       <h2>How was your stay?</h2>
+      {backendError && <p className="error">{backendError}</p>}
       <form onSubmit={handleSubmit}>
         <textarea
           placeholder="Leave your review here..."
@@ -46,10 +52,8 @@ const ReviewForm = ({ spotId, onClose }) => {
           {[1, 2, 3, 4, 5].map((star) => (
             <span
               key={star}
-              className={star <= (hoverStars || stars) ? 'star filled' : 'star'}
+              className={star <= stars ? 'star filled' : 'star'}
               onClick={() => setStars(star)}
-              onMouseEnter={() => setHoverStars(star)}
-              onMouseLeave={() => setHoverStars(0)}
             >
               ★
             </span>
