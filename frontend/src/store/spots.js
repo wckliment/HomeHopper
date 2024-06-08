@@ -96,6 +96,29 @@ export const createSpot = (spotData) => async (dispatch) => {
   }
 };
 
+export const createImage = (spotId, imageUrl, isPreview) => async (dispatch) => {
+  console.log('Creating image with data:', { spotId, imageUrl, isPreview }); // Console log here
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}/images`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url: imageUrl, preview: isPreview }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create image');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error creating image:', error);
+    throw error;
+  }
+};
+
 // Initial State
 const initialState = {
   spots: [],

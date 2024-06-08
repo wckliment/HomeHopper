@@ -4,21 +4,22 @@ import './SpotCard.css';
 const SpotCard = ({ spot, onClick }) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
+  // Ensure that spot.previewImage is defined and is an array
+  const previewImageUrl = Array.isArray(spot.previewImage) && spot.previewImage.length > 0 ? spot.previewImage[0].url : 'default-image-url'; // Provide a default image URL if necessary
+
   return (
     <div
       key={spot.id}
       className="spot-tile"
       onClick={() => onClick(spot.id)}
       onMouseEnter={() => {
-
         setTooltipVisible(true);
       }}
       onMouseLeave={() => {
-
         setTooltipVisible(false);
       }}
     >
-      <img src={spot.previewImage[0]?.url} alt={spot.name} />
+      <img src={previewImageUrl} alt={spot.name} />
       {tooltipVisible && <div className="tooltip">{spot.name}</div>}
       <div className="spot-info">
         <h3>{spot.name}</h3>

@@ -14,6 +14,12 @@
   color: #333;
 }
 
+.form-error {
+  color: red;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
 .form-section h2 {
   margin-bottom: 10px;
   font-size: 20px;
@@ -62,14 +68,8 @@
   cursor: not-allowed;
 }
 
-.create-spot-form-container p.error {
+.error {
   color: red;
   margin-top: 5px;
   font-size: 12px;
-  text-align: left;
-}
-
-.create-spot-form-container p {
-  color: red;
-  text-align: center;
 }
