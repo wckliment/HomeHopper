@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { createSpot, createImage } from '../../store/spots';
 import { useNavigate } from 'react-router-dom'
 import './CreateSpotForm.css';
 
- const CreateSpotForm = () => {
+const CreateSpotForm = () => {
   const [country, setCountry] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
@@ -21,9 +21,12 @@ import './CreateSpotForm.css';
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.spots);
 
+  useEffect(() => {
+    console.log('Loading state:', loading);
+  }, [loading]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted'); // Simple log to check if function is called
 
     const errors = {};
 
@@ -37,22 +40,22 @@ import './CreateSpotForm.css';
       errors.price = 'Price per night is required and must be a positive number';
     }
     if (!previewImage || !/\.(jpg|jpeg|png)$/.test(previewImage)) {
-      errors.previewImage = 'Preview image must end in .png, .jpg, or .jpeg';
+      errors.previewImage = 'Preview image is required';
+    } else if (!previewImage) {
+      errors.previewImage = 'Preview image is required';
     }
     imageUrls.forEach((url, index) => {
-      if (url && !/\.(jpg|jpeg|png)$/.test(url)) {
+      if (!url || !/\.(jpg|jpeg|png)$/.test(url)) {
         errors[`image${index}`] = 'Image URL must end in .png, .jpg, or .jpeg';
       }
     });
 
     if (Object.keys(errors).length > 0) {
-      console.log('Validation errors:', errors); // Log validation errors
       setFormErrors(errors);
       return;
     }
 
     setFormErrors({});
-    console.log('No validation errors, proceeding with spot creation'); // Log to confirm validation passed
 
     const spotData = {
       country,
@@ -64,6 +67,7 @@ import './CreateSpotForm.css';
       description,
       name,
       price: parseFloat(price),
+      previewImage,
     };
 
     const response = await dispatch(createSpot(spotData));
@@ -81,13 +85,10 @@ import './CreateSpotForm.css';
 
       try {
         await Promise.all(imagePromises);
-        console.log('Images created successfully'); // Log to confirm images created
         navigate(`/spots/${spotId}`);
       } catch (error) {
         console.error('Error creating images:', error);
       }
-    } else {
-      console.error('Error creating spot', response); // Log to diagnose spot creation issues
     }
   };
 
@@ -100,15 +101,6 @@ import './CreateSpotForm.css';
   return (
     <div className="create-spot-form-container">
       <h1>Create a New Spot</h1>
-      {Object.keys(formErrors).length > 0 && (
-        <div className="form-errors">
-          {Object.values(formErrors).map((error, index) => (
-            <p key={index} className="error">
-              {error}
-            </p>
-          ))}
-        </div>
-      )}
       <form onSubmit={handleSubmit}>
         <div className="form-section">
           <h2>Where's your place located?</h2>
@@ -120,7 +112,6 @@ import './CreateSpotForm.css';
               placeholder="Country"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              required
             />
             {formErrors.country && <p className="error">{formErrors.country}</p>}
           </div>
@@ -131,7 +122,6 @@ import './CreateSpotForm.css';
               placeholder="Address"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
-              required
             />
             {formErrors.address && <p className="error">{formErrors.address}</p>}
           </div>
@@ -142,7 +132,6 @@ import './CreateSpotForm.css';
               placeholder="City"
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              required
             />
             {formErrors.city && <p className="error">{formErrors.city}</p>}
           </div>
@@ -153,7 +142,6 @@ import './CreateSpotForm.css';
               placeholder="State"
               value={state}
               onChange={(e) => setState(e.target.value)}
-              required
             />
             {formErrors.state && <p className="error">{formErrors.state}</p>}
           </div>
@@ -185,7 +173,6 @@ import './CreateSpotForm.css';
               placeholder="Please write at least 30 characters"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              required
             />
             {formErrors.description && <p className="error">{formErrors.description}</p>}
           </div>
@@ -200,7 +187,6 @@ import './CreateSpotForm.css';
               placeholder="Name of your spot"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              required
             />
             {formErrors.name && <p className="error">{formErrors.name}</p>}
           </div>
@@ -215,7 +201,6 @@ import './CreateSpotForm.css';
               placeholder="Price per night (USD)"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
-              required
             />
             {formErrors.price && <p className="error">{formErrors.price}</p>}
           </div>
@@ -230,7 +215,6 @@ import './CreateSpotForm.css';
               placeholder="Preview Image URL"
               value={previewImage}
               onChange={(e) => setPreviewImage(e.target.value)}
-              required
             />
             {formErrors.previewImage && <p className="error">{formErrors.previewImage}</p>}
           </div>
@@ -247,7 +231,7 @@ import './CreateSpotForm.css';
             </div>
           ))}
         </div>
-        <button type="submit" disabled={loading}>
+        <button type="submit">
           Create Spot
         </button>
         {error && <p>{error}</p>}

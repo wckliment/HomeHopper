@@ -73,3 +73,14 @@
   margin-top: 5px;
   font-size: 12px;
 }
+
+
+.create-spot-form-container .error {
+  color: red;
+  margin-top: 5px;
+}
+
+.error {
+  color: red;
+  margin-top: 5px;
+}

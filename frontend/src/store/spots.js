@@ -93,6 +93,8 @@ export const createSpot = (spotData) => async (dispatch) => {
     return spot;
   } catch (error) {
     dispatch(createSpotFailure(error.toString()));
+  } finally {
+    dispatch(setLoading(false)); // Ensure loading is set to false
   }
 };
 

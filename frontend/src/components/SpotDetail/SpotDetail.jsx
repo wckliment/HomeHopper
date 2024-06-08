@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchSpotDetails, fetchReviews } from "../../store/spots";
+import ReviewForm from '../ReviewForm/ReviewForm';
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
 import "./SpotDetail.css";
 
 const SpotDetail = () => {
@@ -20,9 +22,8 @@ const SpotDetail = () => {
   if (loading) return <div>Loading...</div>;
   if (!spot) return <div>Spot not found</div>;
 
-  const reviewText = spot.numReviews === 1 ? "1 Review" : `${spot.numReviews} Reviews`;
+  const reviewText = spot.numReviews === 1 ? '1 Review' : `${spot.numReviews} Reviews`;
   const isOwner = currentUser && currentUser.id === spot.ownerId;
-  const hasPostedReview = reviews.some(review => review.userId === currentUser?.id);
 
   return (
     <div className="spot-details-page">
@@ -47,7 +48,7 @@ const SpotDetail = () => {
           <div className="callout-info">
             <p className="price">${spot.price} / night</p>
             <p className="rating">
-              {spot.avgRating} ★ <span className="dot">·</span> {spot.numReviews ? reviewText : "New"}
+              {spot.avgRating} ★ <span className="dot">·</span> {spot.numReviews ? reviewText : 'New'}
             </p>
             <button className="reserve-button" onClick={() => alert('Feature Coming Soon!')}>
               Reserve
@@ -57,9 +58,6 @@ const SpotDetail = () => {
       </div>
       <div className="reviews-section">
         <h2>Reviews</h2>
-        {currentUser && !hasPostedReview && !isOwner && (
-          <button onClick={() => alert('Feature Coming Soon!')}>Post Your Review</button>
-        )}
         {reviews.length > 0 ? (
           reviews.map((review) => (
             <div key={review.id} className="review">
@@ -73,6 +71,12 @@ const SpotDetail = () => {
           !isOwner && currentUser ? <p>Be the first to post a review!</p> : <p>No reviews yet.</p>
         )}
       </div>
+      {!isOwner && currentUser && (
+        <OpenModalButton
+          buttonText="Post Your Review"
+          modalComponent={<ReviewForm spotId={spotId} />}
+        />
+      )}
     </div>
   );
 };
