@@ -10,7 +10,7 @@ const SpotDetail = () => {
   const spot = useSelector((state) => state.spots.spotDetails);
   const reviews = useSelector((state) => state.spots.reviews) || [];
   const loading = useSelector((state) => state.spots.loading);
-  const currentUser = useSelector((state) => state.session.user); 
+  const currentUser = useSelector((state) => state.session.user);
 
   useEffect(() => {
     dispatch(fetchSpotDetails(spotId));
@@ -22,6 +22,7 @@ const SpotDetail = () => {
 
   const reviewText = spot.numReviews === 1 ? "1 Review" : `${spot.numReviews} Reviews`;
   const isOwner = currentUser && currentUser.id === spot.ownerId;
+  const hasPostedReview = reviews.some(review => review.userId === currentUser?.id);
 
   return (
     <div className="spot-details-page">
@@ -56,6 +57,9 @@ const SpotDetail = () => {
       </div>
       <div className="reviews-section">
         <h2>Reviews</h2>
+        {currentUser && !hasPostedReview && !isOwner && (
+          <button onClick={() => alert('Feature Coming Soon!')}>Post Your Review</button>
+        )}
         {reviews.length > 0 ? (
           reviews.map((review) => (
             <div key={review.id} className="review">
