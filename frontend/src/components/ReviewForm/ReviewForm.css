@@ -60,3 +60,18 @@
   margin-top: 10px;
   background-color: #e74c3c;
 }
+
+.review-form .star-rating {
+  display: flex;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.review-form .star {
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.review-form .star.filled {
+  color: gold;
+}

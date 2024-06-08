@@ -7,6 +7,7 @@ const ReviewForm = ({ spotId, onClose }) => {
   const dispatch = useDispatch();
   const [review, setReview] = useState('');
   const [stars, setStars] = useState(0);
+  const [hoverStars, setHoverStars] = useState(0); // Add hover state
   const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {
@@ -45,8 +46,10 @@ const ReviewForm = ({ spotId, onClose }) => {
           {[1, 2, 3, 4, 5].map((star) => (
             <span
               key={star}
-              className={star <= stars ? 'star filled' : 'star'}
+              className={star <= (hoverStars || stars) ? 'star filled' : 'star'}
               onClick={() => setStars(star)}
+              onMouseEnter={() => setHoverStars(star)}
+              onMouseLeave={() => setHoverStars(0)}
             >
               ★
             </span>
