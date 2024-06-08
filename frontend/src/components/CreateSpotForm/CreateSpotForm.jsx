@@ -4,7 +4,7 @@ import { createSpot, createImage } from '../../store/spots';
 import { useNavigate } from 'react-router-dom'
 import './CreateSpotForm.css';
 
-const CreateSpotForm = () => {
+ const CreateSpotForm = () => {
   const [country, setCountry] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
@@ -21,71 +21,76 @@ const CreateSpotForm = () => {
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.spots);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('Form submitted'); // Simple log to check if function is called
 
-  const errors = {};
+    const errors = {};
 
-  if (!country) errors.country = 'Country is required';
-  if (!address) errors.address = 'Address is required';
-  if (!city) errors.city = 'City is required';
-  if (!state) errors.state = 'State is required';
-  if (description.length < 30) errors.description = 'Description needs 30 or more characters';
-  if (!name) errors.name = 'Name is required';
-  if (!price || isNaN(price) || parseFloat(price) <= 0) {
-    errors.price = 'Price per night is required and must be a positive number';
-  }
-  if (!previewImage || !/\.(jpg|jpeg|png)$/.test(previewImage)) {
-    errors.previewImage = 'Preview image must end in .png, .jpg, or .jpeg';
-  }
-  imageUrls.forEach((url, index) => {
-    if (url && !/\.(jpg|jpeg|png)$/.test(url)) {
-      errors[`image${index}`] = 'Image URL must end in .png, .jpg, or .jpeg';
+    if (!country) errors.country = 'Country is required';
+    if (!address) errors.address = 'Address is required';
+    if (!city) errors.city = 'City is required';
+    if (!state) errors.state = 'State is required';
+    if (description.length < 30) errors.description = 'Description needs 30 or more characters';
+    if (!name) errors.name = 'Name is required';
+    if (!price || isNaN(price) || parseFloat(price) <= 0) {
+      errors.price = 'Price per night is required and must be a positive number';
     }
-  });
-
-  if (Object.keys(errors).length > 0) {
-    setFormErrors(errors);
-    return;
-  }
-
-  setFormErrors({});
-
-  const spotData = {
-    country,
-    address,
-    city,
-    state,
-    lat: parseFloat(latitude),
-    lng: parseFloat(longitude),
-    description,
-    name,
-    price: parseFloat(price),
-    previewImage,
-  };
-
-  const response = await dispatch(createSpot(spotData));
-  if (response && response.id) {
-    const spotId = response.id;
-    const imagePromises = [
-      dispatch(createImage(spotId, previewImage, true)),
-      ...imageUrls.map((url) => dispatch(createImage(spotId, url, false))),
-    ];
-
-    console.log('Dispatching image creation:', {
-      previewImage,
-      imageUrls,
+    if (!previewImage || !/\.(jpg|jpeg|png)$/.test(previewImage)) {
+      errors.previewImage = 'Preview image must end in .png, .jpg, or .jpeg';
+    }
+    imageUrls.forEach((url, index) => {
+      if (url && !/\.(jpg|jpeg|png)$/.test(url)) {
+        errors[`image${index}`] = 'Image URL must end in .png, .jpg, or .jpeg';
+      }
     });
 
-    try {
-      await Promise.all(imagePromises);
-      navigate(`/spots/${spotId}`);
-    } catch (error) {
-      console.error('Error creating images:', error);
+    if (Object.keys(errors).length > 0) {
+      console.log('Validation errors:', errors); // Log validation errors
+      setFormErrors(errors);
+      return;
     }
-  }
-};
-  
+
+    setFormErrors({});
+    console.log('No validation errors, proceeding with spot creation'); // Log to confirm validation passed
+
+    const spotData = {
+      country,
+      address,
+      city,
+      state,
+      lat: parseFloat(latitude),
+      lng: parseFloat(longitude),
+      description,
+      name,
+      price: parseFloat(price),
+    };
+
+    const response = await dispatch(createSpot(spotData));
+    if (response && response.id) {
+      const spotId = response.id;
+      const imagePromises = [
+        dispatch(createImage(spotId, previewImage, true)),
+        ...imageUrls.map((url) => dispatch(createImage(spotId, url, false))),
+      ];
+
+      console.log('Dispatching image creation:', {
+        previewImage,
+        imageUrls,
+      });
+
+      try {
+        await Promise.all(imagePromises);
+        console.log('Images created successfully'); // Log to confirm images created
+        navigate(`/spots/${spotId}`);
+      } catch (error) {
+        console.error('Error creating images:', error);
+      }
+    } else {
+      console.error('Error creating spot', response); // Log to diagnose spot creation issues
+    }
+  };
+
   const handleImageUrlChange = (index, value) => {
     const newImageUrls = [...imageUrls];
     newImageUrls[index] = value;
@@ -95,7 +100,15 @@ const handleSubmit = async (e) => {
   return (
     <div className="create-spot-form-container">
       <h1>Create a New Spot</h1>
-      {error && <p className="form-error">{error}</p>}
+      {Object.keys(formErrors).length > 0 && (
+        <div className="form-errors">
+          {Object.values(formErrors).map((error, index) => (
+            <p key={index} className="error">
+              {error}
+            </p>
+          ))}
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <div className="form-section">
           <h2>Where's your place located?</h2>
