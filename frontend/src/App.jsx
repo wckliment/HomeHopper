@@ -5,6 +5,7 @@ import Header from './components/Header/Header';
 import Spots from './components/Spots/Spots';
 import SpotDetail from './components/SpotDetail/SpotDetail';
 import CreateSpotForm from './components/CreateSpotForm/CreateSpotForm';
+import ManageSpots from './components/ManageSpots/ManageSpots';
 import * as sessionActions from './store/session';
 
 function Layout() {
@@ -18,7 +19,6 @@ function Layout() {
     });
   }, [dispatch]);
 
-  console.log('Layout: sessionUser', sessionUser); // Debugging log
 
   return (
     <>
@@ -43,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: '/spots/new',
         element: <CreateSpotForm />
+      },
+       {
+        path: '/spots/current',
+        element: <ManageSpots />
       }
     ]
   }

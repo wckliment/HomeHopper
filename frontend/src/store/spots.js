@@ -1,6 +1,7 @@
 import { csrfFetch } from './csrf';
 
 // Action Types
+
 const SET_SPOTS = 'spots/SET_SPOTS';
 const SET_SPOT_DETAILS = 'spots/SET_SPOT_DETAILS';
 const SET_REVIEWS = 'spots/SET_REVIEWS';
@@ -8,8 +9,10 @@ const SET_LOADING = 'spots/SET_LOADING';
 const CREATE_SPOT_REQUEST = 'spots/CREATE_SPOT_REQUEST';
 const CREATE_SPOT_SUCCESS = 'spots/CREATE_SPOT_SUCCESS';
 const CREATE_SPOT_FAILURE = 'spots/CREATE_SPOT_FAILURE';
+const SET_USER_SPOTS = 'spots/SET_USER_SPOTS';
 
 // Action Creators
+
 const setSpots = (spots) => ({
   type: SET_SPOTS,
   spots,
@@ -44,7 +47,13 @@ const createSpotFailure = (error) => ({
   error,
 });
 
+const setUserSpots = (spots) => ({
+  type: SET_USER_SPOTS,
+  spots,
+});
+
 // Thunks
+
 export const fetchSpots = () => async (dispatch) => {
   const response = await csrfFetch('/api/spots');
   if (response.ok) {
@@ -72,6 +81,14 @@ export const fetchReviews = (spotId) => async (dispatch) => {
   }
 };
 
+export const fetchUserSpots = () => async (dispatch) => {
+  const response = await csrfFetch('/api/spots/current');
+  if (response.ok) {
+    const data = await response.json();
+    dispatch(setUserSpots(data.Spots));
+  }
+};
+
 export const createSpot = (spotData) => async (dispatch) => {
   dispatch(createSpotRequest());
   try {
@@ -94,12 +111,12 @@ export const createSpot = (spotData) => async (dispatch) => {
   } catch (error) {
     dispatch(createSpotFailure(error.toString()));
   } finally {
-    dispatch(setLoading(false)); // Ensure loading is set to false
+    dispatch(setLoading(false)); 
   }
 };
 
 export const createImage = (spotId, imageUrl, isPreview) => async (dispatch) => {
-  console.log('Creating image with data:', { spotId, imageUrl, isPreview }); // Console log here
+
   try {
     const response = await csrfFetch(`/api/spots/${spotId}/images`, {
       method: 'POST',
@@ -122,15 +139,18 @@ export const createImage = (spotId, imageUrl, isPreview) => async (dispatch) => 
 };
 
 // Initial State
+
 const initialState = {
   spots: [],
   spotDetails: null,
   reviews: [],
+  userSpots: [],
   loading: false,
   error: null,
 };
 
-// Reducer
+// Reducers
+
 export default function spotsReducer(state = initialState, action) {
   switch (action.type) {
     case SET_SPOTS:
@@ -170,6 +190,11 @@ export default function spotsReducer(state = initialState, action) {
         ...state,
         loading: false,
         error: action.error,
+      };
+     case SET_USER_SPOTS:
+      return {
+        ...state,
+        userSpots: action.spots,
       };
     default:
       return state;
