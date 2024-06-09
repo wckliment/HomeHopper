@@ -147,7 +147,7 @@ router.get('/', async (req, res) => {
         createdAt: spot.createdAt.toISOString().replace('T', ' ').slice(0, 19),
         updatedAt: spot.updatedAt.toISOString().replace('T', ' ').slice(0, 19),
         avgRating: avgRating,
-        previewImage: spot.SpotImages
+        previewImage: spot.SpotImages.length > 0 ? spot.SpotImages[0].url : null
       };
     });
 
@@ -171,10 +171,19 @@ router.get('/current', requireAuth, async (req, res) => {
     const ownerId = req.user.id;
     const spots = await Spot.findAll({
       where: { ownerId: ownerId },
-      include: [{
-        model: Review,
-        attributes: ['stars']
-      }],
+      include: [
+        {
+          model: Review,
+          attributes: ['stars']
+        },
+        {
+          model: SpotImage, // Ensure SpotImage is included
+          as: 'SpotImages',
+          attributes: ['url'],
+          where: { preview: true }, // Ensure only preview images are included
+          required: false,
+        }
+      ],
       attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt']
     });
 
@@ -196,7 +205,7 @@ router.get('/current', requireAuth, async (req, res) => {
         createdAt: new Date(spot.createdAt).toISOString().replace('T', ' ').slice(0, 19), // Format date
         updatedAt: new Date(spot.updatedAt).toISOString().replace('T', ' ').slice(0, 19), // Format date
         avgRating: avgRating,
-        previewImage: "image url" // Placeholder or logic to fetch an actual image URL
+        previewImage: spot.SpotImages.length > 0 ? spot.SpotImages[0].url : null // Ensure the previewImage is correctly assigned
       };
     });
 
