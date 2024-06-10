@@ -9,6 +9,7 @@ const UpdateSpotForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const spotDetails = useSelector((state) => state.spots.spotDetails);
+
   const [country, setCountry] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
@@ -21,7 +22,6 @@ const UpdateSpotForm = () => {
   const [previewImage, setPreviewImage] = useState('');
   const [imageUrls, setImageUrls] = useState(['', '', '', '']);
   const [formErrors, setFormErrors] = useState({});
-  const { error } = useSelector((state) => state.spots);
 
   useEffect(() => {
     dispatch(fetchSpotDetails(spotId));
@@ -39,8 +39,7 @@ const UpdateSpotForm = () => {
       setName(spotDetails.name || '');
       setPrice(spotDetails.price || '');
       setPreviewImage(spotDetails.previewImage || '');
-      const images = spotDetails.SpotImages || [];
-      setImageUrls(images.map((img) => img.url).concat(['', '', '', '']).slice(0, 4));
+      setImageUrls(spotDetails.images ? spotDetails.images.map(img => img.url) : ['', '', '', '']);
     }
   }, [spotDetails]);
 
@@ -57,9 +56,6 @@ const UpdateSpotForm = () => {
     if (!name) errors.name = 'Name is required';
     if (!price || isNaN(price) || parseFloat(price) <= 0) {
       errors.price = 'Price per night is required and must be a positive number';
-    }
-    if (!previewImage || !/\.(jpg|jpeg|png)$/.test(previewImage)) {
-      errors.previewImage = 'Preview image is required';
     }
 
     if (Object.keys(errors).length > 0) {
@@ -80,11 +76,11 @@ const UpdateSpotForm = () => {
       name,
       price: parseFloat(price),
       previewImage,
-      images: imageUrls.filter((url) => url)
+      images: imageUrls,
     };
 
     const response = await dispatch(updateSpot(spotId, spotData));
-    if (response) {
+    if (response && !response.error) {
       navigate(`/spots/${spotId}`);
     }
   };
@@ -95,13 +91,15 @@ const UpdateSpotForm = () => {
     setImageUrls(newImageUrls);
   };
 
-return (
+  if (!spotDetails) return <div>Loading...</div>;
+
+  return (
     <div className="update-spot-form-container">
       <h1>Update Your Spot</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-section">
           <h2>Where's your place located?</h2>
-          <p>Guests will only get your exact address once they&apos;ve booked a reservation.</p>
+          <p>Guests will only get your exact address once they booked a reservation.</p>
           <div className="form-group">
             <label>Country</label>
             <input
@@ -206,36 +204,33 @@ return (
           <h2>Liven up your spot with photos</h2>
           <p>Submit a link to at least one photo to publish your spot.</p>
           <div className="form-group">
-            <label>Preview Image URL</label>
+            <label>Preview Image URL (optional)</label>
             <input
               type="text"
-              placeholder="Preview Image URL"
+              placeholder="Preview Image URL (optional)"
               value={previewImage}
               onChange={(e) => setPreviewImage(e.target.value)}
             />
-            {formErrors.previewImage && <p className="error">{formErrors.previewImage}</p>}
           </div>
           {imageUrls.map((url, index) => (
             <div key={index} className="form-group">
               <label>Image URL (optional)</label>
               <input
                 type="text"
-                placeholder="Image URL(optional)"
+                placeholder="Image URL (optional)"
                 value={url}
                 onChange={(e) => handleImageUrlChange(index, e.target.value)}
               />
-              {formErrors[`image${index}`] && <p className="error">{formErrors[`image${index}`]}</p>}
             </div>
           ))}
         </div>
         <button type="submit">
           Update Spot
         </button>
-        {error && <p>{error}</p>}
+        {formErrors.global && <p className="error">{formErrors.global}</p>}
       </form>
     </div>
   );
 };
-
 
 export default UpdateSpotForm;
