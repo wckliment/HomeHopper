@@ -1,7 +1,6 @@
 import { csrfFetch } from './csrf';
 
 // Action Types
-
 const SET_SPOTS = 'spots/SET_SPOTS';
 const SET_SPOT_DETAILS = 'spots/SET_SPOT_DETAILS';
 const SET_REVIEWS = 'spots/SET_REVIEWS';
@@ -10,9 +9,9 @@ const CREATE_SPOT_REQUEST = 'spots/CREATE_SPOT_REQUEST';
 const CREATE_SPOT_SUCCESS = 'spots/CREATE_SPOT_SUCCESS';
 const CREATE_SPOT_FAILURE = 'spots/CREATE_SPOT_FAILURE';
 const SET_USER_SPOTS = 'spots/SET_USER_SPOTS';
+const UPDATE_SPOT_SUCCESS = 'spots/UPDATE_SPOT_SUCCESS';
 
 // Action Creators
-
 const setSpots = (spots) => ({
   type: SET_SPOTS,
   spots,
@@ -52,8 +51,12 @@ const setUserSpots = (spots) => ({
   spots,
 });
 
-// Thunks
+const updateSpotSuccess = (spot) => ({
+  type: UPDATE_SPOT_SUCCESS,
+  spot,
+});
 
+// Thunks
 export const fetchSpots = () => async (dispatch) => {
   const response = await csrfFetch('/api/spots');
   if (response.ok) {
@@ -76,7 +79,6 @@ export const fetchReviews = (spotId) => async (dispatch) => {
   const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
   if (response.ok) {
     const data = await response.json();
-    console.log('Fetched reviews:', data.Reviews); // Log the fetched reviews
     dispatch(setReviews(data.Reviews));
   }
 };
@@ -111,12 +113,11 @@ export const createSpot = (spotData) => async (dispatch) => {
   } catch (error) {
     dispatch(createSpotFailure(error.toString()));
   } finally {
-    dispatch(setLoading(false)); 
+    dispatch(setLoading(false));
   }
 };
 
-export const createImage = (spotId, imageUrl, isPreview) => async (dispatch) => {
-
+export const createImage = (spotId, imageUrl, isPreview) => async () => {
   try {
     const response = await csrfFetch(`/api/spots/${spotId}/images`, {
       method: 'POST',
@@ -138,8 +139,31 @@ export const createImage = (spotId, imageUrl, isPreview) => async (dispatch) => 
   }
 };
 
-// Initial State
+export const updateSpot = (spotId, spotData) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(spotData),
+    });
 
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to update spot');
+    }
+
+    const updatedSpot = await response.json();
+    dispatch(updateSpotSuccess(updatedSpot));
+    return updatedSpot;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
+// Initial State
 const initialState = {
   spots: [],
   spotDetails: null,
@@ -150,7 +174,6 @@ const initialState = {
 };
 
 // Reducers
-
 export default function spotsReducer(state = initialState, action) {
   switch (action.type) {
     case SET_SPOTS:
@@ -191,10 +214,18 @@ export default function spotsReducer(state = initialState, action) {
         loading: false,
         error: action.error,
       };
-     case SET_USER_SPOTS:
+    case SET_USER_SPOTS:
       return {
         ...state,
         userSpots: action.spots,
+      };
+    case UPDATE_SPOT_SUCCESS:
+      return {
+        ...state,
+        spots: state.spots.map((spot) =>
+          spot.id === action.spot.id ? action.spot : spot
+        ),
+        spotDetails: action.spot,
       };
     default:
       return state;

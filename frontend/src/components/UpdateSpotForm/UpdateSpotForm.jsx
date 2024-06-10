@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { createSpot, createImage } from '../../store/spots';
-import { useNavigate } from 'react-router-dom'
-import './CreateSpotForm.css';
+import { fetchSpotDetails, updateSpot } from '../../store/spots';
+import { useNavigate, useParams } from 'react-router-dom';
+import './UpdateSpotForm.css';
 
-const CreateSpotForm = () => {
+const UpdateSpotForm = () => {
+  const { spotId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const spotDetails = useSelector((state) => state.spots.spotDetails);
   const [country, setCountry] = useState('');
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
@@ -17,13 +21,28 @@ const CreateSpotForm = () => {
   const [previewImage, setPreviewImage] = useState('');
   const [imageUrls, setImageUrls] = useState(['', '', '', '']);
   const [formErrors, setFormErrors] = useState({});
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { loading, error } = useSelector((state) => state.spots);
+  const { error } = useSelector((state) => state.spots);
 
   useEffect(() => {
-    console.log('Loading state:', loading);
-  }, [loading]);
+    dispatch(fetchSpotDetails(spotId));
+  }, [dispatch, spotId]);
+
+  useEffect(() => {
+    if (spotDetails) {
+      setCountry(spotDetails.country || '');
+      setAddress(spotDetails.address || '');
+      setCity(spotDetails.city || '');
+      setState(spotDetails.state || '');
+      setLatitude(spotDetails.lat || '');
+      setLongitude(spotDetails.lng || '');
+      setDescription(spotDetails.description || '');
+      setName(spotDetails.name || '');
+      setPrice(spotDetails.price || '');
+      setPreviewImage(spotDetails.previewImage || '');
+      const images = spotDetails.SpotImages || [];
+      setImageUrls(images.map((img) => img.url).concat(['', '', '', '']).slice(0, 4));
+    }
+  }, [spotDetails]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,13 +59,8 @@ const CreateSpotForm = () => {
       errors.price = 'Price per night is required and must be a positive number';
     }
     if (!previewImage || !/\.(jpg|jpeg|png)$/.test(previewImage)) {
-  errors.previewImage = 'Preview image is required';
-}
-    imageUrls.forEach((url, index) => {
-      if (!url || !/\.(jpg|jpeg|png)$/.test(url)) {
-        errors[`image${index}`] = 'Image URL must end in .png, .jpg, or .jpeg';
-      }
-    });
+      errors.previewImage = 'Preview image is required';
+    }
 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -66,27 +80,12 @@ const CreateSpotForm = () => {
       name,
       price: parseFloat(price),
       previewImage,
+      images: imageUrls.filter((url) => url)
     };
 
-    const response = await dispatch(createSpot(spotData));
-    if (response && response.id) {
-      const spotId = response.id;
-      const imagePromises = [
-        dispatch(createImage(spotId, previewImage, true)),
-        ...imageUrls.map((url) => dispatch(createImage(spotId, url, false))),
-      ];
-
-      console.log('Dispatching image creation:', {
-        previewImage,
-        imageUrls,
-      });
-
-      try {
-        await Promise.all(imagePromises);
-        navigate(`/spots/${spotId}`);
-      } catch (error) {
-        console.error('Error creating images:', error);
-      }
+    const response = await dispatch(updateSpot(spotId, spotData));
+    if (response) {
+      navigate(`/spots/${spotId}`);
     }
   };
 
@@ -96,13 +95,13 @@ const CreateSpotForm = () => {
     setImageUrls(newImageUrls);
   };
 
-  return (
-    <div className="create-spot-form-container">
-      <h1>Create a New Spot</h1>
+return (
+    <div className="update-spot-form-container">
+      <h1>Update Your Spot</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-section">
           <h2>Where's your place located?</h2>
-         <p>Guests will only get your exact address once they&apos;ve booked a reservation.</p>
+          <p>Guests will only get your exact address once they&apos;ve booked a reservation.</p>
           <div className="form-group">
             <label>Country</label>
             <input
@@ -230,7 +229,7 @@ const CreateSpotForm = () => {
           ))}
         </div>
         <button type="submit">
-          Create Spot
+          Update Spot
         </button>
         {error && <p>{error}</p>}
       </form>
@@ -238,4 +237,5 @@ const CreateSpotForm = () => {
   );
 };
 
-export default CreateSpotForm;
+
+export default UpdateSpotForm;

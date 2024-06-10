@@ -38,7 +38,7 @@
 
 .profile-dropdown li:hover {
   background-color: #f1f1f1;
-  color: green;
+  color: black;
 }
 
 .profile-dropdown.hidden {

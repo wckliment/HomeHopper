@@ -26,15 +26,18 @@ const ManageSpots = () => {
   return (
     <div className="manage-spots-page">
       <h1>Manage Your Spots</h1>
-      <div className="spots-list">
-        {userSpots && userSpots.length > 0 ? (
-          userSpots.map((spot) => (
+      {userSpots && userSpots.length > 0 ? (
+        <div className="spots-list">
+          {userSpots.map((spot) => (
             <SpotCard key={spot.id} spot={spot} onClick={handleSpotClick} />
-          ))
-        ) : (
-          <p>You have no spots. <NavLink to="/spots/new">Create a new spot</NavLink></p>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="no-spots">
+          <p>You have no spots.</p>
+          <NavLink to="/spots/new" className="create-new-spot-link">Create a New Spot</NavLink>
+        </div>
+      )}
     </div>
   );
 };

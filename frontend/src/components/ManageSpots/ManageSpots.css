@@ -1,63 +1,29 @@
 .manage-spots-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.manage-spots-page h1 {
-  font-size: 2.5em;
-  margin-bottom: 20px;
   text-align: center;
 }
 
 .spots-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
   justify-content: center;
+  gap: 20px;
 }
 
-.spot-tile {
-  width: 300px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
-  transition: box-shadow 0.3s ease;
-  cursor: pointer;
+.no-spots {
+  margin-top: 20px;
 }
 
-.spot-tile img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.spot-tile .spot-info {
-  padding: 15px;
-}
-
-.spot-tile .spot-info h3 {
-  font-size: 1.5em;
-  margin: 0 0 10px;
-}
-
-.spot-tile .spot-info p {
-  margin: 5px 0;
-}
-
-.spot-tile:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.tooltip {
-  position: absolute;
-  background: #333;
-  color: #fff;
-  padding: 5px 10px;
+.create-new-spot-link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #3DC6C1;
+  color: white;
+  text-decoration: none;
   border-radius: 5px;
-  font-size: 0.9em;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-  pointer-events: none;
+  transition: background-color 0.3s ease;
+}
+
+.create-new-spot-link:hover {
+  background-color: #0056b3;
 }

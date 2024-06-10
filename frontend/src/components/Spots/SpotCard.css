@@ -46,3 +46,20 @@
   height: 2000px;
   width: 2000px;
 }
+
+.spot-actions {
+  display: flex;
+  gap: 10px;
+  /* Adjust this value to increase/decrease space */
+}
+
+.spot-actions button {
+  padding: 5px 10px;
+  /* Adjust the padding as needed */
+  cursor: pointer;
+}
+
+.spot-actions button:first-child {
+  margin-right: 10px;
+  /* Adds space to the right of the first button */
+}
