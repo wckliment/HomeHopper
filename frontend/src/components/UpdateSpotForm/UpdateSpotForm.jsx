@@ -217,10 +217,10 @@ return (
           </div>
           {imageUrls.map((url, index) => (
             <div key={index} className="form-group">
-              <label>Image URL</label>
+              <label>Image URL (optional)</label>
               <input
                 type="text"
-                placeholder="Image URL"
+                placeholder="Image URL(optional)"
                 value={url}
                 onChange={(e) => handleImageUrlChange(index, e.target.value)}
               />
