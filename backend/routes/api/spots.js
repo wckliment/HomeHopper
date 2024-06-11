@@ -398,9 +398,14 @@ const validateSpotUpdate = [
   handleValidationErrors
 ];
 
-router.put('/:spotId', requireAuth, validateSpotUpdate, async (req, res) => {
+//Update a Spot
+
+router.put('/:spotId', requireAuth, validateSpotUpdate, async (req, res, next) => {
   const { spotId } = req.params;
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+  console.log("Received update request for spotId:", spotId);
+  console.log("Payload:", req.body);
 
   try {
     const spot = await Spot.findByPk(spotId);
@@ -429,7 +434,8 @@ router.put('/:spotId', requireAuth, validateSpotUpdate, async (req, res) => {
 
     res.status(200).json(spot);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error updating spot:", error);
+    next(error);
   }
 });
 

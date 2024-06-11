@@ -11,6 +11,7 @@ const CREATE_SPOT_FAILURE = 'spots/CREATE_SPOT_FAILURE';
 const SET_USER_SPOTS = 'spots/SET_USER_SPOTS';
 const UPDATE_SPOT_SUCCESS = 'spots/UPDATE_SPOT_SUCCESS';
 const DELETE_SPOT_SUCCESS = 'spots/DELETE_SPOT_SUCCESS';
+const REMOVE_USER_SPOT = 'spots/REMOVE_USER_SPOT';
 
 // Action Creators
 const setSpots = (spots) => ({
@@ -59,6 +60,11 @@ const updateSpotSuccess = (spot) => ({
 
 const deleteSpotSuccess = (spotId) => ({
   type: DELETE_SPOT_SUCCESS,
+  spotId,
+});
+
+const removeUserSpot = (spotId) => ({
+  type: REMOVE_USER_SPOT,
   spotId,
 });
 
@@ -147,6 +153,7 @@ export const createImage = (spotId, imageUrl, isPreview) => async () => {
 
 export const updateSpot = (spotId, spotData) => async (dispatch) => {
   try {
+    console.log("Updating spot with data:", spotData);
     const response = await csrfFetch(`/api/spots/${spotId}`, {
       method: 'PUT',
       headers: {
@@ -157,6 +164,7 @@ export const updateSpot = (spotId, spotData) => async (dispatch) => {
 
     if (!response.ok) {
       const errorData = await response.json();
+      console.error("Error response data:", errorData); // Log the error data
       throw new Error(errorData.message || 'Failed to update spot');
     }
 
@@ -164,7 +172,7 @@ export const updateSpot = (spotId, spotData) => async (dispatch) => {
     dispatch(updateSpotSuccess(updatedSpot));
     return updatedSpot;
   } catch (error) {
-    console.error(error);
+    console.error("Error updating spot:", error);
     throw error;
   }
 };
@@ -181,6 +189,7 @@ export const deleteSpot = (spotId) => async (dispatch) => {
     }
 
     dispatch(deleteSpotSuccess(spotId));
+    dispatch(removeUserSpot(spotId));
   } catch (error) {
     console.error(error);
     throw error;
@@ -240,11 +249,20 @@ export default function spotsReducer(state = initialState, action) {
         spots: state.spots.map((spot) =>
           spot.id === action.spot.id ? action.spot : spot
         ),
+        userSpots: state.userSpots.map((spot) =>
+          spot.id === action.spot.id ? action.spot : spot
+        ),
       };
     case DELETE_SPOT_SUCCESS:
       return {
         ...state,
         spots: state.spots.filter((spot) => spot.id !== action.spotId),
+        userSpots: state.userSpots.filter((spot) => spot.id !== action.spotId),
+      };
+    case REMOVE_USER_SPOT:
+      return {
+        ...state,
+        userSpots: state.userSpots.filter((spot) => spot.id !== action.spotId),
       };
     default:
       return state;
