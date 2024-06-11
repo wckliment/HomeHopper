@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createReview } from '../../store/review';
+import { useModal } from '../../context/Modal';
 import './ReviewForm.css';
 
 const ReviewForm = ({ spotId, onClose }) => {
   const dispatch = useDispatch();
+  const { closeModal } = useModal();
   const [review, setReview] = useState('');
   const [stars, setStars] = useState(0);
   const [errors, setErrors] = useState({});
@@ -28,8 +30,17 @@ const ReviewForm = ({ spotId, onClose }) => {
     }
 
     try {
-      await dispatch(createReview(spotId, { review, stars }));
-      onClose();
+      const result = await dispatch(createReview(spotId, { review, stars }));
+      if (result.error) {
+        if (result.status === 409) {
+          setBackendError('User already has a review for this spot');
+        } else {
+          setBackendError(result.error || 'An unexpected error occurred. Please try again later.');
+        }
+      } else {
+        closeModal(); // Close the modal after successfully creating a review
+        onClose(); // Trigger the review fetch in the SpotDetail component
+      }
     } catch (err) {
       const errorMessage = err.message || 'An unexpected error occurred. Please try again later.';
       setBackendError(errorMessage);

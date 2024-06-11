@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchSpotDetails, fetchReviews } from "../../store/spots";
 import ReviewForm from '../ReviewForm/ReviewForm';
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import ConfirmDeleteReviewModal from "../ConfirmDeleteReviewModal/ConfirmDeleteReviewModal";
 import "./SpotDetail.css";
 
 const SpotDetail = () => {
@@ -13,6 +14,8 @@ const SpotDetail = () => {
   const reviews = useSelector((state) => state.spots.reviews) || [];
   const loading = useSelector((state) => state.spots.loading);
   const currentUser = useSelector((state) => state.session.user);
+
+  const [reviewIdToDelete, setReviewIdToDelete] = useState(null);
 
   useEffect(() => {
     dispatch(fetchSpotDetails(spotId));
@@ -24,6 +27,7 @@ const SpotDetail = () => {
 
   const reviewText = reviews.length === 1 ? "1 Review" : `${reviews.length} Reviews`;
   const isOwner = currentUser && currentUser.id === spot.ownerId;
+  const userHasReviewed = reviews.some(review => review.userId === currentUser.id);
 
   const calculateAverageRating = (reviews) => {
     if (reviews.length === 0) return "New";
@@ -32,6 +36,23 @@ const SpotDetail = () => {
   };
 
   const averageRating = calculateAverageRating(reviews);
+
+  const handleReviewCreation = () => {
+    dispatch(fetchReviews(spotId)); // Fetch the latest reviews
+  };
+
+  const handleDeleteSuccess = () => {
+    dispatch(fetchReviews(spotId)); // Refresh the reviews after deletion
+    setReviewIdToDelete(null);
+  };
+
+  const openDeleteModal = (reviewId) => {
+    setReviewIdToDelete(reviewId);
+  };
+
+  const closeDeleteModal = () => {
+    setReviewIdToDelete(null);
+  };
 
   return (
     <div className="spot-details-page">
@@ -70,9 +91,9 @@ const SpotDetail = () => {
       </div>
       <div className="reviews-section">
         <h2>Reviews</h2>
-        {currentUser && !isOwner && !reviews.some(review => review.userId === currentUser.id) && (
+        {currentUser && !isOwner && !userHasReviewed && (
           <OpenModalButton
-            modalComponent={<ReviewForm spotId={spotId} />}
+            modalComponent={<ReviewForm spotId={spotId} onClose={handleReviewCreation} />}
             buttonText="Post Your Review"
           />
         )}
@@ -83,6 +104,21 @@ const SpotDetail = () => {
               <p>{new Date(review.createdAt).toLocaleString('default', { month: 'long', year: 'numeric' })}</p>
               <p>{review.review}</p>
               <p>{review.stars} ★</p>
+              {currentUser && review.userId === currentUser.id && (
+                <>
+                  <OpenModalButton
+                    modalComponent={
+                      <ConfirmDeleteReviewModal
+                        reviewId={reviewIdToDelete}
+                        onDeleteSuccess={handleDeleteSuccess}
+                        onCancel={closeDeleteModal}
+                      />
+                    }
+                    buttonText="Delete"
+                    onButtonClick={() => openDeleteModal(review.id)}
+                  />
+                </>
+              )}
             </div>
           ))
         ) : (

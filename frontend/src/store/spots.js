@@ -190,14 +190,13 @@ export const deleteSpot = (spotId) => async (dispatch) => {
 // Initial State
 const initialState = {
   spots: [],
-  spotDetails: null,
+  spotDetails: {},
   reviews: [],
-  userSpots: [],
   loading: false,
-  error: null,
+  userSpots: [],
 };
 
-// Reducers
+// Reducer
 export default function spotsReducer(state = initialState, action) {
   switch (action.type) {
     case SET_SPOTS:
@@ -220,22 +219,14 @@ export default function spotsReducer(state = initialState, action) {
         ...state,
         loading: action.loading,
       };
-    case CREATE_SPOT_REQUEST:
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
     case CREATE_SPOT_SUCCESS:
       return {
         ...state,
-        loading: false,
         spots: [...state.spots, action.spot],
       };
     case CREATE_SPOT_FAILURE:
       return {
         ...state,
-        loading: false,
         error: action.error,
       };
     case SET_USER_SPOTS:
@@ -249,13 +240,11 @@ export default function spotsReducer(state = initialState, action) {
         spots: state.spots.map((spot) =>
           spot.id === action.spot.id ? action.spot : spot
         ),
-        spotDetails: action.spot,
       };
     case DELETE_SPOT_SUCCESS:
       return {
         ...state,
         spots: state.spots.filter((spot) => spot.id !== action.spotId),
-        userSpots: state.userSpots.filter((spot) => spot.id !== action.spotId),
       };
     default:
       return state;

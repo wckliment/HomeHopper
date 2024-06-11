@@ -1,0 +1,26 @@
+.confirm-delete-modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.confirm-delete-button {
+  background-color: red;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-delete-button {
+  background-color: grey;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
