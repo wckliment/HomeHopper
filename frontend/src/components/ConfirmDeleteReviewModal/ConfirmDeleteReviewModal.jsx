@@ -8,10 +8,11 @@ const ConfirmDeleteReviewModal = ({ reviewId, onDeleteSuccess, onCancel }) => {
   const { closeModal } = useModal();
 
   const handleDelete = async () => {
+    console.log('Deleting review with reviewId:', reviewId); // Add this log
     try {
       await dispatch(deleteReview(reviewId));
       onDeleteSuccess();
-      closeModal(); // Close the modal after deletion
+      closeModal(); // Close the modal after successful deletion
     } catch (error) {
       console.error('Error deleting review:', error);
     }

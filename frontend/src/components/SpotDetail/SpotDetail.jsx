@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchSpotDetails, fetchReviews } from "../../store/spots";
@@ -15,8 +15,6 @@ const SpotDetail = () => {
   const loading = useSelector((state) => state.spots.loading);
   const currentUser = useSelector((state) => state.session.user);
 
-  const [reviewIdToDelete, setReviewIdToDelete] = useState(null);
-
   useEffect(() => {
     dispatch(fetchSpotDetails(spotId));
     dispatch(fetchReviews(spotId));
@@ -27,7 +25,7 @@ const SpotDetail = () => {
 
   const reviewText = reviews.length === 1 ? "1 Review" : `${reviews.length} Reviews`;
   const isOwner = currentUser && currentUser.id === spot.ownerId;
-  const userHasReviewed = reviews.some(review => review.userId === currentUser.id);
+  const userHasReviewed = currentUser && reviews.some(review => review.userId === currentUser.id);
 
   const calculateAverageRating = (reviews) => {
     if (reviews.length === 0) return "New";
@@ -43,15 +41,6 @@ const SpotDetail = () => {
 
   const handleDeleteSuccess = () => {
     dispatch(fetchReviews(spotId)); // Refresh the reviews after deletion
-    setReviewIdToDelete(null);
-  };
-
-  const openDeleteModal = (reviewId) => {
-    setReviewIdToDelete(reviewId);
-  };
-
-  const closeDeleteModal = () => {
-    setReviewIdToDelete(null);
   };
 
   return (
@@ -109,13 +98,15 @@ const SpotDetail = () => {
                   <OpenModalButton
                     modalComponent={
                       <ConfirmDeleteReviewModal
-                        reviewId={reviewIdToDelete}
+                        reviewId={review.id}
                         onDeleteSuccess={handleDeleteSuccess}
-                        onCancel={closeDeleteModal}
+                        onCancel={() => {}}
                       />
                     }
                     buttonText="Delete"
-                    onButtonClick={() => openDeleteModal(review.id)}
+                    onButtonClick={() => {
+                      console.log('Opening delete modal for reviewId:', review.id);
+                    }}
                   />
                 </>
               )}

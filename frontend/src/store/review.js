@@ -61,8 +61,7 @@ export const deleteReview = (reviewId) => async (dispatch) => {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to delete review');
+      throw new Error('Failed to delete review');
     }
 
     dispatch(removeReview(reviewId));
