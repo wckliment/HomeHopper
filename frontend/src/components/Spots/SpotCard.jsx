@@ -17,6 +17,11 @@ const SpotCard = ({ spot, onClick, onDelete }) => {
     navigate(`/spots/${spot.id}/edit`);
   };
 
+  const handleDeleteClick = (e) => {
+    e.stopPropagation();
+    onDelete(spot.id);
+  };
+
   return (
     <div
       key={spot.id}
@@ -27,8 +32,9 @@ const SpotCard = ({ spot, onClick, onDelete }) => {
       onMouseLeave={() => {
         setTooltipVisible(false);
       }}
+      onClick={() => onClick(spot.id)}
     >
-      <img src={previewImageUrl} alt={spot.name} onClick={() => onClick(spot.id)} />
+      <img src={previewImageUrl} alt={spot.name} />
       {tooltipVisible && <div className="tooltip">{spot.name}</div>}
       <div className="spot-info">
         <h3>{spot.name}</h3>
@@ -38,7 +44,7 @@ const SpotCard = ({ spot, onClick, onDelete }) => {
         {isManageSpotsPage && (
           <div className="spot-actions">
             <button className="update-button" onClick={handleUpdateClick}>Update</button>
-            <button className="delete-button" onClick={() => onDelete(spot.id)}>Delete</button>
+            <button className="delete-button" onClick={handleDeleteClick}>Delete</button>
           </div>
         )}
       </div>

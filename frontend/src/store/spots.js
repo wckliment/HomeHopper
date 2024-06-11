@@ -10,6 +10,7 @@ const CREATE_SPOT_SUCCESS = 'spots/CREATE_SPOT_SUCCESS';
 const CREATE_SPOT_FAILURE = 'spots/CREATE_SPOT_FAILURE';
 const SET_USER_SPOTS = 'spots/SET_USER_SPOTS';
 const UPDATE_SPOT_SUCCESS = 'spots/UPDATE_SPOT_SUCCESS';
+const DELETE_SPOT_SUCCESS = 'spots/DELETE_SPOT_SUCCESS';
 
 // Action Creators
 const setSpots = (spots) => ({
@@ -54,6 +55,11 @@ const setUserSpots = (spots) => ({
 const updateSpotSuccess = (spot) => ({
   type: UPDATE_SPOT_SUCCESS,
   spot,
+});
+
+const deleteSpotSuccess = (spotId) => ({
+  type: DELETE_SPOT_SUCCESS,
+  spotId,
 });
 
 // Thunks
@@ -163,6 +169,24 @@ export const updateSpot = (spotId, spotData) => async (dispatch) => {
   }
 };
 
+export const deleteSpot = (spotId) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || 'Failed to delete spot');
+    }
+
+    dispatch(deleteSpotSuccess(spotId));
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 // Initial State
 const initialState = {
   spots: [],
@@ -226,6 +250,12 @@ export default function spotsReducer(state = initialState, action) {
           spot.id === action.spot.id ? action.spot : spot
         ),
         spotDetails: action.spot,
+      };
+    case DELETE_SPOT_SUCCESS:
+      return {
+        ...state,
+        spots: state.spots.filter((spot) => spot.id !== action.spotId),
+        userSpots: state.userSpots.filter((spot) => spot.id !== action.spotId),
       };
     default:
       return state;
