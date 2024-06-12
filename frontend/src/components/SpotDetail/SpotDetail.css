@@ -134,3 +134,8 @@
 .review p {
   margin: 5px 0;
 }
+
+.spot-description {
+  color: black;
+  font-style: italic;
+}

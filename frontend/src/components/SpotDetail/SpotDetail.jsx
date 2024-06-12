@@ -62,8 +62,8 @@ const SpotDetail = () => {
             )}
           </div>
           <div className="spot-info">
-            <p>Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}</p>
-            <p>{spot.description}</p>
+            <p className="hosted-by">Hosted by {spot.Owner?.firstName} {spot.Owner?.lastName}</p>
+            <p className="spot-description">{spot.description}</p>
           </div>
         </div>
         <div className="callout-ctn">

@@ -8,16 +8,12 @@
   z-index: 1;
   opacity: 0;
   transition: opacity 0.2s;
-}
-
-.tooltip.visible {
-  opacity: 1;
-}
-
-.tooltip.visible {
-  opacity: 1;
   top: -30px;
-  /* Adjust as needed */
+  /* Adjust this to position the tooltip correctly */
   left: 50%;
   transform: translateX(-50%);
+}
+
+.tooltip.visible {
+  opacity: 1;
 }

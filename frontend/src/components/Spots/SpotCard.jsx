@@ -7,10 +7,10 @@ const SpotCard = ({ spot, onClick, onDelete }) => {
   const [tooltipVisible, setTooltipVisible] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const isLandingPage = location.pathname === '/';
   const isManageSpotsPage = location.pathname === '/spots/current';
-  const isLandingPage = location.pathname === '/'; 
 
-  const previewImageUrl = spot.previewImage ? spot.previewImage : 'default-image-url';
+  const previewImageUrl = spot.previewImage ? spot.previewImage : 'default-image-url'; 
 
   const averageRating = spot.avgRating ? parseFloat(spot.avgRating).toFixed(1) : 'New';
 
@@ -28,15 +28,10 @@ const SpotCard = ({ spot, onClick, onDelete }) => {
     <div
       key={spot.id}
       className="spot-tile"
-      onMouseEnter={() => {
-        console.log(`Tooltip for ${spot.name} visible: true`);
-        setTooltipVisible(true);
-      }}
-      onMouseLeave={() => {
-        console.log(`Tooltip for ${spot.name} visible: false`);
-        setTooltipVisible(false);
-      }}
+      onMouseEnter={() => setTooltipVisible(true)}
+      onMouseLeave={() => setTooltipVisible(false)}
       onClick={() => onClick(spot.id)}
+      style={{ position: 'relative' }} // Ensure the container is positioned relative
     >
       <img src={previewImageUrl} alt={spot.name} />
       {isLandingPage && <Tooltip text={spot.name} visible={tooltipVisible} />}

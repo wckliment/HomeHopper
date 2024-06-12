@@ -34,7 +34,7 @@
 
 .spot-info p {
   margin: 5px 0;
-  color: #666;
+  color: black;
   /* Gray color for text */
 }
 
@@ -71,4 +71,9 @@
 
 .spot-actions button:first-child {
   margin-right: 10px;
+}
+
+.hosted-by {
+  color: black;
+  font-weight: bold;
 }
