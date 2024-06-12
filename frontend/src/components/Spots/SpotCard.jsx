@@ -26,18 +26,14 @@ const SpotCard = ({ spot, onClick, onDelete }) => {
     <div
       key={spot.id}
       className="spot-tile"
-      onMouseEnter={() => {
-        setTooltipVisible(true);
-      }}
-      onMouseLeave={() => {
-        setTooltipVisible(false);
-      }}
+      onMouseEnter={() => setTooltipVisible(true)}
+      onMouseLeave={() => setTooltipVisible(false)}
       onClick={() => onClick(spot.id)}
     >
       <img src={previewImageUrl} alt={spot.name} />
       {tooltipVisible && <div className="tooltip">{spot.name}</div>}
       <div className="spot-info">
-        <h3>{spot.name}</h3>
+        <h3 className="spot-name">{spot.name}</h3>
         <p>{spot.city}, {spot.state}</p>
         <p>${spot.price} / night</p>
         <p>{averageRating} ★</p>

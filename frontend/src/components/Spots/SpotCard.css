@@ -7,7 +7,8 @@
   transition: transform 0.2s;
   position: relative;
   cursor: pointer;
-  z-index: 0;
+  margin: 10px;
+  /* Added margin for better spacing */
 }
 
 .spot-tile img {
@@ -21,14 +22,20 @@
 
 .spot-info {
   padding: 10px;
+  background-color: white;
+  /* Ensure background is white for visibility */
 }
 
 .spot-info h3 {
   margin: 0 0 10px;
+  color: #333;
+  /* Dark color for better contrast */
 }
 
 .spot-info p {
   margin: 5px 0;
+  color: #666;
+  /* Gray color for text */
 }
 
 .tooltip {
@@ -38,28 +45,30 @@
   border-radius: 4px;
   padding: 5px;
   position: absolute;
-  z-index: 1;
-  /* top: -30px;
+  top: -40px;
   left: 50%;
-  transform: translateX(-50%); */
-  opacity: 1;
-  height: 2000px;
-  width: 2000px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 1;
+  opacity: 0.9;
+  pointer-events: none;
+}
+
+.spot-name {
+  color: #333;
+  /* Dark color for better contrast */
 }
 
 .spot-actions {
   display: flex;
   gap: 10px;
-  /* Adjust this value to increase/decrease space */
 }
 
 .spot-actions button {
   padding: 5px 10px;
-  /* Adjust the padding as needed */
   cursor: pointer;
 }
 
 .spot-actions button:first-child {
   margin-right: 10px;
-  /* Adds space to the right of the first button */
 }
