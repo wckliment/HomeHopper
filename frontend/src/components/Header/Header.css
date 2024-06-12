@@ -17,8 +17,27 @@
 .nav {
   display: flex;
   align-items: center;
-  margin-right: 20px;
-  /* Add margin to move the nav items away from the right edge */
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navigation li {
+  margin: 0 10px;
+}
+
+.navigation li a {
+  text-decoration: none;
+  color: #000;
+}
+
+.navigation li a:hover {
+  text-decoration: underline;
 }
 
 .profile-icon {

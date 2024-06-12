@@ -1,0 +1,29 @@
+.manage-spots-page {
+  text-align: center;
+}
+
+.spots-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.no-spots {
+  margin-top: 20px;
+}
+
+.create-new-spot-link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #3DC6C1;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.create-new-spot-link:hover {
+  background-color: #0056b3;
+}

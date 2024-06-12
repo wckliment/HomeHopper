@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux'; // Added useSelector
+import { useDispatch, useSelector } from 'react-redux';
 import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Spots from './components/Spots/Spots';
 import SpotDetail from './components/SpotDetail/SpotDetail';
+import CreateSpotForm from './components/CreateSpotForm/CreateSpotForm';
+import ManageSpots from './components/ManageSpots/ManageSpots';
+import UpdateSpotForm from './components/UpdateSpotForm/UpdateSpotForm'
 import * as sessionActions from './store/session';
 
 function Layout() {
@@ -16,6 +19,7 @@ function Layout() {
       setIsLoaded(true);
     });
   }, [dispatch]);
+
 
   return (
     <>
@@ -36,6 +40,18 @@ const router = createBrowserRouter([
       {
         path: '/spots/:spotId',
         element: <SpotDetail />
+      },
+      {
+        path: '/spots/new',
+        element: <CreateSpotForm />
+      },
+       {
+        path: '/spots/:spotId/edit',
+        element: <UpdateSpotForm /> // Add this route
+      },
+       {
+        path: '/spots/current',
+        element: <ManageSpots />
       }
     ]
   }

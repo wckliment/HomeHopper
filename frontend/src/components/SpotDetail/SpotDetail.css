@@ -10,6 +10,10 @@
 .top-section {
   display: flex;
   gap: 20px;
+  align-items: flex-start;
+    /* Align items at the start */
+    position: relative;
+    /* Set the reference point for positioning the callout */
 }
 
 .spot-images {
@@ -41,15 +45,20 @@
 .callout-ctn {
   display: flex;
   justify-content: flex-end;
-  width: 100%;
+  align-items: flex-start;
+  /* Align to the top */
+  width: 200px;
+  flex-shrink: 0;
+  margin-top: 325px;
+  /* Adjust this value to move the container down */
 }
 
 .callout-info {
   background: #f7f7f7;
-  padding: 20px;
+  padding: 10px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  width: 250px;
+  width: 200px;
 }
 
 .callout-info p {
@@ -60,6 +69,7 @@
 .callout-info .price {
   font-size: 1.5em;
   font-weight: bold;
+  margin-bottom: 5px ;
 }
 
 .callout-info .rating {
@@ -67,6 +77,7 @@
   color: #ffc107;
   display: flex;
   align-items: center;
+  margin-bottom: 5px;
 }
 
 .callout-info .dot {
@@ -77,7 +88,7 @@
   display: block;
   margin-top: 10px;
   padding: 10px;
-  background-color: #ff5a5f;
+  background-color: #3DC6C1;
   color: white;
   text-align: center;
   border: none;
@@ -87,7 +98,8 @@
 }
 
 .reserve-button:hover {
-  background-color: #e14b4f;
+  background-color: black;
+  color: black;
 }
 
 .spot-info {
@@ -121,4 +133,9 @@
 
 .review p {
   margin: 5px 0;
+}
+
+.spot-description {
+  color: black;
+  font-style: italic;
 }

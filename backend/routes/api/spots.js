@@ -147,7 +147,7 @@ router.get('/', async (req, res) => {
         createdAt: spot.createdAt.toISOString().replace('T', ' ').slice(0, 19),
         updatedAt: spot.updatedAt.toISOString().replace('T', ' ').slice(0, 19),
         avgRating: avgRating,
-        previewImage: spot.SpotImages
+        previewImage: spot.SpotImages.length > 0 ? spot.SpotImages[0].url : null
       };
     });
 
@@ -171,10 +171,19 @@ router.get('/current', requireAuth, async (req, res) => {
     const ownerId = req.user.id;
     const spots = await Spot.findAll({
       where: { ownerId: ownerId },
-      include: [{
-        model: Review,
-        attributes: ['stars']
-      }],
+      include: [
+        {
+          model: Review,
+          attributes: ['stars']
+        },
+        {
+          model: SpotImage, // Ensure SpotImage is included
+          as: 'SpotImages',
+          attributes: ['url'],
+          where: { preview: true }, // Ensure only preview images are included
+          required: false,
+        }
+      ],
       attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt']
     });
 
@@ -196,7 +205,7 @@ router.get('/current', requireAuth, async (req, res) => {
         createdAt: new Date(spot.createdAt).toISOString().replace('T', ' ').slice(0, 19), // Format date
         updatedAt: new Date(spot.updatedAt).toISOString().replace('T', ' ').slice(0, 19), // Format date
         avgRating: avgRating,
-        previewImage: "image url" // Placeholder or logic to fetch an actual image URL
+        previewImage: spot.SpotImages.length > 0 ? spot.SpotImages[0].url : null // Ensure the previewImage is correctly assigned
       };
     });
 
@@ -389,9 +398,14 @@ const validateSpotUpdate = [
   handleValidationErrors
 ];
 
-router.put('/:spotId', requireAuth, validateSpotUpdate, async (req, res) => {
+//Update a Spot
+
+router.put('/:spotId', requireAuth, validateSpotUpdate, async (req, res, next) => {
   const { spotId } = req.params;
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
+
+  console.log("Received update request for spotId:", spotId);
+  console.log("Payload:", req.body);
 
   try {
     const spot = await Spot.findByPk(spotId);
@@ -420,7 +434,8 @@ router.put('/:spotId', requireAuth, validateSpotUpdate, async (req, res) => {
 
     res.status(200).json(spot);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error("Error updating spot:", error);
+    next(error);
   }
 });
 
@@ -446,6 +461,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', requireAuth, validateReviewInput, async (req, res, next) => {
@@ -476,7 +492,7 @@ router.post('/:spotId/reviews', requireAuth, validateReviewInput, async (req, re
     });
     if (existingReview) {
       console.error("Review already exists for user:", userId, "and spot:", spotId);
-      return res.status(500).json({ message: "User already has a review for this spot" }); // Changed from 500 to 409
+      return res.status(409).json({ message: "User already has a review for this spot" }); // Changed from 500 to 409
     }
 
     // Create the new review
