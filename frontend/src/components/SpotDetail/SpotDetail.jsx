@@ -105,7 +105,6 @@ const SpotDetail = () => {
                     }
                     buttonText="Delete"
                     onButtonClick={() => {
-                      console.log('Opening delete modal for reviewId:', review.id);
                     }}
                   />
                 </>

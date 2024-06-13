@@ -404,8 +404,7 @@ router.put('/:spotId', requireAuth, validateSpotUpdate, async (req, res, next) =
   const { spotId } = req.params;
   const { address, city, state, country, lat, lng, name, description, price } = req.body;
 
-  console.log("Received update request for spotId:", spotId);
-  console.log("Payload:", req.body);
+
 
   try {
     const spot = await Spot.findByPk(spotId);
@@ -469,13 +468,11 @@ router.post('/:spotId/reviews', requireAuth, validateReviewInput, async (req, re
   const { review, stars } = req.body;
   const userId = req.user.id;
 
-  // Log incoming request details
-  console.log("Attempting to post a new review:");
-  console.log("User ID:", userId, "Spot ID:", spotId, "Review:", review, "Stars:", stars);
+
 
   try {
     // Check if the spot exists
-    console.log("Checking if spot exists with ID:", spotId);
+
     const spot = await Spot.findByPk(spotId);
     if (!spot) {
       console.error("No spot found with ID:", spotId);
@@ -483,7 +480,7 @@ router.post('/:spotId/reviews', requireAuth, validateReviewInput, async (req, re
     }
 
     // Check for an existing review by this user for this spot
-    console.log("Checking for existing review by user ID:", userId, "for spot ID:", spotId);
+
     const existingReview = await Review.findOne({
       where: {
         userId: userId,
@@ -496,7 +493,7 @@ router.post('/:spotId/reviews', requireAuth, validateReviewInput, async (req, re
     }
 
     // Create the new review
-    console.log("Creating new review for user ID:", userId, "at spot ID:", spotId);
+
     const newReview = await Review.create({
       userId,
       spotId,
@@ -504,7 +501,7 @@ router.post('/:spotId/reviews', requireAuth, validateReviewInput, async (req, re
       stars
     });
 
-    console.log("Review created successfully:", newReview);
+   
     res.status(201).json(newReview);
   } catch (error) {
     console.error("Error creating review:", error);

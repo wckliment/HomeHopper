@@ -42,7 +42,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 // Edit an Review
 router.put('/:reviewId', requireAuth, validateReviewUpdate, async (req, res, next) => {
-  console.log('Put - Edit existing review');
+
   const { reviewId } = req.params;
   const { review, stars } = req.body;
   const userId = req.user.id;
@@ -54,7 +54,7 @@ router.put('/:reviewId', requireAuth, validateReviewUpdate, async (req, res, nex
         userId: userId
       }
     });
-    console.log(existingReview, 'existingReview', userId, 'userId', reviewId, 'reviewId');
+   
 
 
     if (!existingReview) {

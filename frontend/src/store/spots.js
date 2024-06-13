@@ -153,7 +153,7 @@ export const createImage = (spotId, imageUrl, isPreview) => async () => {
 
 export const updateSpot = (spotId, spotData) => async (dispatch) => {
   try {
-    console.log("Updating spot with data:", spotData);
+    
     const response = await csrfFetch(`/api/spots/${spotId}`, {
       method: 'PUT',
       headers: {

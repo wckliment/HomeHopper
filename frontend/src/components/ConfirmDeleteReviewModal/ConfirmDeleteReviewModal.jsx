@@ -8,7 +8,7 @@ const ConfirmDeleteReviewModal = ({ reviewId, onDeleteSuccess, onCancel }) => {
   const { closeModal } = useModal();
 
   const handleDelete = async () => {
-    console.log('Deleting review with reviewId:', reviewId); // Add this log
+   
     try {
       await dispatch(deleteReview(reviewId));
       onDeleteSuccess();

@@ -22,7 +22,7 @@ const CreateSpotForm = () => {
   const { loading, error } = useSelector((state) => state.spots);
 
   useEffect(() => {
-    console.log('Loading state:', loading);
+
   }, [loading]);
 
   const handleSubmit = async (e) => {
@@ -76,10 +76,6 @@ const CreateSpotForm = () => {
         ...imageUrls.map((url) => dispatch(createImage(spotId, url, false))),
       ];
 
-      console.log('Dispatching image creation:', {
-        previewImage,
-        imageUrls,
-      });
 
       try {
         await Promise.all(imagePromises);
