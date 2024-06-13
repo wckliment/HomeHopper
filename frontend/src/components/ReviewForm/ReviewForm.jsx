@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { createReview } from '../../store/review';
+import { createReview, updateReview } from '../../store/review';
 import { useModal } from '../../context/Modal';
 import './ReviewForm.css';
 
-const ReviewForm = ({ spotId, onClose }) => {
+const ReviewForm = ({ spotId, reviewId = null, initialReview = '', initialStars = 0, onClose }) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const [review, setReview] = useState('');
-  const [stars, setStars] = useState(0);
+  const [review, setReview] = useState(initialReview);
+  const [stars, setStars] = useState(initialStars);
   const [errors, setErrors] = useState({});
   const [backendError, setBackendError] = useState('');
 
@@ -30,7 +30,13 @@ const ReviewForm = ({ spotId, onClose }) => {
     }
 
     try {
-      const result = await dispatch(createReview(spotId, { review, stars }));
+      let result;
+      if (reviewId) {
+        result = await dispatch(updateReview(reviewId, { review, stars })); // Update existing review
+      } else {
+        result = await dispatch(createReview(spotId, { review, stars })); // Create new review
+      }
+
       if (result.error) {
         if (result.status === 409) {
           setBackendError('User already has a review for this spot');
@@ -38,7 +44,7 @@ const ReviewForm = ({ spotId, onClose }) => {
           setBackendError(result.error || 'An unexpected error occurred. Please try again later.');
         }
       } else {
-        closeModal(); // Close the modal after successfully creating a review
+        closeModal(); // Close the modal after successfully creating or updating a review
         onClose(); // Trigger the review fetch in the SpotDetail component
       }
     } catch (err) {
@@ -72,7 +78,7 @@ const ReviewForm = ({ spotId, onClose }) => {
         </div>
         {errors.stars && <p className="error">{errors.stars}</p>}
         <button type="submit" disabled={review.length < 10 || stars < 1}>
-          Submit Your Review
+          {reviewId ? 'Update Your Review' : 'Submit Your Review'}
         </button>
       </form>
     </div>

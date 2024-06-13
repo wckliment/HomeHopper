@@ -4,6 +4,7 @@ import { csrfFetch } from './csrf';
 const SET_REVIEWS = 'reviews/SET_REVIEWS';
 const ADD_REVIEW = 'reviews/ADD_REVIEW';
 const DELETE_REVIEW = 'reviews/DELETE_REVIEW';
+const UPDATE_REVIEW = 'reviews/UPDATE_REVIEW'
 
 // Action Creators
 const setReviews = (reviews) => ({
@@ -19,6 +20,11 @@ const addReview = (review) => ({
 const removeReview = (reviewId) => ({
   type: DELETE_REVIEW,
   reviewId,
+});
+
+const updateReviewAction = (review) => ({
+  type: UPDATE_REVIEW,
+  review,
 });
 
 // Thunks
@@ -54,6 +60,30 @@ export const createReview = (spotId, reviewData) => async (dispatch) => {
   }
 };
 
+export const updateReview = (reviewId, reviewData) => async (dispatch) => {
+  try {
+    const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(reviewData),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      dispatch(updateReviewAction(data));
+      return data;
+    } else {
+      const errorData = await response.json();
+      return { error: errorData.message, status: response.status };
+    }
+  } catch (error) {
+    console.error('Error updating review:', error);
+    return { error: error.message };
+  }
+};
+
 export const deleteReview = (reviewId) => async (dispatch) => {
   try {
     const response = await csrfFetch(`/api/reviews/${reviewId}`, {
@@ -70,6 +100,8 @@ export const deleteReview = (reviewId) => async (dispatch) => {
     throw error;
   }
 };
+
+
 
 // Initial State
 const initialState = {
@@ -94,6 +126,14 @@ export default function reviewsReducer(state = initialState, action) {
         ...state,
         reviews: state.reviews.filter((review) => review.id !== action.reviewId),
       };
+    case UPDATE_REVIEW: 
+      return {
+        ...state,
+        reviews: state.reviews.map((review) =>
+          review.id === action.review.id ? action.review : review
+        ),
+      };
+
     default:
       return state;
   }

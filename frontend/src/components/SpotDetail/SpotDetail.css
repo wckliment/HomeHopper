@@ -11,9 +11,7 @@
   display: flex;
   gap: 20px;
   align-items: flex-start;
-    /* Align items at the start */
-    position: relative;
-    /* Set the reference point for positioning the callout */
+  position: relative;
 }
 
 .spot-images {
@@ -46,11 +44,9 @@
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  /* Align to the top */
   width: 200px;
   flex-shrink: 0;
   margin-top: 325px;
-  /* Adjust this value to move the container down */
 }
 
 .callout-info {
@@ -69,7 +65,7 @@
 .callout-info .price {
   font-size: 1.5em;
   font-weight: bold;
-  margin-bottom: 5px ;
+  margin-bottom: 5px;
 }
 
 .callout-info .rating {
@@ -138,4 +134,36 @@
 .spot-description {
   color: black;
   font-style: italic;
+}
+
+/* New styles for the review buttons */
+.review-buttons {
+  display: flex;
+  gap: 10px;
+  /* Add spacing between buttons */
+  margin-top: 10px;
+  /* Add some space above the buttons */
+}
+
+.review-buttons button {
+  padding: 5px 10px;
+  /* Make buttons more compact */
+  font-size: 0.9em;
+  /* Adjust font size if needed */
+  background-color: #3DC6C1;
+  /* Button color */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.review-buttons button:hover {
+  background-color: #2ca3a0;
+  /* Darken on hover */
+}
+
+.review-buttons button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }

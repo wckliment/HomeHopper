@@ -23,12 +23,12 @@ const SpotDetail = () => {
   if (loading) return <div>Loading...</div>;
   if (!spot) return <div>Spot not found</div>;
 
-  const reviewText = reviews.length === 1 ? "1 Review" : `${reviews.length} Reviews`;
+  const reviewText = reviews.length === 1 ? '1 Review' : `${reviews.length} Reviews`;
   const isOwner = currentUser && currentUser.id === spot.ownerId;
   const userHasReviewed = currentUser && reviews.some(review => review.userId === currentUser.id);
 
   const calculateAverageRating = (reviews) => {
-    if (reviews.length === 0) return "New";
+    if (reviews.length === 0) return 'New';
     const totalRating = reviews.reduce((acc, review) => acc + review.stars, 0);
     return (totalRating / reviews.length).toFixed(1);
   };
@@ -94,20 +94,29 @@ const SpotDetail = () => {
               <p>{review.review}</p>
               <p>{review.stars} ★</p>
               {currentUser && review.userId === currentUser.id && (
-                <>
+                <div className="review-buttons">
+                  <OpenModalButton
+                    modalComponent={
+                      <ReviewForm
+                        spotId={spotId}
+                        reviewId={review.id}
+                        initialReview={review.review}
+                        initialStars={review.stars}
+                        onClose={handleReviewCreation}
+                      />
+                    }
+                    buttonText="Update"
+                  />
                   <OpenModalButton
                     modalComponent={
                       <ConfirmDeleteReviewModal
                         reviewId={review.id}
                         onDeleteSuccess={handleDeleteSuccess}
-                        onCancel={() => {}}
                       />
                     }
                     buttonText="Delete"
-                    onButtonClick={() => {
-                    }}
                   />
-                </>
+                </div>
               )}
             </div>
           ))
