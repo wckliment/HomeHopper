@@ -30,8 +30,8 @@ module.exports = {
       },
       {
         spotId: 3,
-        userId: 3,
-        review: "Truly the American Dream Neighboor living never felt better.",
+        userId: 6,
+        review: "Truly the American Dream. Neighborhood living never felt better.",
         stars: 5,
         createdAt: new Date(),
         updatedAt: new Date()

@@ -19,7 +19,7 @@ module.exports = {
         lat: 37.7645358,
         lng: -122.4730327,
         name: "Santa Clause: Nearby Attractions and Cozy Getaway",
-        description: "A snowy getaway for those that love the North Pole!",
+        description: "A snowy getaway for those that love an adventure.",
         price: 215,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -47,7 +47,7 @@ module.exports = {
         lat: 34.052235,
         lng: -118.243683,
         name: "Urban Family Living: The American Dream",
-        description: "Home of thElmwood Ave Luxury: Modern House with Stunning Views. Dog not included.e Superheroes",
+        description: "Modern house with stunning views. Dog not included.",
         price: 385,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -61,7 +61,7 @@ module.exports = {
         lat: 31.056235,
         lng: -116.245683,
         name: "Lavish Luxury Home Available To Stay",
-        description: "Luxurious Home located in metro Denver. Breathtaking architecture, Spacious Rooms, 7 bed, 8 bath house.",
+        description: "Luxurious home located in metro Denver. Breathtaking architecture, spacious Rooms, 7 bed, 8 bath house.",
         price: 725,
         createdAt: new Date(),
         updatedAt: new Date()
