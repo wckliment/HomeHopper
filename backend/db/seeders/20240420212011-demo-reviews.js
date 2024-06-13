@@ -15,7 +15,7 @@ module.exports = {
       {
         spotId: 1,
         userId: 1,
-        review: "Great place to learn programming!",
+        review: "Went skiing, hiking, and played in the snow!",
         stars: 5,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -23,7 +23,7 @@ module.exports = {
       {
         spotId: 2,
         userId: 2,
-        review: "Awesome creativity hub!",
+        review: "Moden art made me feel like I was in a museum! Was so much fun.",
         stars: 4,
         createdAt: new Date(),
         updatedAt: new Date()
@@ -31,19 +31,28 @@ module.exports = {
       {
         spotId: 3,
         userId: 3,
-        review: "Amazing superhero experience!",
+        review: "Truly the American Dream Neighboor living never felt better.",
         stars: 5,
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        spotId: 1,
-        userId: 2,
-        review: "Very informative courses!",
-        stars: 4,
+        spotId: 4,
+        userId: 5,
+        review: "Huge house but was way too expensive!",
+        stars: 3,
         createdAt: new Date(),
         updatedAt: new Date()
-      }
+      },
+ {
+        spotId: 3,
+        userId: 1,
+        review: "Was an amazing adventure. Our family was so impressed can't wait to come back!",
+        stars: 5,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+
     ], { validate: true });
   },
 
@@ -51,7 +60,7 @@ module.exports = {
     const Op = Sequelize.Op;
     options.tableName = 'Reviews';
     return queryInterface.bulkDelete(options, {
-      spotId: { [Op.in]: [1, 2, 3] }
+      spotId: { [Op.in]: [1, 2, 3, 4] }
     });
   }
 };
