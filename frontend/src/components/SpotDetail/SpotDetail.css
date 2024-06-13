@@ -38,7 +38,7 @@
 
 .small-images img {
   width: calc(50% - 20px);
-  height: calc(0- 30px);
+  height: calc(0 - 30px);
   object-fit: cover;
 }
 
