@@ -321,16 +321,14 @@ const validateSpotCreation = [
   check('city').not().isEmpty().withMessage('City is required'),
   check('state').not().isEmpty().withMessage('State is required'),
   check('country').not().isEmpty().withMessage('Country is required'),
-  check('lat').isFloat({ min: -90, max: 90 }).withMessage('Latitude must be within -90 and 90'),
-  check('lng').isFloat({ min: -180, max: 180 }).withMessage('Longitude must be within -180 and 180'),
-  check('name').isLength({ min:5, max: 50 }).withMessage('Name must be more than 5 characters and less than 50 characters'),
+  check('name').isLength({ min: 5, max: 50 }).withMessage('Name must be more than 5 characters and less than 50 characters'),
   check('description').not().isEmpty().withMessage('Description is required'),
   check('price').isFloat({ min: 0 }).withMessage('Price per day must be a positive number'),
   handleValidationErrors
 ];
 
 router.post('/', requireAuth, validateSpotCreation, async (req, res) => {
-  const { address, city, state, country, lat, lng, name, description, price } = req.body;
+  const { address, city, state, country, name, description, price } = req.body;
   try {
     const newSpot = await Spot.create({
       ownerId: req.user.id, // Assuming req.user is populated by the requireAuth middleware
@@ -338,8 +336,6 @@ router.post('/', requireAuth, validateSpotCreation, async (req, res) => {
       city,
       state,
       country,
-      lat,
-      lng,
       name,
       description,
       price
@@ -347,6 +343,7 @@ router.post('/', requireAuth, validateSpotCreation, async (req, res) => {
 
     res.status(201).json(newSpot);
   } catch (error) {
+    console.error('Error creating spot:', error); // Log the detailed error
     res.status(500).json({ error: error.message });
   }
 });
@@ -501,7 +498,7 @@ router.post('/:spotId/reviews', requireAuth, validateReviewInput, async (req, re
       stars
     });
 
-   
+
     res.status(201).json(newReview);
   } catch (error) {
     console.error("Error creating review:", error);
