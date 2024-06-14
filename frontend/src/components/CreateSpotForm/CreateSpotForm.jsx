@@ -9,8 +9,6 @@ const CreateSpotForm = () => {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
   const [description, setDescription] = useState('');
   const [name, setName] = useState('');
   const [price, setPrice] = useState('');
@@ -21,9 +19,7 @@ const CreateSpotForm = () => {
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.spots);
 
-  useEffect(() => {
-
-  }, [loading]);
+  useEffect(() => {}, [loading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,8 +36,8 @@ const CreateSpotForm = () => {
       errors.price = 'Price per night is required and must be a positive number';
     }
     if (!previewImage || !/\.(jpg|jpeg|png)$/.test(previewImage)) {
-  errors.previewImage = 'Preview image is required';
-}
+      errors.previewImage = 'Preview image is required';
+    }
     imageUrls.forEach((url, index) => {
       if (!url || !/\.(jpg|jpeg|png)$/.test(url)) {
         errors[`image${index}`] = 'Image URL must end in .png, .jpg, or .jpeg';
@@ -60,8 +56,6 @@ const CreateSpotForm = () => {
       address,
       city,
       state,
-      lat: parseFloat(latitude),
-      lng: parseFloat(longitude),
       description,
       name,
       price: parseFloat(price),
@@ -75,7 +69,6 @@ const CreateSpotForm = () => {
         dispatch(createImage(spotId, previewImage, true)),
         ...imageUrls.map((url) => dispatch(createImage(spotId, url, false))),
       ];
-
 
       try {
         await Promise.all(imagePromises);
@@ -98,7 +91,7 @@ const CreateSpotForm = () => {
       <form onSubmit={handleSubmit}>
         <div className="form-section">
           <h2>Where's your place located?</h2>
-         <p>Guests will only get your exact address once they&apos;ve booked a reservation.</p>
+          <p>Guests will only get your exact address once they&apos;ve booked a reservation.</p>
           <div className="form-group">
             <label>Country</label>
             <input
@@ -138,24 +131,6 @@ const CreateSpotForm = () => {
               onChange={(e) => setState(e.target.value)}
             />
             {formErrors.state && <p className="error">{formErrors.state}</p>}
-          </div>
-          <div className="form-group">
-            <label>Latitude (optional)</label>
-            <input
-              type="text"
-              placeholder="Latitude"
-              value={latitude}
-              onChange={(e) => setLatitude(e.target.value)}
-            />
-          </div>
-          <div className="form-group">
-            <label>Longitude (optional)</label>
-            <input
-              type="text"
-              placeholder="Longitude"
-              value={longitude}
-              onChange={(e) => setLongitude(e.target.value)}
-            />
           </div>
         </div>
         <div className="form-section">
