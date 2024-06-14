@@ -81,6 +81,49 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
 
+      },
+      {
+
+        ownerId: 6,
+        address: "123 Seaside Ln",
+        city: "Nantucket",
+        state: "MA",
+        country: "United States of America",
+        lat: 37.256383,
+        lng: -110.243683,
+        name: "Seaside Serenity Cottage",
+        description: "Charming coastal cottage with stunning ocean views and cozy decor.",
+        price: 520,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        ownerId: 5,
+        address: "456 Brickstone Ave, Apt 12B",
+        city: "New York",
+        state: "NY",
+        country: "United States of America",
+        lat: 32.256383,
+        lng: -117.243683,
+        name: "Brickstone Haven Apartments",
+        description: "Modern brick apartment with city views, stylish interiors, and convenient amenities.",
+        price: 395,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        ownerId: 1,
+        address: "789 Lone Star Lane, Apt 5C",
+        city: "Houston",
+        state: "TX",
+        country: "United States of America",
+        lat: 31.256383,
+        lng: -115.243683,
+        name: "Lone Star Studio Retreat",
+        description: "Contemporary studio apartment in downtown Houston with great city views and cozy comfort.",
+        price: 285,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ], { validate: true });
   },
@@ -94,7 +137,10 @@ module.exports = {
         '123 Maple Grove Lane, Suite 4B',
         '465 Elmwood Ave',
         '5897 Woodhaven Circle',
-        '1313 Eerie Hollow Lane'
+        '1313 Eerie Hollow Lane',
+        '123 Seaside Ln',
+        '456 Brickstone Ave, Apt 12B',
+        '789 Lone Star Lane, Apt 5C'
       ]}
     }, {});
   }

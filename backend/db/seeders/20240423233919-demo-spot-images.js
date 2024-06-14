@@ -191,6 +191,111 @@ module.exports = {
         preview: false,
         createdAt: new Date(),
         updatedAt: new Date()
+      },
+      {
+        spotId: 6,
+        url: 'https://images.pexels.com/photos/731082/pexels-photo-731082.jpeg',
+        preview: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 6,
+        url: 'https://images.pexels.com/photos/1328032/pexels-photo-1328032.jpeg',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 6,
+        url: 'https://images.pexels.com/photos/322316/pexels-photo-322316.jpeg',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 6,
+        url: 'https://images.pexels.com/photos/2131853/pexels-photo-2131853.jpeg',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 6,
+        url: 'https://images.pexels.com/photos/2138921/pexels-photo-2138921.jpeg',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 7,
+        url: 'https://images.pexels.com/photos/19573734/pexels-photo-19573734/free-photo-of-facade-of-a-building.jpeg',
+        preview: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 7,
+        url: 'https://images.pexels.com/photos/19573751/pexels-photo-19573751/free-photo-of-an-entrance-to-the-building.jpeg',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 7,
+        url: 'https://images.pexels.com/photos/2079249/pexels-photo-2079249.jpeg',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 7,
+        url: 'https://images.pexels.com/photos/3932930/pexels-photo-3932930.jpeg',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 7,
+        url: 'https://images.pexels.com/photos/3837464/pexels-photo-3837464.jpeg',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 8,
+        url: 'https://images.pexels.com/photos/14998334/pexels-photo-14998334/free-photo-of-facade-of-white-apartment-building-under-white-sky.jpeg',
+        preview: true,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 8,
+        url: 'https://images.pexels.com/photos/6758782/pexels-photo-6758782.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 8,
+        url: 'https://images.pexels.com/photos/6758785/pexels-photo-6758785.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 8,
+        url: 'https://images.pexels.com/photos/6758786/pexels-photo-6758786.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 8,
+        url: 'https://images.pexels.com/photos/6758787/pexels-photo-6758787.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+        preview: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
       }
     ], { validate: true });
   },
@@ -225,7 +330,22 @@ module.exports = {
           'https://cdn.pixabay.com/photo/2020/03/18/17/01/old-house-4944818_1280.jpg',
           'https://cdn.pixabay.com/photo/2015/02/08/09/47/urban-628274_1280.jpg',
           'https://cdn.pixabay.com/photo/2021/08/27/14/08/abandoned-house-6578755_1280.jpg',
-          'https://images.pexels.com/photos/3714192/pexels-photo-3714192.jpeg'
+          'https://images.pexels.com/photos/3714192/pexels-photo-3714192.jpeg',
+          'https://images.pexels.com/photos/731082/pexels-photo-731082.jpeg',
+          'https://images.pexels.com/photos/1328032/pexels-photo-1328032.jpeg',
+          'https://images.pexels.com/photos/322316/pexels-photo-322316.jpeg',
+          'https://images.pexels.com/photos/2131853/pexels-photo-2131853.jpeg',
+          'https://images.pexels.com/photos/2138921/pexels-photo-2138921.jpeg',
+          'https://images.pexels.com/photos/19573734/pexels-photo-19573734/free-photo-of-facade-of-a-building.jpeg',
+          'https://images.pexels.com/photos/19573751/pexels-photo-19573751/free-photo-of-an-entrance-to-the-building.jpeg',
+          'https://images.pexels.com/photos/2079249/pexels-photo-2079249.jpeg',
+          'https://images.pexels.com/photos/3932930/pexels-photo-3932930.jpeg',
+          'https://images.pexels.com/photos/3837464/pexels-photo-3837464.jpeg',
+          'https://images.pexels.com/photos/14998334/pexels-photo-14998334/free-photo-of-facade-of-white-apartment-building-under-white-sky.jpeg',
+          'https://images.pexels.com/photos/6758782/pexels-photo-6758782.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          'https://images.pexels.com/photos/6758785/pexels-photo-6758785.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          'https://images.pexels.com/photos/6758786/pexels-photo-6758786.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          'https://images.pexels.com/photos/6758787/pexels-photo-6758787.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'
         ]
       }
     }, {});

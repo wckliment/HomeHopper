@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    // Seed data for Reviews table
+  
     await Review.bulkCreate([
       {
         spotId: 1,
@@ -52,6 +52,30 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date()
       },
+  {
+        spotId: 6,
+        userId: 3,
+        review: "The seaside views were breathtaking, and the cottage was cozy and charming.",
+        stars: 5,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 7,
+        userId: 4,
+        review: "A stylish apartment with amazing city views and all the amenities I needed.",
+        stars: 4,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        spotId: 8,
+        userId: 5,
+        review: "Great location in downtown Houston, cozy and comfortable studio apartment.",
+        stars: 4,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
 
     ], { validate: true });
   },
@@ -60,7 +84,7 @@ module.exports = {
     const Op = Sequelize.Op;
     options.tableName = 'Reviews';
     return queryInterface.bulkDelete(options, {
-      spotId: { [Op.in]: [1, 2, 3, 4] }
+      spotId: { [Op.in]: [1, 2, 3, 4, 6, 7, 8] }
     });
   }
 };
