@@ -70,7 +70,15 @@ const SpotDetail = () => {
           <div className="callout-info">
             <p className="price">${spot.price} / night</p>
             <p className="rating">
-              {averageRating} ★ <span className="dot">·</span> {reviewText}
+              {reviews.length === 0 ? (
+                <>
+                  ★ New
+                </>
+              ) : (
+                <>
+                  {averageRating} ★ <span className="dot">·</span> {reviewText}
+                </>
+              )}
             </p>
             <button className="reserve-button" onClick={() => alert('Feature Coming Soon!')}>
               Reserve
@@ -79,7 +87,7 @@ const SpotDetail = () => {
         </div>
       </div>
       <div className="reviews-section">
-        <h2>Reviews {averageRating} ★ · {reviewText}</h2>
+        <h2>Reviews {reviews.length === 0 ? `★ New` : `${averageRating} ★ · ${reviewText}`}</h2>
         {currentUser && !isOwner && !userHasReviewed && (
           <OpenModalButton
             modalComponent={<ReviewForm spotId={spotId} onClose={handleReviewCreation} />}
