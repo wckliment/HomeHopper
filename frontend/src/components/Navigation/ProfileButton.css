@@ -1,6 +1,6 @@
 .menu-button {
-  background: none;
-  border: 2px solid #808080;
+  background: #8e8e8e;
+  border: 2px solid #8e8e8e;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -8,7 +8,10 @@
   font-size: 32px;
   color: #333333;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
   /* Add some spacing for better visual appearance */
+  top: 20px;
+  right: 20px;
 }
 
 .menu-button:hover {
@@ -18,7 +21,7 @@
 .profile-dropdown {
   position: absolute;
   right: 0;
-  top: 100px;
+  top: 60px;
   /* Adjust this value to move the dropdown lower */
   background-color: #333333;
   border: 1px solid whitesmoke;
