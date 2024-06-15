@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { FaUserCircle } from 'react-icons/fa';
 import { FiMenu } from 'react-icons/fi';
 import * as sessionActions from '../../store/session';
@@ -11,12 +11,13 @@ import './ProfileButton.css';
 
 function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
 
   const toggleMenu = (e) => {
     e.stopPropagation();
-    setShowMenu(!showMenu);
+    setShowMenu((prevShowMenu) => !prevShowMenu);
   };
 
   useEffect(() => {
@@ -35,10 +36,13 @@ function ProfileButton({ user }) {
 
   const closeMenu = () => setShowMenu(false);
 
-  const logout = (e) => {
+  const logout = async (e) => {
     e.preventDefault();
-    dispatch(sessionActions.logout());
+    console.log('Logging out...');
+    await dispatch(sessionActions.logout());
+    console.log('Logged out, navigating to landing page...');
     closeMenu();
+    navigate('/'); // Navigate to the landing page after closing the menu
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
