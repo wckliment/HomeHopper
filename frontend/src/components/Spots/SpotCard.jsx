@@ -24,14 +24,13 @@ const SpotCard = ({ spot, onClick, onDelete }) => {
     onDelete(spot.id);
   };
 
-  return (
+ return (
     <div
       key={spot.id}
       className="spot-tile"
       onMouseEnter={() => setTooltipVisible(true)}
       onMouseLeave={() => setTooltipVisible(false)}
       onClick={() => onClick(spot.id)}
-      style={{ position: 'relative' }} // Ensure the container is positioned relative
     >
       <img src={previewImageUrl} alt={spot.name} />
       {isLandingPage && <Tooltip text={spot.name} visible={tooltipVisible} />}
@@ -39,7 +38,7 @@ const SpotCard = ({ spot, onClick, onDelete }) => {
         <h3 className="spot-name">{spot.name}</h3>
         <p>{spot.city}, {spot.state}</p>
         <p>${spot.price} / night</p>
-        <p>{averageRating} ★</p>
+        <p className="average-rating">{averageRating} ★</p>
         {isManageSpotsPage && (
           <div className="spot-actions">
             <button className="update-button" onClick={handleUpdateClick}>Update</button>

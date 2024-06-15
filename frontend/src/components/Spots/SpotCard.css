@@ -9,21 +9,27 @@
   cursor: pointer;
   margin: 10px;
   /* Added margin for better spacing */
+  height: 300px;
+  /* Fixed height for consistency */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .spot-tile img {
   width: 100%;
-  height: auto;
-}
-
-.spot-tile:hover {
-  transform: scale(1.05);
+  height: 150px;
+  /* Fixed height for images */
+  object-fit: cover;
+  /* Ensure images cover the area */
 }
 
 .spot-info {
   padding: 10px;
   background-color: white;
   /* Ensure background is white for visibility */
+  flex-grow: 1;
+  /* Ensure the content fills the available space */
 }
 
 .spot-info h3 {
@@ -38,25 +44,9 @@
   /* Gray color for text */
 }
 
-.tooltip {
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 4px;
-  padding: 5px;
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  white-space: nowrap;
-  z-index: 1;
-  opacity: 0.9;
-  pointer-events: none;
-}
-
-.spot-name {
-  color: #333;
-  /* Dark color for better contrast */
+.spot-info .average-rating {
+  color: #ffc107;
+  /* Gold color for average rating and star icon */
 }
 
 .spot-actions {
