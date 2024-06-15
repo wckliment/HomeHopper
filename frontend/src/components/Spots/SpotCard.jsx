@@ -10,7 +10,7 @@ const SpotCard = ({ spot, onClick, onDelete }) => {
   const isLandingPage = location.pathname === '/';
   const isManageSpotsPage = location.pathname === '/spots/current';
 
-  const previewImageUrl = spot.previewImage ? spot.previewImage : 'default-image-url'; 
+  const previewImageUrl = spot.previewImage ? spot.previewImage : 'default-image-url';
 
   const averageRating = spot.avgRating ? parseFloat(spot.avgRating).toFixed(1) : 'New';
 
