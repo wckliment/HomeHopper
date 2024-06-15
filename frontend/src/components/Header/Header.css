@@ -4,16 +4,23 @@
   align-items: center;
   padding: 10px;
   background-color: #8e8e8e;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #8e8e8e;
   width: 100%;
   box-sizing: border-box;
 }
 
 .logo {
-  height: 150px;
+  height: 250px;
   cursor: pointer;
+  border: none;
+  /* Removes any border */
+  padding: 0;
+  /* Removes any padding */
+  background: none;
+  /* Ensures no background color */
+  display: block;
+  /* Ensures the element displays correctly */
 }
-
 .nav {
   display: flex;
   align-items: center;
