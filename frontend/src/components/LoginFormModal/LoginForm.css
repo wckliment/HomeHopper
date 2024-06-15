@@ -1,20 +1,38 @@
+#modal-content {
+  background-color: #8e8e8e;;
+  color: black;
+  padding: 20px;
+  border-radius: 8px;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -20%);
+}
+
 form {
   display: flex;
   flex-direction: column;
   width: 300px;
   margin: 0 auto;
   padding: 20px;
-  background-color: white;
+  background-color: transparent;
   border-radius: 10px;
 }
 
 label {
-  margin-bottom: 10px;
+ margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+label input {
+  margin-top: 5px;
+  /* Add margin to the top of the input for more space between label and input */
 }
 
 input {
-  padding: 8px;
-  margin-bottom: 10px;
+  padding: 20px;
+  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
@@ -23,19 +41,19 @@ button {
   padding: 8px;
   height: 50px !important;
   background-color: #3DC6C1;
-  color: white;
+  color: #333333;
   border: none;
   border-radius: 2px;
   cursor: pointer;
   margin-bottom: 8px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    /* Add box shadow */
+  /* Add box shadow */
 }
 
 button:hover {
   background-color: #3DC6C1;
-    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
-      /* Increase shadow on hover */
+  box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.2);
+  /* Increase shadow on hover */
 }
 
 button:disabled {
@@ -44,6 +62,8 @@ button:disabled {
 }
 
 h1 {
+  color: #f0f0f0;
+  /* Light text color for contrast */
   text-align: center;
   margin-bottom: 20px;
 }

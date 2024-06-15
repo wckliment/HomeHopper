@@ -34,7 +34,7 @@
 
 .spot-info {
   padding: 10px;
-  background-color: white;
+  background-color: #8e8e8e;
   flex-grow: 1;
   /* Ensure this section takes the remaining space */
   display: flex;
@@ -49,7 +49,7 @@
 
 .spot-info p {
   margin: 5px 0;
-  color: black;
+  color: whitesmoke;
 }
 
 .tooltip {
