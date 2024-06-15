@@ -36,11 +36,11 @@ const SpotDetail = () => {
   const averageRating = calculateAverageRating(reviews);
 
   const handleReviewCreation = () => {
-    dispatch(fetchReviews(spotId)); // Fetch the latest reviews
+    dispatch(fetchReviews(spotId));
   };
 
   const handleDeleteSuccess = () => {
-    dispatch(fetchReviews(spotId)); // Refresh the reviews after deletion
+    dispatch(fetchReviews(spotId));
   };
 
   return (
@@ -79,7 +79,7 @@ const SpotDetail = () => {
         </div>
       </div>
       <div className="reviews-section">
-        <h2>Reviews</h2>
+        <h2>Reviews {averageRating} ★ · {reviewText}</h2>
         {currentUser && !isOwner && !userHasReviewed && (
           <OpenModalButton
             modalComponent={<ReviewForm spotId={spotId} onClose={handleReviewCreation} />}

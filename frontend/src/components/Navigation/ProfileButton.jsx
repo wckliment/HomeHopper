@@ -38,11 +38,9 @@ function ProfileButton({ user }) {
 
   const logout = async (e) => {
     e.preventDefault();
-    console.log('Logging out...');
     await dispatch(sessionActions.logout());
-    console.log('Logged out, navigating to landing page...');
     closeMenu();
-    navigate('/'); // Navigate to the landing page after closing the menu
+    navigate('/');
   };
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
