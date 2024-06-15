@@ -71,12 +71,10 @@ const SpotDetail = () => {
             <p className="price">${spot.price} / night</p>
             <p className="rating">
               {reviews.length === 0 ? (
-                <>
-                  ★ New
-                </>
+                <span className="gold-text">★ New</span>
               ) : (
                 <>
-                  {averageRating} ★ <span className="dot">·</span> {reviewText}
+                  <span className="gold-text">{averageRating} ★</span> <span className="black-text">· {reviewText}</span>
                 </>
               )}
             </p>
@@ -87,7 +85,7 @@ const SpotDetail = () => {
         </div>
       </div>
       <div className="reviews-section">
-        <h2>Reviews {reviews.length === 0 ? `★ New` : `${averageRating} ★ · ${reviewText}`}</h2>
+        <h2>Reviews {reviews.length === 0 ? <span className="gold-text">★ New</span> : <><span className="gold-text">{averageRating} ★</span> <span className="black-text">· {reviewText}</span></>}</h2>
         {currentUser && !isOwner && !userHasReviewed && (
           <OpenModalButton
             modalComponent={<ReviewForm spotId={spotId} onClose={handleReviewCreation} />}

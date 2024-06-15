@@ -167,3 +167,11 @@
   background-color: #cccccc;
   cursor: not-allowed;
 }
+
+.gold-text {
+  color: #ffc107;
+}
+
+.black-text {
+  color: black;
+}
