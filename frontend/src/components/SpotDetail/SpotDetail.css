@@ -50,19 +50,21 @@
 }
 
 .callout-info {
-  background: #f7f7f7;
+  background: #2d2d2d;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid #8e8e8e;
   border-radius: 8px;
   width: 200px;
 }
 
 .callout-info p {
+  color: whitesmoke;
   margin: 5px 0;
   font-size: 1.2em;
 }
 
 .callout-info .price {
+  color: whitesmoke;
   font-size: 1.5em;
   font-weight: bold;
   margin-bottom: 5px;
@@ -77,15 +79,17 @@
 }
 
 .callout-info .dot {
+  color: black;
   margin: 0 8px;
 }
 
 .reserve-button {
+  background: #8e8e8e;
+  border: 2px solid #808080;
   display: block;
   margin-top: 10px;
   padding: 10px;
-  background-color: #3DC6C1;
-  color: white;
+  color: #333333;
   text-align: center;
   border: none;
   border-radius: 5px;
@@ -99,15 +103,19 @@
 }
 
 .spot-info {
+  background-color: #333333;
+  color: whitesmoke;
   margin-top: 20px;
 }
 
 .spot-detail h1 {
+  color: whitesmoke;
   font-size: 2em;
   margin-bottom: 10px;
 }
 
 .spot-detail p {
+  color: whitesmoke;
   font-size: 1.2em;
 }
 
@@ -117,22 +125,25 @@
 }
 
 .reviews-section h2 {
+  color: whitesmoke;
   font-size: 1.5em;
   margin-bottom: 10px;
 }
 
 .review {
-  border-top: 1px solid #ccc;
+  border-top: 1px solid whitesmoke;
   padding-top: 10px;
   margin-top: 10px;
 }
 
 .review p {
+  color: whitesmoke;
   margin: 5px 0;
 }
 
 .spot-description {
-  color: black;
+  background-color: #333333;
+  color: whitesmoke;
   font-style: italic;
 }
 
@@ -170,8 +181,15 @@
 
 .gold-text {
   color: #ffc107;
+  font-size: 14px;
 }
 
 .black-text {
-  color: black;
+  color: whitesmoke;
+  font-size: 14px;
+}
+
+/* New style for the no-reviews text */
+.no-reviews-text {
+  color: whitesmoke;
 }

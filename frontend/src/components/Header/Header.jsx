@@ -12,7 +12,7 @@ const Header = ({ isLoaded, sessionUser }) => {
         <ul className="navigation">
           {sessionUser && (
             <li>
-              <NavLink to="/spots/new">Create a New Spot</NavLink>
+              <NavLink to="/spots/new" className="create-new-spot-link">Create a New Spot</NavLink>
             </li>
           )}
           {isLoaded && (

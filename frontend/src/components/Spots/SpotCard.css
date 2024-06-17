@@ -23,7 +23,7 @@
 
 .spot-info {
   padding: 10px;
-  background-color: white;
+  background-color: #333333;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -41,7 +41,7 @@
 }
 
 .spot-info .average-rating {
-  color: #ffc107;
+  color: #f3ce5a;
 }
 
 .spot-actions {
@@ -72,6 +72,7 @@
 }
 
 .hosted-by {
-  color: black;
+  background-color: #333333;
+  color: whitesmoke;
   font-weight: bold;
 }

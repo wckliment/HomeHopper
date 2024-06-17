@@ -1,25 +1,30 @@
 .menu-button {
-  background: none;
-  border: none;
+  background: #8e8e8e;
+  border: 2px solid #8e8e8e;
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
   font-size: 32px;
-  color: #3DC6C1;
+  color: #333333;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  /* Add some spacing for better visual appearance */
+  top: 20px;
+  right: 20px;
 }
 
 .menu-button:hover {
-  color: black;
+  color: #333333;
 }
 
 .profile-dropdown {
-  position: absolute;
+  position: fixed;
   right: 0;
-  top: 50px;
+  top: 60px;
   /* Adjust this value to move the dropdown lower */
-  background-color: white;
-  border: 1px solid #ccc;
+  background-color: #333333;
+  border: 1px solid whitesmoke;
   padding: 10px;
   list-style-type: none;
   width: 150px;
@@ -31,18 +36,40 @@
   padding: 8px 12px;
   cursor: pointer;
   font-size: 16px;
-  color: #333;
+  color: whitesmoke;
   display: block;
   /* Ensure list items are displayed as block elements */
 }
 
 .profile-dropdown li:hover {
-  background-color: #f1f1f1;
-  color: black;
+  background-color: #3DC6C1;
+  color: #333333;
 }
 
 .profile-dropdown.hidden {
   display: none;
+}
+
+.profile-dropdown a {
+  color: whitesmoke;
+  /* Ensure all links are white */
+  text-decoration: none;
+  /* Remove underline */
+}
+
+.profile-dropdown a:hover {
+  color: #ccc;
+  /* Optional: lighter color on hover */
+}
+
+.profile-dropdown a[href="/spots/current"] {
+  color: whitesmoke;
+  /* Ensure the 'Manage Spots' link is white */
+}
+
+.profile-dropdown a[href="/spots/current"]:hover {
+  color: #ccc;
+  /* Optional: lighter color on hover */
 }
 
 .error {
