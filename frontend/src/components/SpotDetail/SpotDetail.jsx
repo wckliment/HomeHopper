@@ -43,6 +43,10 @@ const SpotDetail = () => {
     dispatch(fetchReviews(spotId));
   };
 
+ const handleCancelDelete = () => {
+
+  };
+
   return (
     <div className="spot-details-page">
       <div className="top-section">
@@ -118,6 +122,7 @@ const SpotDetail = () => {
                       <ConfirmDeleteReviewModal
                         reviewId={review.id}
                         onDeleteSuccess={handleDeleteSuccess}
+                        onCancel={handleCancelDelete}
                       />
                     }
                     buttonText="Delete"
@@ -127,7 +132,7 @@ const SpotDetail = () => {
             </div>
           ))
         ) : (
-           !isOwner && currentUser ? <p className="no-reviews-text">Be the first to post a review!</p> : <p className="no-reviews-text">No reviews yet.</p>
+          !isOwner && currentUser ? <p className="no-reviews-text">Be the first to post a review!</p> : <p className="no-reviews-text">No reviews yet.</p>
         )}
       </div>
     </div>
