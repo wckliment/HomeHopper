@@ -188,3 +188,8 @@
   color: whitesmoke;
   font-size: 14px;
 }
+
+/* New style for the no-reviews text */
+.no-reviews-text {
+  color: whitesmoke;
+}

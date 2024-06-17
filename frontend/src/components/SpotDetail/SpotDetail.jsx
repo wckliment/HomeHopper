@@ -127,7 +127,7 @@ const SpotDetail = () => {
             </div>
           ))
         ) : (
-          !isOwner && currentUser ? <p>Be the first to post a review!</p> : <p>No reviews yet.</p>
+           !isOwner && currentUser ? <p className="no-reviews-text">Be the first to post a review!</p> : <p className="no-reviews-text">No reviews yet.</p>
         )}
       </div>
     </div>
