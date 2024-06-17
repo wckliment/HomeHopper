@@ -19,7 +19,7 @@
 }
 
 .profile-dropdown {
-  position: absolute;
+  position: fixed;
   right: 0;
   top: 60px;
   /* Adjust this value to move the dropdown lower */
