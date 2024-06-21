@@ -48,14 +48,17 @@ To set up the project locally, follow these steps:
 
   ```sh
   npm install
+  ```
 
 3. Create a `.env` file in the root directory and add the following variables:
-```plaintext
-  DB_USERNAME=your_db_username
-  DB_PASSWORD=your_db_password
-  DB_NAME=your_db_name
-  DB_HOST=your_db_host
-  JWT_SECRET=your_jwt_secret
+
+   ```plaintext
+   DB_USERNAME=your_db_username
+   DB_PASSWORD=your_db_password
+   DB_NAME=your_db_name
+   DB_HOST=your_db_host
+   JWT_SECRET=your_jwt_secret
+   ```
 
 ## Usage 🖥️
 You can access the deployed application at [HomeHopper on Render](https://homehopper.onrender.com).
