@@ -2,7 +2,6 @@
 
 ![HomeHopper Logo](frontend/public/logo.png)
 
-
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
@@ -11,12 +10,12 @@ Welcome to HomeHopper, your go-to platform for finding and managing home rentals
 ## Table of Contents 📑
 
 - [Introduction](#introduction)
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Setup](#setup)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+- [Features](#features-)
+- [Technologies Used](#technologies used-)
+- [Setup](# setup-)
+- [Usage](# usage-)
+- [Contributing](# contributing-)
+- [License](# license-)
 
 ## Introduction
 
@@ -44,13 +43,13 @@ To set up the project locally, follow these steps:
    ```sh
    git clone https://github.com/yourusername/HomeHopper.git
 
-2. Install dependencies:
+1. Install dependencies:
 
-  ```sh
-  npm install
-  ```
+   ```sh
+    npm install
+   ```
 
-3. Create a `.env` file in the root directory and add the following variables:
+1. Create a `.env` file in the root directory and add the following variables:
 
    ```plaintext
    DB_USERNAME=your_db_username
@@ -61,10 +60,13 @@ To set up the project locally, follow these steps:
    ```
 
 ## Usage 🖥️
+
 You can access the deployed application at [HomeHopper on Render](https://homehopper.onrender.com).
 
 ## Contributing 🤝
+
 Contributions are welcome! Please fork the repository and create a pull request.
 
 ## License 📄
+
 This project is licensed under the MIT License.
