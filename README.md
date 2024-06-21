@@ -21,7 +21,7 @@ Welcome to HomeHopper, your go-to platform for finding and managing home rentals
 
 HomeHopper is a web application that allows users to browse, create, and manage rental properties. It provides a seamless user experience for both property owners and renters.
 
-## Features 🚀
+## Features
 
 - User Authentication 🔒
 - Create, Read, Update, Delete Spots 🏠
@@ -31,16 +31,16 @@ HomeHopper is a web application that allows users to browse, create, and manage 
 - Detailed Spot Information ℹ️
 - User Profiles 👤
 
-## Technologies Used 🛠️
+## Technologies Used
 
-- React
-- Redux
-- Express
-- Sequelize
+- React ⚛️
+- Redux 🔄
+- Express ⚡
+- Sequelize 📊
 
-## Setup ⚙️
+## Setup
 
-To set up the project locally, follow these steps:
+⚙️ To set up the project locally, follow these steps:
 
 1. Clone the repository:
 
@@ -65,39 +65,39 @@ To set up the project locally, follow these steps:
 
 1. Set up the database:
 
-   - Navigate to the backend directory:
+- Navigate to the backend directory:
 
-  ```sh
-  cd backend
-  ```
+   ```sh
+   cd backend
+   ```
 
-   - Create the database:
+- Create the database:
 
-  ```sh
-  npx sequelize-cli db:create
-  ```
+   ```sh
+   npx sequelize-cli db:create
+   ```
 
-   - Run migrations:
+- Run migrations:
 
-  ```sh
-  npx sequelize-cli db:migrate
-  ```
+   ```sh
+   npx sequelize-cli db:migrate
+   ```
 
-   - Seed the database (optional):
+- Seed the database (optional):
 
-  ```sh
-  npx sequelize-cli db:seed:all
-  ```
+   ```sh
+   npx sequelize-cli db:seed:all
+   ```
 
-   - Start the backend server:
+- Start the backend server:
 
-  ```sh
- npm start
-  ```
+   ```sh
+   npm start
+   ```
 
 1. Start the frontend server:
 
-   - Navigate to the frontend directory:
+- Navigate to the frontend directory:
 
     ```sh
     cd frontend
@@ -111,14 +111,14 @@ To set up the project locally, follow these steps:
 
 1. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
 
-## Usage 🖥️
+## Usage
 
-You can access the deployed application at [HomeHopper on Render](https://homehopper.onrender.com).
+🖥️ You can access the deployed application at [HomeHopper on Render](https://homehopper.onrender.com).
 
-## Contributing 🤝
+## Contributing
 
-Contributions are welcome! Please fork the repository and create a pull request.
+🤝 Contributions are welcome! Please fork the repository and create a pull request.
 
-## License 📄
+## License
 
-This project is licensed under the MIT License.
+📄 This project is licensed under the MIT License.
