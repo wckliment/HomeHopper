@@ -1,76 +1,67 @@
 # HomeHopper
 
-Welcome to HomeHopper! This is a web application for managing vacation rentals.
+![HomeHopper Logo](frontend/public/logo.png)
 
-## Live Demo
 
-Check out the live demo of the application deployed on Render: [HomeHopper Live Demo](https://homehopper.onrender.com)
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
-## Features
+Welcome to HomeHopper, your go-to platform for finding and managing home rentals.
 
-- User authentication and authorization
-- Manage vacation rental spots
-- Create, update, and delete spots
-- View and post reviews for spots
+## Table of Contents 📑
 
-## Getting Started
+- [Introduction](#introduction)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-To get started with the project locally, follow these steps:
+## Introduction
 
-### Prerequisites
+HomeHopper is a web application that allows users to browse, create, and manage rental properties. It provides a seamless user experience for both property owners and renters.
 
-- Node.js and npm installed
-- PostgreSQL database
+## Features 🚀
 
-### Installation
+- User Authentication 🔒
+- Create, Read, Update, Delete Spots 🏠
+- Responsive Design 📱
+
+## Technologies Used 🛠️
+
+- React
+- Redux
+- Express
+- Sequelize
+
+## Setup ⚙️
+
+To set up the project locally, follow these steps:
 
 1. Clone the repository:
 
-    ```sh
-    git clone https://github.com/yourusername/HomeHopper.git
-    cd HomeHopper
-    ```
+   ```sh
+   git clone https://github.com/yourusername/HomeHopper.git
 
-2. Install the dependencies:
+2. Install dependencies:
 
-    ```sh
-    npm install
-    ```
+  ```sh
+  npm install
 
 3. Create a `.env` file in the root directory and add the following variables:
+```plaintext
+  DB_USERNAME=your_db_username
+  DB_PASSWORD=your_db_password
+  DB_NAME=your_db_name
+  DB_HOST=your_db_host
+  JWT_SECRET=your_jwt_secret
 
-    ```plaintext
-    DB_USERNAME=your_db_username
-    DB_PASSWORD=your_db_password
-    DB_NAME=your_db_name
-    DB_HOST=your_db_host
-    JWT_SECRET=your_jwt_secret
-    ```
+## Usage 🖥️
+You can access the deployed application at [HomeHopper on Render](https://homehopper.onrender.com).
 
-4. Set up the database:
+## Contributing 🤝
+Contributions are welcome! Please fork the repository and create a pull request.
 
-    ```sh
-    npx sequelize-cli db:create
-    npx sequelize-cli db:migrate
-    npx sequelize-cli db:seed:all
-    ```
-
-5. Start the development server:
-
-    ```sh
-    npm start
-    ```
-
-## Usage
-
-After starting the development server, you can access the application at `http://localhost:3000`.
-
-For the live demo, you can visit [HomeHopper Live Demo](https://homehopper.onrender.com).
-
-## Contributing
-
-If you would like to contribute, please fork the repository and use a feature branch. Pull requests are welcome.
-
-## License
-
+## License 📄
 This project is licensed under the MIT License.
