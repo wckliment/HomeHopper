@@ -95,7 +95,7 @@ HomeHopper is a web application that allows users to browse, create, and manage 
    npm start
    ```
 
-- Start the frontend server:
+1. Start the frontend server:
 
 - Navigate to the frontend directory:
 
@@ -109,7 +109,7 @@ HomeHopper is a web application that allows users to browse, create, and manage 
     npm run dev
     ```
 
- Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
+1. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
 
 ## Usage
 
