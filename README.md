@@ -103,7 +103,7 @@ HomeHopper is a web application that allows users to browse, create, and manage 
     cd frontend
     ```
 
-1. Start the frontend development server:
+- Start the frontend development server:
 
     ```sh
     npm run dev
