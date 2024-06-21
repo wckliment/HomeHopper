@@ -63,7 +63,7 @@ HomeHopper is a web application that allows users to browse, create, and manage 
    JWT_SECRET=your_jwt_secret
    ```
 
-1. Set up the database:
+1. Set up the backend database, start the frontend and backend server, and open your browser :
 
 - Navigate to the backend directory:
 
@@ -95,8 +95,6 @@ HomeHopper is a web application that allows users to browse, create, and manage 
    npm start
    ```
 
-1. Start the frontend server:
-
 - Navigate to the frontend directory:
 
     ```sh
@@ -109,7 +107,7 @@ HomeHopper is a web application that allows users to browse, create, and manage 
     npm run dev
     ```
 
-1. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
+- Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
 
 ## Usage
 
