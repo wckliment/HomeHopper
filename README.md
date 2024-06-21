@@ -10,12 +10,12 @@ Welcome to HomeHopper, your go-to platform for finding and managing home rentals
 ## Table of Contents 📑
 
 - [Introduction](#introduction)
-- [Features](#features-)
-- [Technologies Used](#technologies used-)
-- [Setup](# setup-)
-- [Usage](# usage-)
-- [Contributing](# contributing-)
-- [License](# license-)
+- [Features](#features 🚀)
+- [Technologies-Used](#technologies-used 🛠️)
+- [Setup](#setup ⚙️)
+- [Usage](#usage 🖥️)
+- [Contributing](#contributing 🤝)
+- [License](#license 📄)
 
 ## Introduction
 
@@ -26,6 +26,10 @@ HomeHopper is a web application that allows users to browse, create, and manage 
 - User Authentication 🔒
 - Create, Read, Update, Delete Spots 🏠
 - Responsive Design 📱
+- Review and Rating System ⭐
+- Search and Filter Listings 🔍
+- Detailed Spot Information ℹ️
+- User Profiles 👤
 
 ## Technologies Used 🛠️
 
@@ -58,6 +62,54 @@ To set up the project locally, follow these steps:
    DB_HOST=your_db_host
    JWT_SECRET=your_jwt_secret
    ```
+
+1. Set up the database:
+
+   - Navigate to the backend directory:
+
+     ```sh
+     cd backend
+     ```
+
+   - Create the database:
+
+     ```sh
+     npx sequelize-cli db:create
+     ```
+
+   - Run migrations:
+
+     ```sh
+     npx sequelize-cli db:migrate
+     ```
+
+   - Seed the database (optional):
+
+     ```sh
+     npx sequelize-cli db:seed:all
+     ```
+
+   - Start the backend server:
+
+    ```sh
+    npm start
+    ```
+
+1. Start the frontend server:
+
+   - Navigate to the frontend directory:
+
+    ```sh
+    cd frontend
+    ```
+
+1. Start the frontend development server:
+
+    ```sh
+    npm run dev
+    ```
+
+1. Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
 
 ## Usage 🖥️
 
