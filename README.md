@@ -10,12 +10,12 @@ Welcome to HomeHopper, your go-to platform for finding and managing home rentals
 ## Table of Contents 📑
 
 - [Introduction](#introduction)
-- [Features](#features 🚀)
-- [Technologies-Used](#technologies-used 🛠️)
-- [Setup](#setup ⚙️)
-- [Usage](#usage 🖥️)
-- [Contributing](#contributing 🤝)
-- [License](#license 📄)
+- [Features](#features)
+- [Technologies-Used](#technologies-used)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Introduction
 
@@ -67,33 +67,33 @@ To set up the project locally, follow these steps:
 
    - Navigate to the backend directory:
 
-     ```sh
-     cd backend
-     ```
+  ```sh
+  cd backend
+  ```
 
    - Create the database:
 
-     ```sh
-     npx sequelize-cli db:create
-     ```
+  ```sh
+  npx sequelize-cli db:create
+  ```
 
    - Run migrations:
 
-     ```sh
-     npx sequelize-cli db:migrate
-     ```
+  ```sh
+  npx sequelize-cli db:migrate
+  ```
 
    - Seed the database (optional):
 
-     ```sh
-     npx sequelize-cli db:seed:all
-     ```
+  ```sh
+  npx sequelize-cli db:seed:all
+  ```
 
    - Start the backend server:
 
-    ```sh
-    npm start
-    ```
+  ```sh
+ npm start
+  ```
 
 1. Start the frontend server:
 
